@@ -1,0 +1,7 @@
+CREATE TABLE business (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created DATE NOT NULL,
+    cnpj VARCHAR(255) NOT NULL,
+    phone VARCHAR(100) NOT NULL
+);

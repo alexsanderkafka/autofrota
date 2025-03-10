@@ -1,0 +1,74 @@
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomNavigation from './BottomNavigation'
+
+import Home from '../screens/Home';
+import Login from '../screens/Login';
+import Vehicle from '../screens/Vehicle';
+import Maintenance from '../screens/Maintenance';
+import Fuel from '../screens/Fuel'
+
+const Stack = createNativeStackNavigator();
+
+export default function MyStack(){
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+
+            <Stack.Screen 
+                name="Login" 
+                component={Login}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name="BottomNavigation" 
+                component={BottomNavigation}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen 
+                name="Vehicle" 
+                component={Vehicle}
+                options={{
+                    title: "Veículo",
+                    headerStyle:{
+                        backgroundColor: '#FFF',
+                    },
+                    headerTintColor: '#176585',
+                }}
+            />
+
+            <Stack.Screen 
+                name="Maintenance" 
+                component={Maintenance}
+                options={{
+                    title: "Manutenções",
+                    headerStyle:{
+                        backgroundColor: '#FFF',
+                    },
+                    headerTintColor: '#176585',
+                }}
+            />
+
+            <Stack.Screen 
+                name="Fuel" 
+                component={Fuel}
+                options={{
+                    title: "Abastecimentos",
+                    headerStyle:{
+                        backgroundColor: '#FFF',
+                    },
+                    headerTintColor: '#176585',
+                }}
+            />
+            </Stack.Navigator>  
+      </NavigationContainer>
+    );
+}
