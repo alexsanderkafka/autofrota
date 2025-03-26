@@ -15,11 +15,29 @@ const HeaderContainer = styled.header`
     }
 `
 
+const HeaderButton = styled.button`
+    all: unset;
+    background-color: #2563EB;
+    border-radius: 5px;
+    padding: 9px 55px;
+
+    color: #FFF;
+
+    transition: 0.5s;
+
+    &:hover{
+        background-color: #1e40ab;
+    }
+`
+
 export default function Header(){
     return (
         <HeaderContainer>
             <img src={logo} alt="Logo AutoFrota" />
 
+            <HeaderButton>
+                Comece
+            </HeaderButton>
         </HeaderContainer>
     )   
 }

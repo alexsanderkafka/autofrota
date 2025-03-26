@@ -7,6 +7,7 @@ import PlanCard from "../components/PlanCard";
 import AccordionQuestion from "../components/AccordionQuestion";
 
 import CarImage from "../assets/car.png";
+import Slide from "../components/Slide";
 
 export default function LandingPage(){
     return (
@@ -52,7 +53,7 @@ export default function LandingPage(){
             </section>
 
             <section id="section-feedbacks">
-            
+                <Slide />
             </section>
 
             <section id="section-plans">

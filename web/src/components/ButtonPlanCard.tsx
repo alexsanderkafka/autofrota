@@ -2,6 +2,15 @@ import styled from "styled-components";
 
 import DoneIcon from '@mui/icons-material/Done';
 
+
+const ContainerToggleButtonPlanCard = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+`
+
 const PlanCardButton = styled.div`
     display: flex;
     flex-direction: column;
@@ -10,6 +19,11 @@ const PlanCardButton = styled.div`
     height: 615px;
 
     border-radius: 5px;
+
+    margin-top: 50px;
+    margin-bottom: 50px;
+
+    cursor: pointer;
 
     .header-card {
         margin-top: 96px;
@@ -49,7 +63,8 @@ const PlanCardButton = styled.div`
         margin-bottom: 16px;
     }
 
-    .active{
+    &.active-toggle {
+        background-color: #FFF;
         border: 1px solid #2563EB;
     }
 `;
@@ -57,39 +72,71 @@ const PlanCardButton = styled.div`
 interface PlanCardProps{
     planName?: string,
     price?: string,
-    itens?: string[],
-    type?: string,
-    setType? : (type: string) => void
+    itensOne?: string[],
+    itensTwo?: string[],
+    type: string,
+    setType : (type: string) => void
 }
 
-export default function PlanCard({planName = "Plano Básico", price = "0,00", itens = [], type = "basic", setType}: PlanCardProps){
+export default function ToggleButtonPlanCard({planName = "Plano Básico", price = "0,00", itensOne = [], itensTwo = [], type, setType}: PlanCardProps){
     return(
-        <PlanCardButton
-            className={type === "basic" ? "active" : ""}
-            onClick={() => {
+        <ContainerToggleButtonPlanCard>
+            <PlanCardButton
+                className={`${type === "basic" ? "active-toggle" : ""}`}
+                onClick={() => {
+                    setType("basic");
+                }}
+            >
+                <div className="header-card">
+                    <h3>{planName}</h3>
+                    <p>R$ {price}/ano</p>
+                </div>
+
+                <hr/>
+
+                <div className="container-itens">
+                    {
+                        itensOne.map((item: string, index: number) => {
+                            return(
+                                
+                                <div className="item" key={index}>
+                                    <DoneIcon style={{ color: '#2563EB', fontSize: '24px' }} />
+                                    <p>{item}</p>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
                 
-            }}
-        >
-            <div className="header-card">
-                <h3>{planName}</h3>
-                <p>R$ {price}/ano</p>
-            </div>
+            </PlanCardButton>
 
-            <hr/>
+            <PlanCardButton
+                className={type === "premium" ? "active-toggle" : ""}
+                onClick={() => {
+                    setType("premium");
+                }}
+            >
+                <div className="header-card">
+                    <h3>{planName}</h3>
+                    <p>R$ {price}/ano</p>
+                </div>
 
-            <div className="container-itens">
-                {
-                    itens.map((item: string) => {
-                        return(
-                            <div className="item">
-                                <DoneIcon style={{ color: '#2563EB', fontSize: '24px' }} />
-                                <p>{item}</p>
-                            </div>
-                        )
-                    })
-                }
-            </div>
-            
-        </PlanCardButton>
+                <hr/>
+
+                <div className="container-itens">
+                    {
+                        itensTwo.map((item: string, index: number) => {
+                            return(
+                                <div className="item">
+                                    <DoneIcon style={{ color: '#2563EB', fontSize: '24px' }} />
+                                    <p>{item}</p>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                
+            </PlanCardButton>
+        </ContainerToggleButtonPlanCard>
     );
 }

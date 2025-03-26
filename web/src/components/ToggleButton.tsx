@@ -23,6 +23,8 @@ const ContainerToggleButton = styled.div`
         
         font-weight: 300;
         transition: 0.2s;
+        background-color: #fff;
+        
     }
 
     .active{

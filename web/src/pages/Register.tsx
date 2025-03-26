@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Logo from "../assets/autofrota.png";
-import PlanCard from "../components/PlanCard";
 import ToggleButton from "../components/ToggleButton";
 import { useState } from "react";
 import Forms from "../components/Forms";
+import ToggleButtonPlanCard from "../components/ButtonPlanCard";
 
 
 const RegisterContainer = styled.div`
@@ -42,18 +42,11 @@ const RegisterTexts = styled.div`
     }
 `
 
-const RegisterContainerPlanButtons = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-`
-
-
 export default function Register(){
 
-    const [type, setType] = useState("Pessoa física");
+    const [typeCard, setTypeCard] = useState("basic");
+
+    const [typeToggle, setTypeToggle] = useState("Pessoa física");
 
     return(
         <RegisterContainer>
@@ -64,14 +57,11 @@ export default function Register(){
                 <p>Escolha o seu o plano e comece a gerenciar sua frota</p>
             </RegisterTexts>
 
-            <RegisterContainerPlanButtons>
-                <PlanCard planName="Plano Básico" price="0,00" itens={["Controle de gasto de combustível", "Controle de manutenções", "Checklist nos veículos"]}/>
-                <PlanCard planName="Plano Pro" price="0,00" itens={["Todas as funcionalidades do básico", "Emissão de alertas", "Geração de relatório para cada veículo", "Análise de gastos", "Suporte ao cliente"]}/>
-            </RegisterContainerPlanButtons>
+            <ToggleButtonPlanCard itensOne={["Controle de gasto de combustível", "Controle de manutenções", "Checklist nos veículos"]} itensTwo={["Todas as funcionalidades do básico", "Emissão de alertas", "Geração de relatório para cada veículo", "Análise de gastos", "Suporte ao cliente"]} setType={setTypeCard} type={typeCard}/>
 
-            <ToggleButton type={type} setActive={setType} />
+            <ToggleButton type={typeToggle} setActive={setTypeToggle} />
 
-            <Forms typeForm={type}/>
+            <Forms typeForm={typeToggle}/>
 
 
         </RegisterContainer>

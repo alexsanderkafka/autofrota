@@ -1,16 +1,14 @@
-import { StrictMode } from 'react';
+//import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+
+import {BrowserRouter} from "react-router-dom";
 
 import './styles/reset.css';
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-
-import LandingPage from './pages/LandingPage';
-import Register from './pages/Register';
+import AppRouter from './routes';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Register />
-  </StrictMode>,
+  <BrowserRouter>
+    <AppRouter/>
+  </BrowserRouter>,
 );
