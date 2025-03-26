@@ -1,127 +1,20 @@
 import { useState } from "react";
 
-import styled from "styled-components";
-
 import { useForm } from 'react-hook-form';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FooterRegister from "../FooterRegister";
+import FormButton from "../FormButton";
 
-const MainContainer = styled.div`
-    margin-top: 60px;   
-    
-    form{
-        display: flex;
-        flex-direction: column;
-        width: 586px;
-
-        margin-bottom: 120px;
-    }
-
-    label{
-        font-size: 16px;
-    }
-
-    .custom-input{
-        all: unset;
-        border: 1px solid;
-        margin-bottom: 15px;
-        font-size: 20px;
-
-        padding: 13px 12px 13px 12px;
-
-        border-radius: 5px;
-        border-color: #2563EB;
-    }
-
-    .small-field{
-        max-width: 100%;
-    }
-    
-`
-
-const ContainerSmallFields = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    height: auto;
-`
-
-const ContainerFormsButton = styled.button`
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-    padding: 15px 0px;
-    background-color: #2563EB;
-    color: #FFF;
-    font-size: 20px;
-    font-family: "Roboto", sans-serif;
-    border: none;
-    border-radius: 5px;
-    transition: 0.3s;
-    cursor: pointer;
-
-    &:hover{
-        background-color: #1A4CA0;
-    }
-`
-
-interface FormButtonProps{
-    children: string;
-    onClick: () => void;
-}
-
-function FormButton({children = "button", onClick = () => {}}: FormButtonProps){
-    return(
-        <ContainerFormsButton
-            type="submit"
-            onClick={onClick}
-        >
-            {children}
-        </ContainerFormsButton>
-    );
-}
-
-const ContainerFooterRegister = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 30px;
-
-    font-family: 'Roboto', sans-serif;
-
-    p{
-        font-size: 20px;
-        font-weight: 100;
-        color: #343434;
-    }
-
-    .footer-title{
-        margin-bottom: 20px;
-    }
-
-    span{
-        color: #2563EB;
-    }
-`
-
-
-function FooterRegister(){
-    return(
-        <ContainerFooterRegister>
-            <p className="footer-title">Já possui uma conta? <span>Abaixe o app e faça o login</span></p>
-            <p>Precisa de ajuda? Entre em contato com o nosso suporte:</p>
-            <p>autofrota@gmail.com <span>|</span> (00) 0 0000-0000</p>
-        </ContainerFooterRegister>
-    );
-}
+import {
+    ContainerSmallFields,
+    MainContainer
+} from './style';
 
 interface FormProps{
     typeForm: string;
 }
-export default function Forms({typeForm = "Pessoa física"}: FormProps){
+export default function Form({typeForm = "Pessoa física"}: FormProps){
 
     const { register, handleSubmit, formState: {errors} } = useForm();
     //const selectedOption = watch("terms");
@@ -199,8 +92,6 @@ export default function Forms({typeForm = "Pessoa física"}: FormProps){
                     </div>
                 </ContainerSmallFields>
         );
-            
-
     }
     
     return(

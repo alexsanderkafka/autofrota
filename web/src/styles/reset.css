@@ -18,8 +18,9 @@ time, mark, audio, video {
     border: 0;
 }
 
+
 *{
-    font-family: 'Montserrat', serif;
+    font-family: "Roboto", sans-serif;
 }
 
 html, body{

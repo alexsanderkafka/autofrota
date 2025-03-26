@@ -1,78 +1,16 @@
-import styled from 'styled-components';
-import Logo from '../assets/autofrota.png';
-import ButtonLandingPage from './Button';
+import Logo from '../../assets/autofrota.png';
+import ButtonLandingPage from '../Button';
 
-const FooterContainer = styled.footer`
-  padding-top: 80px;
-  padding-bottom: 25px;
-`;
-
-
-const FooterContent = styled.div`
-  margin: 0 auto;
-  padding: 0 50px;
-`;
-
-const FooterItens = styled.div`
-    max-width: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-`;
-
-const FooterSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  
-`;
-
-const FooterSectionLogo = styled.div`
-  display: flex;
-  flex-direction: column;
-  
-  justify-content: left;
-
-  img{
-    width: auto;
-    height: 40px;
-    object-fit: contain;
-
-    margin-bottom: 7px;
-  }
-
-  p{
-    max-width: 378px;
-    font-size: 18px;
-
-    margin-bottom: 76px;
-  }
-`;
-
-const FooterTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 24px;
-`;
-
-const FooterLink = styled.a`
-  color: #343434;
-  text-decoration: none;
-
-  transition: 0.3s;
-
-  &:hover {
-    color: #2563eb;
-  }
-`;
-
-const Copyright = styled.div`
-  text-align: start;
-  color: #000;
-  font-weight: bold;
-  font-size: 14px;
-`;
+import {
+  FooterContainer,
+  FooterContent,
+  FooterItens,
+  FooterSectionLogo,
+  FooterSection,
+  FooterTitle,
+  FooterLink,
+  Copyright,
+} from './style';
 
 export default function Footer() {
   return (

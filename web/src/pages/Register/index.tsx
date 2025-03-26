@@ -1,46 +1,13 @@
-import styled from "styled-components";
-import Logo from "../assets/autofrota.png";
-import ToggleButton from "../components/ToggleButton";
+import Logo from "../../assets/autofrota.png";
+import ToggleButton from "../../components/Togglebutton";
 import { useState } from "react";
-import Forms from "../components/Forms";
-import ToggleButtonPlanCard from "../components/ButtonPlanCard";
+import Form from "../../components/Form";
+import ToggleButtonPlanCard from "../../components/ButtonPlanCard";
 
-
-const RegisterContainer = styled.div`
-
-    *{
-        font-family: 'Roboto', sans-serif;
-    }
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding-top: 50px;
-
-    img{
-        width: 200px;
-        height: auto;
-        margin-bottom: 70px;
-    }
-`;
-
-const RegisterTexts = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    text-align: center;
-
-    h1{
-        font-size: 40px;
-        
-    }
-
-    p{
-        font-size: 20px;
-    }
-`
+import {
+    RegisterContainer,
+    RegisterTexts
+} from './style';
 
 export default function Register(){
 
@@ -61,7 +28,7 @@ export default function Register(){
 
             <ToggleButton type={typeToggle} setActive={setTypeToggle} />
 
-            <Forms typeForm={typeToggle}/>
+            <Form typeForm={typeToggle}/>
 
 
         </RegisterContainer>
