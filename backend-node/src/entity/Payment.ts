@@ -8,35 +8,28 @@ export default class Payment{
     @PrimaryGeneratedColumn()
     public id!: number;
 
-    @Column("varchar", { nullable: true })
-    @JoinColumn({ name : "collector_id" })
+    @Column("varchar", { nullable: true, name : "collector_id" })
     public collectorId?: string;
 
-    @Column("varchar", { nullable: true })
-    @JoinColumn({ name : "payment_id" })
+    @Column("varchar", { nullable: true, name : "payment_id" })
     public paymentId?: string;
 
     @Column("varchar", { nullable: false })
     public status: string;
 
-    @Column({ nullable: true })
-    @JoinColumn({ name : "external_reference" })
+    @Column("varchar",{ nullable: true, name : "external_reference" })
     public externalReference?: string;
 
-    @Column("varchar", { nullable: true })
-    @JoinColumn({ name : "payment_type" })
+    @Column("varchar", { nullable: true, name : "payment_type"})
     public paymentType?: string;
 
-    @Column("varchar", { nullable: true })
-    @JoinColumn({ name : "processing_mode" })
+    @Column("varchar", { nullable: true, name : "processing_mode" })
     public processingMode?: string;
 
-    @Column("varchar", { nullable: true })
-    @JoinColumn({ name : "merchant_account_id" })
+    @Column("varchar", { nullable: true, name : "merchant_account_id" })
     public merchantAccountId?: string;
 
-    @Column("date", { nullable: true })
-    @JoinColumn({ name : "confirmed_date_payment" })
+    @Column("date", { nullable: true, name : "confirmed_date_payment" })
     public confirmedDatePayment?: String;
 
     @ManyToOne(() => Plan, ( plan ) => plan.getId)

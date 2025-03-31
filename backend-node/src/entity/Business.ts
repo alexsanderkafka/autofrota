@@ -7,7 +7,7 @@ import Login from "./Login";
 @Entity('Business')
 export default class Business{
     @PrimaryGeneratedColumn()
-    private id!: number;
+    public id!: number;
 
     @Column("varchar", { nullable: false })
     private name?: string;

@@ -7,11 +7,12 @@ import { MysqlDataSource } from "./database";
 import RegisterController from "./controllers/RegisterController";
 import RegisterValidationMiddleware from "./middlewares/RegisterValidationMiddleware";
 import bodyParser from "body-parser";
+import PaymentWebhook from "./controllers/PaymentWebhook";
 
 
 const app = createExpressServer({
     cors: true,
-    controllers: [RegisterController],
+    controllers: [RegisterController, PaymentWebhook],
     //middlewares: [RegisterValidationMiddleware],
     routePrefix: "/api",
     defaultErrorHandler: false,

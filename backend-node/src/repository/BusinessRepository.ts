@@ -7,4 +7,11 @@ export default class BusinessRepository {
     public async save(business: Business){
         return await this.orm.save(business);
     }
+
+    public async findOneBusinessById(id: number)/*: Promise<Business>*/{
+        return this.orm.findOne({ 
+            where: { id: id },
+            relations: ["payment", "payment.plan"]
+        });
+    }
 }
