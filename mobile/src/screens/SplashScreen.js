@@ -1,32 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-ico-material-design';
+import { 
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator
+} from 'react-native';
+
+import  {
+  colors,
+  typography
+} from '../theme';
 
 export default function SplashScreen() {
+
+  const logo = require('../../assets/logo/image.jpg');
+  
+
   return (
     <View style={styles.container}>
-        <View style={styles.logo}>
-          <Icon
-          name="car-front"
-          height="72"
-          width="72"
-          color="#176585"
-          style={{ marginRight: 13 }} 
-          />
-          <Icon
-          name="car-front"
-          height="72"
-          width="72"
-          color="#176585"
-          style={{ marginRight: 13 }} 
-          />
-          <Icon
-          name="car-front"
-          height="72"
-          width="72"
-          color="#176585"
-          />          
-        </View>
+        <Image source={logo} style={styles.logoImage}/>
+        <ActivityIndicator size="large" color={colors.primary.main}/>
+        <Text style={styles.loadingDescription}>Carregando recursos...</Text>
     </View>
   );
 }
@@ -34,29 +29,18 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#27B1BF',
+    backgroundColor: colors.primary.white,
     alignItems: 'center',
     justifyContent: 'center',
-    
   },
-  loadingBar:{
-    backgroundColor: '#000',
-
-    width: '50px',
-    height: '50px',
-    marginTop: '10px'
+  logoImage:{
+    width: 169,
+    height: 169,
   },
-  informations:{
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  logo:{
-    width: 'auto',
-    height: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
-  }
+  loadingDescription:{
+    fontSize: 13,
+    color: '#000',
+    fontWeight: 'light',
+    marginTop: 10
+  }  
 });

@@ -31,7 +31,7 @@ const slides = [
     description: "Gerencia sua frota de uma  forma simples e eficiente",
   },
   {
-    image: require("../../assets/onboarding/slide-2.jpg"),
+    image: require("../../assets/onboarding/slide-2.png"),
     title: "Análise completa de dados",
     description: "Acompanhe o histórico de abastecimento e manutenções da sua frota",
   },
@@ -41,7 +41,7 @@ const slides = [
     description: "Insights detalhados da sua frota para tomada de decisões",
   },
   {
-    image: require("../../assets/onboarding/slide-4.jpg"),
+    image: require("../../assets/onboarding/slide-4.png"),
     title: "Emissão de alertas",
     description: "Receba alertas de vencimento de manutenções",
   },
