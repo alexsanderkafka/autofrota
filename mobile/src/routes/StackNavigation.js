@@ -9,13 +9,23 @@ import Login from '../screens/Login';
 import Vehicle from '../screens/Vehicle';
 import Maintenance from '../screens/Maintenance';
 import Fuel from '../screens/Fuel'
+import OnboardingScreen from '../screens/Onboarding';
 
 const Stack = createNativeStackNavigator();
 
 export default function MyStack(){
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Onboarding">
+
+            <Stack.Screen 
+                name="Onboarding" 
+                component={OnboardingScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+                
 
             <Stack.Screen 
                 name="Login" 

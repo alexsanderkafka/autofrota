@@ -11,7 +11,18 @@ import {
   TextInput,
   TouchableOpacity,
   Animated,
+  SafeAreaView,
+  StatusBar, 
+  Image,
+  Pressable
 } from 'react-native';
+
+import {
+  colors,
+  typography
+} from '../theme';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login({ navigation }) {
 
@@ -20,7 +31,11 @@ export default function Login({ navigation }) {
   const [showAlert, setShowAlert] = useState(false);
   const [textAlert, setTextAlert] = useState('');
   const [token, setToken] = useState('');
+  const [remember, setRemember] = useState(false)
+
   const animatedOpacity = useRef(new Animated.Value(1)).current;
+
+  const [eyeButton, setEyeButton] = useState(false);
 
   useEffect(() => {
 
@@ -75,6 +90,11 @@ export default function Login({ navigation }) {
     return false;
   }
 
+  function toggleEyeButton(){
+    setEyeButton(!eyeButton);
+  }
+  
+
   async function login(){
     let resultVerify = verifyFields();
 
@@ -124,31 +144,78 @@ export default function Login({ navigation }) {
     return true;
   }
 
+  function forgetPassword(){
+    console.log("Esqueceu a senha");
+  }
+
+  function createAccount(){
+    console.log("Não tem conta");
+  }
+  
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-        <Text style={styles.textLogin}>Auto Frota</Text>
+        <Image source={require('../../assets/logo/image.jpg')} style={styles.logoImage}/>
 
-        <TextInput
-        style={styles.inputs}
-        placeholder='E-mail'
-        value={email}
-        onChangeText={ (text) => setEmail(text)}
-        />
+        <Text style={styles.welcomeTitle}>Bem-vindo</Text>
+        <Text style={styles.welcomeDescription}>Faça o login para continuar</Text>
 
-        <TextInput
-        style={styles.inputs}
-        placeholder='Password'
-        secureTextEntry={true}
-        value={password}
-        onChangeText={ (text) => setPassword(text)}
-        />
+        <View style={styles.inputContainer} >
 
-        <Text style={styles.textForgerPassword}>Esqueceu a senha? Clique aqui</Text>
+          <Icon name="email" size={24} color={colors.icon.main}/>
+          <TextInput
+          style={styles.inputs}
+          placeholder='E-mail'
+          value={email}
+          onChangeText={ (text) => setEmail(text)}
+          />
+        </View>
+
+        <View style={styles.inputContainer} >
+          <Icon name="lock" size={24} color={colors.icon.main}/>
+          <TextInput
+          style={styles.inputs}
+          placeholder='Password'
+          secureTextEntry={eyeButton ? false : true}
+          value={password}
+          onChangeText={ (text) => setPassword(text)}
+          />
+          <TouchableOpacity style={styles.eyeBtn} onPress={toggleEyeButton}>
+            {
+              !eyeButton ? (
+                <Icon name="eye" size={24} color={colors.icon.main}/>
+              ) :
+              (
+                <Icon name="eye-off" size={24} color={colors.icon.main}/>
+              )
+            }
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.containerActions}>
+            <Pressable
+            onPress={() => setRemember(!remember)}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+            >
+              <View style={[styles.checkBox, { backgroundColor: remember ? colors.primary.green : colors.primary.white, borderColor: remember ? colors.primary.green : colors.border.main }]}>
+                {remember && <Icon name="check" size={20} color="#FFF" />}
+              </View>
+              <Text>Aceito os termos</Text>
+            </Pressable>
+            
+            <Text style={{color: colors.text.other}} onPress={forgetPassword}>Esqueceu a senha?</Text>
+        </View>
 
         <TouchableOpacity style={styles.btn} onPress={login}>
-          <Text style={styles.btnText}>Login</Text>
+          <Text style={styles.btnText}>Entrar</Text>
         </TouchableOpacity>
+
+        <Text onPress={createAccount} style={styles.textCreateAccount}>Não tem uma conta? <Text style={{ color: colors.text.other, fontStyle: 'italic' }}>Cadastre-se</Text></Text>
 
         {
           showAlert && (
@@ -160,7 +227,7 @@ export default function Login({ navigation }) {
             
           )
         }
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -169,47 +236,94 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20
+    padding: 30
   },
+  logoImage:{
+    width: 169,
+    height: 169,
+    marginBottom: 10,
+    marginTop: 20
+  },
+  welcomeTitle:{
+    fontSize: 22,
+    fontWeight: 'bold',
+    fontFamily: typography.fontFamily.primary,
+    marginBottom: 4,
+  },
+  welcomeDescription:{
+    fontSize: 13,
+    marginBottom: 62
+  },  
   textLogin:{
     fontSize: 35,
     marginBottom: 35,
     color: '#176585',
     fontWeight: 'bold'
   },
-  inputs:{
+  inputContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
-    padding: 8,
     fontSize: 18,
     color: '#000',
-    borderWidth: 2,
-    marginBottom: 25,
+    borderWidth: 1,
     borderRadius: 5,
-    borderColor: '#176585'
+    borderColor: colors.border.main,
+    marginBottom: 15,
+    paddingVertical: 11,
+    paddingHorizontal: 10,
+    justifyContent: 'space-between'
+  },
+  inputs:{
+    padding: 0,
+    marginLeft: 5,
+    fontSize: 15,
+    flex: 1,
+  },
+  eyeBtn:{
+    marginLeft: 10
+  },
+  containerActions:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: 20,
+    marginTop: 7
+  },
+  checkBox:{
+    width: 24,
+    height: 24,
+    borderWidth: 1,
+    borderColor: colors.border.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+    borderRadius: 5,
   },
   textForgerPassword:{
     color: '#176585',
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   btn:{
     width: "100%",
-    backgroundColor: "#176585",
-    height: 40,
+    backgroundColor: colors.primary.main,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 38,
+    marginBottom: 30
   },
   btnText:{
     fontSize: 16,
-    color: '#FFF'
+    color: colors.text.white,
   },
   alert:{
     position: 'absolute',
     bottom: 20,
     width: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#FF0000',
     borderRadius: 5,
     height: 40,
     justifyContent: 'center',
