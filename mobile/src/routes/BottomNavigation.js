@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-ico-material-design';
 
 import Home from '../screens/Home';
 import VehicleScreen from '../screens/AddVehicleScreen';
 import Perfil from '../screens/Perfil';
+import ReportScreen from '../screens/ReportScreen';
 import { colors } from '../theme';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,29 +31,39 @@ export default function BottomNavigation() {
               backgroundColor: '#FFF'
           },
           tabBarIcon: ({ focused }) => <Icon
-              name="home-button"
-              color={focused ? "#176585" : "#000"}
+              name="home"
+              size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
           />,
           tabBarLabel: "Home"
           }}
         />
 
-        <Tab.Screen name="Adicionar" component={VehicleScreen}
+        <Tab.Screen name="Veículos" component={VehicleScreen}
         options={{
             headerTintColor: '#176585',
             tabBarIcon: ({ focused }) => <Icon
-            name="square-add-button"
-            color={focused ? "#176585" : "#000"}
+            name="car"
+            size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
+          />,
+          }}
+        />
+
+        <Tab.Screen name="Relatórios" component={ReportScreen}
+        options={{
+            headerTintColor: '#176585',
+            tabBarIcon: ({ focused }) => <Icon
+            name="chart-bar"
+            size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
             />,
           }}
         />
 
-        <Tab.Screen name="Perfil" component={Perfil}
+      <Tab.Screen name="Configurações" component={VehicleScreen}
         options={{
             headerTintColor: '#176585',
             tabBarIcon: ({ focused }) => <Icon
-            name="user-shape"
-            color={focused ? "#176585" : "#000"}
+            name="cog"
+            size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
             />,
           }}
         />

@@ -26,9 +26,12 @@ export const colors = {
     },
     icon:{
         main: '#888',
+        secondaray: '#343A40',
         yellow: '#FFA500',
         green: '#00A843',
-        red: '#FF0000'
+        red: '#FF0000',
+        mainBlue: '#2563EB',
+        money: '#7B7C67'
     }
 }
 

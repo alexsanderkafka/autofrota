@@ -212,17 +212,9 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.recentVehiclesContainer}>
           <Text style={styles.titles}>Veículos recentes</Text>
+          <Text style={styles.titles}>Remove</Text>
             
-          <FlatList 
-          data={vehicles}
-          keyExtractor={ item => String(item.vehicle_characteristic.id)}
-          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
-          onEndReached={() => {
-            loadMoreVehicles();
-          }}
-          onEndReachedThreshold={1} 
-          ListFooterComponent={renderFooterFlatList}
-          />
+          
           
 
         </View>
@@ -355,6 +347,16 @@ const styles = StyleSheet.create({
 
 
 /*
+<FlatList 
+          data={vehicles}
+          keyExtractor={ item => String(item.vehicle_characteristic.id)}
+          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
+          onEndReached={() => {
+            loadMoreVehicles();
+          }}
+          onEndReachedThreshold={1} 
+          ListFooterComponent={renderFooterFlatList}
+          />
 
 <View style={styles.container}>
 
