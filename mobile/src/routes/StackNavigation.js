@@ -11,6 +11,10 @@ import Maintenance from '../screens/Maintenance';
 import Fuel from '../screens/Fuel'
 import OnboardingScreen from '../screens/Onboarding';
 
+import {
+    colors
+} from '../theme'
+
 const Stack = createNativeStackNavigator();
 
 export default function MyStack(){
@@ -31,7 +35,7 @@ export default function MyStack(){
                 name="Login" 
                 component={Login}
                 options={{
-                    headerShown: false
+                    headerShown: false,
                 }}
             />
 

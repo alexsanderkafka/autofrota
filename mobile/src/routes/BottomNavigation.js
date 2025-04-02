@@ -4,6 +4,7 @@ import Icon from 'react-native-ico-material-design';
 import Home from '../screens/Home';
 import VehicleScreen from '../screens/AddVehicleScreen';
 import Perfil from '../screens/Perfil';
+import { colors } from '../theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,7 @@ export default function BottomNavigation() {
         component={Home}
         options={{
           title: "AutoFrota",
-          headerTintColor: '#176585',
+          headerTintColor: colors.text.title,
           headerStyle: {
               backgroundColor: '#FFF'
           },

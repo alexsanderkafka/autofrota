@@ -5,13 +5,20 @@ import VehicleListTile from '../components/VehicleListTile';
 import {Picker} from '@react-native-picker/picker';
 import Icon from 'react-native-ico-material-design';
 
+import MapView from 'react-native-maps';
+
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
+
+import { colors } from '../theme';
+import InfoCard from '../components/InfoCard';
+import ActionButton from '../components/ActionButton';
 
 export default function HomeScreen({ navigation }) {
 
@@ -153,25 +160,6 @@ export default function HomeScreen({ navigation }) {
   }else if(notFoundVehicles){
     return(
       <View style={styles.container}>
-
-      <View style={styles.containerPicker}>
-        <Picker
-          selectedValue={selected}
-          onValueChange={(itemValue, itemIndex) => {
-            console.log("Value picker: " + itemValue);
-            setSelected(itemValue);
-            setLoading(true);
-            setVehicles([]);
-            setPage(0);
-          }}
-          style={styles.picker}
-          >
-          <Picker.Item label="Todos" value="todos" />
-          <Picker.Item label="Em dia" value="em dia" />
-          <Picker.Item label="Feito" value="feito" />
-          <Picker.Item label="Atrasado" value="atrasada" />
-        </Picker>
-      </View>
       
       <View style={styles.containerCenter}>
         <Icon
@@ -183,43 +171,65 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.textNotFoundVehicles}>{message}</Text>
       </View>
 
-    </View>
+      </View>
     );
   }else{
     return (
+      <ScrollView>
       <View style={styles.container}>
-
-        <View style={styles.containerPicker}>
-          <Picker
-            selectedValue={selected}
-            onValueChange={(itemValue, itemIndex) => {
-              setVehicles([]);
-              setPage(0);
-
-              setSelected(itemValue);
-              setLoading(true);
-            }}
-            style={styles.picker}
-            >
-            <Picker.Item label="Todos" value="todos" />
-            <Picker.Item label="Em dia" value="em dia" />
-            <Picker.Item label="Feito" value="feita" />
-            <Picker.Item label="Atrasado" value="atrasada" />
-          </Picker>
-        </View>
+      
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2 }}>
+          <View style={styles.containerInfos}>
+              <InfoCard icon="car" amount="50" title="Veículos Ativos" color={colors.icon.green}/>
+              <InfoCard icon="wrench" amount="50" title="Em Manutenção" color={colors.icon.yellow}/>
+              <InfoCard icon="alert" amount="50" title="Em Alerta" color={colors.icon.red}/>
+          </View>
+        </ScrollView>
   
-        <FlatList 
-        data={vehicles}
-        keyExtractor={ item => String(item.vehicle_characteristic.id)}
-        renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
-        onEndReached={() => {
-          loadMoreVehicles();
-        }}
-        onEndReachedThreshold={1} 
-        ListFooterComponent={renderFooterFlatList}
-        />
+        <View style={styles.mapContainer}>
+          <Text style={styles.titles}>Localizações</Text>
+          <View style={styles.mapBox}>
+            <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            />
+          </View>
+        </View>
+
+        <View style={styles.actionContainer}>
+          <Text style={styles.titles}>Ações rápidas</Text>
+
+          <View style={styles.buttonContainer}>
+              <ActionButton icon={'plus'} text={'Novo Veículo'}/>
+              <ActionButton icon={'chart-bar'} text={'Relatórios'}/>
+          </View>
+        </View>
+
+        <View style={styles.recentVehiclesContainer}>
+          <Text style={styles.titles}>Veículos recentes</Text>
+            
+          <FlatList 
+          data={vehicles}
+          keyExtractor={ item => String(item.vehicle_characteristic.id)}
+          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
+          onEndReached={() => {
+            loadMoreVehicles();
+          }}
+          onEndReachedThreshold={1} 
+          ListFooterComponent={renderFooterFlatList}
+          />
+          
+
+        </View>
+        
   
       </View>
+      </ScrollView>
     );
   }
 }
@@ -228,23 +238,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     color: '#000',
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 20,
-    backgroundColor: '#FFF'
+    backgroundColor: colors.primary.white,
+    paddingHorizontal: 15,
+  },
+  containerInfos:{
+    width: '100%',
+    height: 'auto',
+    marginTop: 30,
+    marginBottom: 26,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 15
+  },
+  containerPicker:{
+    width: '100%',
   },
   alertText:{
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10
-  },
-  containerPicker:{
-    borderWidth: 2,
-    marginBottom: 10,
-    borderRadius: 5,
-    borderColor: '#176585',
-    backgroundColor: '#FFF',
-    elevation: 5
   },
   containerListTile:{
     width: '100%',
@@ -258,6 +270,43 @@ const styles = StyleSheet.create({
     padding: 3,
     marginBottom: 10,
   },
+  mapContainer:{
+    width: '100%',
+    height: 'auto'
+  },
+  titles:{
+    fontSize: 16,
+    marginBottom: 15
+  },
+  mapBox:{
+    width: '100%',
+    height: 262,
+    borderRadius: 5,
+    overflow: 'hidden'
+  },
+  map:{
+    width: '100%',
+    height: '100%',
+  },
+  actionContainer:{
+    marginTop: 16
+  },
+  buttonContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 18,
+    //flexWrap: 'wrap',
+    
+  },
+  recentVehiclesContainer:{
+    marginTop: 26
+  },
+
+
+
+
+
+
   img:{
     width: 131,
     height: 102.16,
@@ -303,3 +352,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+
+/*
+
+<View style={styles.container}>
+
+      <View style={styles.containerPicker}>
+        <Picker
+          selectedValue={selected}
+          onValueChange={(itemValue, itemIndex) => {
+            console.log("Value picker: " + itemValue);
+            setSelected(itemValue);
+            setLoading(true);
+            setVehicles([]);
+            setPage(0);
+          }}
+          style={styles.picker}
+          >
+          <Picker.Item label="Todos" value="todos" />
+          <Picker.Item label="Em dia" value="em dia" />
+          <Picker.Item label="Feito" value="feito" />
+          <Picker.Item label="Atrasado" value="atrasada" />
+        </Picker>
+      </View>
+      
+      <View style={styles.containerCenter}>
+        <Icon
+          name="car-front"
+          height="72"
+          width="72"
+          color="#176585"
+        />
+        <Text style={styles.textNotFoundVehicles}>{message}</Text>
+      </View>
+
+    </View>*/

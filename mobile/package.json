@@ -8,6 +8,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/roboto": "^0.3.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-picker/picker": "^2.9.0",
     "@react-navigation/bottom-tabs": "^7.0.5",
@@ -23,9 +24,11 @@
     "react-native-animatable": "^1.4.0",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-fab": "^1.0.18",
+    "react-native-google-fonts": "^0.0.0",
     "react-native-ico": "^43.7.4",
     "react-native-ico-material-design": "^5.1.2",
     "react-native-ico-noto-emojis": "^5.1.2",
+    "react-native-maps": "^1.20.1",
     "react-native-paper": "^5.12.5",
     "react-native-progress": "^5.0.1",
     "react-native-select-dropdown": "^4.0.1",

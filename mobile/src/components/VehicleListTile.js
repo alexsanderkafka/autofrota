@@ -8,13 +8,23 @@ import {
     Image,
     TouchableOpacity
   } from 'react-native';
+import { colors, typography } from '../theme';
+
+import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
 export default function VehicleListTile({ data, navigation}){
+
+    const [fontsLoaded] = useFonts({
+      Roboto_400Regular,
+      Roboto_700Bold
+    });
 
     var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
     var nextDate = new Date(data.maintenance.next_maintenance).toLocaleDateString('pt-BR');
 
     let image = imageMap[data.image_perfil] || require("../../assets/images/gol.jpg");
+
+    const imageKm = require("../../assets/icons/km.png");
 
     return(
         <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', data)}>
@@ -26,25 +36,24 @@ export default function VehicleListTile({ data, navigation}){
             <View styles={styles.img}></View>
 
             <View style={styles.infoVehicle}>
-            <Text style={styles.plate}>Placa: {data.plate}</Text>
-            <Text style={styles.vehicleCode}>Código: {data.vehicle_code !== "" ? data.vehicle_code : "Sem código"}</Text>
-            
-            <Text style={styles.date}>Data da última manutenção: {latestDate}</Text>
-            <Text style={styles.date}>Data da próxima manutenção: {nextDate}</Text>
+              <Text style={styles.plate}>{data.plate}</Text>
+              <Text style={styles.vehicleBrand}>Fiat Mobi</Text>
+              
+              <View style={styles.alertContainer}>
+                <View style={styles.alertIcon}></View>
+                
+                <Text style={styles.textIcon}>Ativo</Text>
 
-            <View style={styles.alertIcon}>
+              </View>
 
-                <Icon
-                name="check-symbol"
-                height="24"
-                width="24"
-                color="#00A843"
-                style={{ marginRight: 13 }} 
-                />
+              <View style={styles.kmContainer}>
+                <Image source={imageKm} style={styles.imageKm} />
 
-                <Text style={styles.textAlertIcon}>Nenhuma observação.</Text>
+                <Text style={styles.textIcon}>79.000km</Text>
 
-            </View>
+              </View>
+
+              <Text style={styles.nextMaintenance}>Próxima manutenção: {nextDate}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -57,40 +66,58 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       display: 'flex',
       borderColor: '#000',
-      elevation: 5,
+      elevation: 2,
       backgroundColor: '#FFF',
       borderRadius: 5,
-      padding: 3,
-      marginBottom: 10,
+      padding: 5,
+      marginBottom: 20,
     },
     img:{
-      width: 131,
-      height: 102.16,
+      width: 126,
+      height: 98,
       borderRadius: 5,
-      marginRight: 8,
+      marginRight: 10,
     },
     infoVehicle: {
       display: 'flex',
       width: 'auto',
+      height: 'auto',
+      justifyContent: 'space-between',
     },
     plate:{
       fontWeight: 'bold',
-      fontSize: 20,
+      fontSize: 16,
     },
-    vehicleCode:{
-      fontSize: 12  
+    vehicleBrand:{
+      fontSize: 12,
     },
-    date:{
-      fontSize: 10
-    },
-    alertIcon:{
-      maxWidth: 199,
+    alertContainer:{
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
     },
-    textAlertIcon:{
+    alertIcon:{
+      width: 5,
+      height: 5,
+      backgroundColor: colors.primary.green,
+      borderRadius: '50%',
+      marginRight: 5
+    },
+    textIcon:{
       fontSize: 9,
+    },
+    kmContainer:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
+    },
+    imageKm:{
+      width: 12,
+      height: 12,
+      marginRight: 5
+    },
+    nextMaintenance:{
+      fontSize: 10
     }
   });
   

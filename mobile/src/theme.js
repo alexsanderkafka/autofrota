@@ -13,6 +13,7 @@ export const colors = {
         secondaray: '#343A40',
         white: '#FFF',
         other: '#2563EB',
+        title: '#3674B5',
     },
     border:{
         main: '#2563EB',
@@ -24,13 +25,16 @@ export const colors = {
         black: 'rgba(0, 0, 0, 0.3)'
     },
     icon:{
-        main: '#888'
+        main: '#888',
+        yellow: '#FFA500',
+        green: '#00A843',
+        red: '#FF0000'
     }
 }
 
 //config de fontes
 export const typography = {
     fontFamily:{
-        primary: 'Roboto, sans-serif',
+        primary: 'Roboto_400Regular',
     }
 }
