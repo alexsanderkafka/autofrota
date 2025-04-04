@@ -19,7 +19,7 @@ export default function FilterButton({ text }){
 
 const styles = StyleSheet.create({
     filter:{
-        width: 98,
+        flex: 1,
         height: 'auto',
         paddingVertical: 9,
         flexDirection: 'column',
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         backgroundColor: colors.primary.main,
-        color: colors.text.white,
         elevation: 2
     },
     textButton:{

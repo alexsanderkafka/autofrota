@@ -23,7 +23,7 @@ export default function InfoCardReport({ icon, amount, title, color}){
 
 const styles = StyleSheet.create({
     card:{
-        width: 102,
+        flex: 1,
         height: 'auto',
         paddingVertical: 15,
         paddingLeft: 10,

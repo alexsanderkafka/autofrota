@@ -8,21 +8,20 @@ import {
 } from "react-native";
 import { colors } from '../theme';
 
-export default function ReportButton(){
+export default function ProfileButton(){
     return(
-        <TouchableOpacity style={styles.reportButton}>
+        <TouchableOpacity style={styles.profileButtonButton}>
             <Text>Teste TEste</Text>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    reportButton:{
+    profileButtonButton:{
         width: '100%',
-        height: 50,
+        height: 68,
         backgroundColor: colors.primary.white,
         elevation: 2,
         borderRadius: 5,
-        marginBottom: 20
     }
-});
+})

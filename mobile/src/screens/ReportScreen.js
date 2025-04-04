@@ -5,16 +5,16 @@ import {
     View,
     FlatList,
     ActivityIndicator,
-    ScrollView
+    ScrollView,
+    TouchableOpacity,
+    Image
   } from 'react-native';
   
 import { colors } from '../theme';
 
 import FilterButton from '../components/FilterButton';
 import InfoCardReport from '../components/infoCardReport';
-import ReportButton from '../components/Reportbutton';
-
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ReportScreen(){
     return(
@@ -39,8 +39,21 @@ export default function ReportScreen(){
                 <View style={styles.reportContainer}>
                     <Text style={styles.title}>Geração de relatório</Text>
 
-                    <ReportButton />
-                    <ReportButton />
+                    <TouchableOpacity style={styles.reportButton}>
+                        <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+                            <Image source={require('../../assets/icons/pdf.png')} style={{width: 38, height: 38}}/>
+                            <Text>Relatório em pdf</Text>
+                        </View>
+                        <Icon name="cloud-download" size={24} color={colors.icon.main}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.reportButton}>
+                        <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+                            <Image source={require('../../assets/icons/docx.png')} style={{width: 38, height: 38}}/>
+                            <Text>Relatório em pdf</Text>
+                        </View>
+                        <Icon name="cloud-download" size={24} color={colors.icon.main}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
@@ -89,6 +102,17 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 16,
         marginBottom: 15
+    },
+    reportButton:{
+        width: '100%',
+        backgroundColor: colors.primary.white,
+        elevation: 2,
+        borderRadius: 5,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        justifyContent: 'space-between'
     }
     
 });

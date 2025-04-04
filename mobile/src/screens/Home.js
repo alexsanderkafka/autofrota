@@ -118,41 +118,13 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
-  async function loadMoreVehicles(){
-    setLatestElement(true);
 
-    console.log(totalVehicles);
-
-    if(page === totalPages || totalVehicles < sizePage){
-      setLatestElement(false);
-      return;
-    }
-
-    setPage(page + 1);
-
-    if(selected === 'todos'){
-      await getAllVehicles();
-    }else{
-      await getStatusVehicles();
-    }
-  }
-
-  function renderFooterFlatList(){
-    if(!latestElement) return null;
-
-    return(
-      <View style={styles.latestElement}>
-        <ActivityIndicator
-        size="large" color="#176585" />
-      </View>
-    );
-  }
 
   if(loading){
     return(
       <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <ActivityIndicator 
-        color="#176585"
+        color={colors.primary.blue}
         size={45}
         />
       </View>
@@ -179,10 +151,11 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.container}>
       
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2 }}>
-          <View style={styles.containerInfos}>
+          <View style={styles.infosContainer}>
               <InfoCard icon="car" amount="50" title="Veículos Ativos" color={colors.icon.green}/>
               <InfoCard icon="wrench" amount="50" title="Em Manutenção" color={colors.icon.yellow}/>
               <InfoCard icon="alert" amount="50" title="Em Alerta" color={colors.icon.red}/>
+              <InfoCard icon="alert" amount="50" title="Test" color={colors.icon.red}/>
           </View>
         </ScrollView>
   
@@ -233,7 +206,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary.white,
     paddingHorizontal: 15,
   },
-  containerInfos:{
+  infosContainer:{
     width: '100%',
     height: 'auto',
     marginTop: 30,

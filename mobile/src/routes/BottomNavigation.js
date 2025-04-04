@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/Home';
-import VehicleScreen from '../screens/AddVehicleScreen';
-import Perfil from '../screens/Perfil';
+import Vehicles from '../screens/Vehicles';
+import Settings from '../screens/Settings';
 import ReportScreen from '../screens/ReportScreen';
 import { colors } from '../theme';
 
@@ -38,9 +38,9 @@ export default function BottomNavigation() {
           }}
         />
 
-        <Tab.Screen name="Veículos" component={VehicleScreen}
+        <Tab.Screen name="Veículos" component={Vehicles}
         options={{
-            headerTintColor: '#176585',
+            headerTintColor: colors.text.title,
             tabBarIcon: ({ focused }) => <Icon
             name="car"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
@@ -50,7 +50,7 @@ export default function BottomNavigation() {
 
         <Tab.Screen name="Relatórios" component={ReportScreen}
         options={{
-            headerTintColor: '#176585',
+            headerTintColor: colors.text.title,
             tabBarIcon: ({ focused }) => <Icon
             name="chart-bar"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
@@ -58,9 +58,9 @@ export default function BottomNavigation() {
           }}
         />
 
-      <Tab.Screen name="Configurações" component={VehicleScreen}
+      <Tab.Screen name="Configurações" component={Settings}
         options={{
-            headerTintColor: '#176585',
+            headerTintColor: colors.text.title,
             tabBarIcon: ({ focused }) => <Icon
             name="cog"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}

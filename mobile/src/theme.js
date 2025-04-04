@@ -22,7 +22,7 @@ export const colors = {
         other: '#343440',
     },
     shadow:{
-        black: 'rgba(0, 0, 0, 0.3)'
+        black: 'rgba(0, 0, 0, 0.2)'
     },
     icon:{
         main: '#888',
@@ -31,7 +31,8 @@ export const colors = {
         green: '#00A843',
         red: '#FF0000',
         mainBlue: '#2563EB',
-        money: '#7B7C67'
+        money: '#7B7C67',
+        white: '#FFF'
     }
 }
 
