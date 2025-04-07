@@ -53,9 +53,9 @@ export default function MyStack(){
                 options={{
                     title: "Veículo",
                     headerStyle:{
-                        backgroundColor: '#FFF',
+                        backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: '#176585',
+                    headerTintColor: colors.text.title,
                 }}
             />
 
@@ -65,9 +65,9 @@ export default function MyStack(){
                 options={{
                     title: "Manutenções",
                     headerStyle:{
-                        backgroundColor: '#FFF',
+                        backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: '#176585',
+                    headerTintColor: colors.text.title,
                 }}
             />
 
@@ -77,9 +77,9 @@ export default function MyStack(){
                 options={{
                     title: "Abastecimentos",
                     headerStyle:{
-                        backgroundColor: '#FFF',
+                        backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: '#176585',
+                    headerTintColor: colors.text.title,
                 }}
             />
             </Stack.Navigator>  

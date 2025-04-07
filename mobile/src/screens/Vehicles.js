@@ -149,7 +149,7 @@ export default function Vehicles( {navigation} ) {
                 <TouchableOpacity
                 style={ styles.searchButton }
                 >
-                    <Icon name="search-web" size={24} color={colors.icon.white}/>
+                    <Icon name="magnify" size={24} color={colors.icon.white}/>
 
                 </TouchableOpacity>
 

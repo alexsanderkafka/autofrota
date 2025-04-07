@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from 'react-native-ico-material-design';
 import imageMap from '../service/image';
 import {
     StyleSheet,
@@ -9,6 +8,9 @@ import {
     Image,
     ScrollView
 } from 'react-native';
+import { colors } from '../theme';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Vehicle({ navigation, route }) {
 
@@ -23,131 +25,12 @@ export default function Vehicle({ navigation, route }) {
 
   let image = imageMap[data.image_perfil] || require("../../assets/images/gol.jpg");
 
-  function renderMaintenance(){
-    if(data.maintenance.id == null){
-      return(
-        <View style={styles.nextMain}>
-          
-          <Text style={styles.textIdentification}>Próxima manutenção</Text>
-          <Text style={styles.textWithoutHistory}>Nenhum histórico de manutenção</Text>
-          <View style={styles.containerBtn}>
-                  <TouchableOpacity
-                  onPress={() => navigation.navigate('Maintenance')}
-                  >
-                      <Icon
-                      name="right-arrow-forward"
-                      height="24"
-                      width="24"
-                      color="#176585"
-                      style={{ marginRight: 13 }}
-                      />
-                  </TouchableOpacity>
-            </View>
-        </View>
-      );
-    }else{
-      return(
-      <View style={styles.nextMain}>
-              <Text style={styles.textIdentification}>Próxima manutenção</Text>
-
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Data:</Text>
-                  <Text style={styles.textInformations}>{dateNextMaintenance}</Text>
-              </View>
-
-            <Text style={styles.observacao}>
-              Observação:
-            </Text>
-
-            <Text style={styles.observacaoInformacao}>
-              {data.maintenance.observation}
-            </Text>
-
-            <View style={styles.containerBtn}>
-                  <TouchableOpacity
-                  onPress={() => navigation.navigate('Maintenance', vehicleId)}
-                  >
-                      <Icon
-                      name="right-arrow-forward"
-                      height="24"
-                      width="24"
-                      color="#176585"
-                      style={{ marginRight: 13 }}
-                      />
-                  </TouchableOpacity>
-            </View>
-          </View>);
-    }
+  function handleDriverButton() {
+    
   }
 
-  function renderFuel(){
-    if(data.fuel.id == null){
-      return(
-        <View style={styles.abastecimento}>
-              <Text style={styles.textIdentification}>Último abastecimento</Text>
-
-              <Text style={styles.textWithoutHistory}>Nenhum histórico de abastecimento.</Text>
-
-              <View style={styles.containerBtn}>
-                  <TouchableOpacity
-                  onPress={() => navigation.navigate('Fuel')}
-                  >
-                      <Icon
-                      name="right-arrow-forward"
-                      height="24"
-                      width="24"
-                      color="#176585"
-                      style={{ marginRight: 13 }} 
-                      />
-                  
-                  </TouchableOpacity>
-              </View>
-
-          </View>
-      );
-    }else{
-      return(
-        <View style={styles.abastecimento}>
-              <Text style={styles.textIdentification}>Último abastecimento</Text>
-
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Data</Text>
-                  <Text style={styles.textInformations}>{dateLatestFuel}</Text>
-              </View>
-
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Valor</Text>
-                  <Text style={styles.textInformations}>R$ {data.fuel.price.toFixed(2).replace('.', ',')}</Text>
-              </View>
-
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Km</Text>
-                  <Text style={styles.textInformations}>{data.fuel.km}</Text>
-              </View>
-
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Combustivel</Text>
-                  <Text style={styles.textInformations}>{data.fuel.fuel_type}</Text>
-              </View>
-
-              <View style={styles.containerBtn}>
-                  <TouchableOpacity
-                  onPress={() => navigation.navigate('Fuel')}
-                  >
-                      <Icon
-                      name="right-arrow-forward"
-                      height="24"
-                      width="24"
-                      color="#176585"
-                      style={{ marginRight: 13 }} 
-                      />
-                  
-                  </TouchableOpacity>
-              </View>
-
-          </View>
-      )
-    }
+  function sendToFuel(){
+    navigation.navigate('Fuel', vehicleId);
   }
 
   return (
@@ -158,52 +41,161 @@ export default function Vehicle({ navigation, route }) {
             style={styles.img}
           />
 
-        <View style={styles.containerInformations}>
-          <View style={styles.identification}>
-              <Text style={styles.textIdentification}>Identificação</Text>
+          <View style={{ paddingHorizontal: 15 }}>
+            <View style={styles.identificationCard}>
+              <View style={styles.leftColumn}>
+                <Text style={styles.plate}>BRA2E19</Text>
+                <Text style={styles.textInfo}>Fiat Mobi</Text>
 
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Marca</Text>
-                  <Text style={styles.textInformations}>{data.brand}</Text>
+                <View style={styles.containerWithIcon}>
+                  <Image source={require('../../assets/icons/km.png')} style={{ width: 12, height: 12 }} />
+                  <Text style={styles.textInfo}>79.000km</Text>
+                </View>
+
+                <View style={styles.containerWithIcon}>
+                  <Icon name="gas-station" size={12} color={colors.icon.mainBlue} />
+                  <Text style={styles.textInfo}>Flex</Text>
+                </View>
               </View>
 
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Modelo</Text>
-                  <Text style={styles.textInformations}>{data.model}</Text>
-              </View>
-              
+              <View style={styles.rightColumn}>
+                <View style={styles.statusContainer}>
+                  <View style={styles.statusDot} />
+                  <Text style={styles.statusText}>Ativo</Text>
+                </View>
 
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Placa</Text>
-                  <Text style={styles.textInformations}>{data.plate}</Text>
+                <TouchableOpacity style={styles.driverButton} onPress={ () => {}}>
+                  <Text style={{ color: colors.text.white, fontSize: 13 }}>Dirigir</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.fuelContainer}>
+              <Text style={styles.title}>Último abastecimento</Text>
+
+              <View style={styles.fuelCard}>
+
+                <View style={{ paddingLef: 10, paddingRight: 10, paddingTop: 10 }}>
+                  <View style={styles.row}>
+                    <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
+                    <Text>00/00/2030</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
+                    <Text>R$ 500,00</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
+                    <Text>78.990km</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
+                    <Text>Gasolina</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="fuel" size={24} color={colors.icon.mainBlue} />
+                    <Text>70L</Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity style={styles.cardButton} onPress={ sendToFuel }>
+                  <Text style={{ color: colors.text.white, fontSize: 13 }}>Abastecimentos</Text>
+                </TouchableOpacity>
+
               </View>
 
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Código</Text>
-                  <Text style={styles.textInformations}>{data.vehicle_code}</Text>
+            </View>
+
+            <View style={styles.maintenanceContainer}>
+              <Text style={styles.title}>Último abastecimento</Text>
+
+              <View style={styles.maintenanceCard}>
+
+                <View style={{ paddingLef: 10, paddingRight: 10, paddingTop: 10 }}>
+                  <View style={styles.row}>
+                    <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
+                    <Text>00/00/2030</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
+                    <Text>R$ 500,00</Text>
+                  </View>
+
+                  <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                  <View style={styles.row}>
+                    <Icon name="wrench" size={24} color={colors.icon.mainBlue} />
+                    <Text>Serviços feitos:</Text>
+                  </View>
+
+                  <View style={styles.serviceBoxMade}>
+                    <View style={styles.serviceMade}>
+                      <Text style={{ color: colors.text.white, fontSize: 10 }}>Troca de óleo</Text>
+                    </View>
+                  </View>
+
+    
+                </View>
+
+                <TouchableOpacity style={styles.cardButton} onPress={ () => {}}>
+                  <Text style={{ color: colors.text.white, fontSize: 13 }}>Manutenções</Text>
+                </TouchableOpacity>
+
               </View>
 
-              <View style={styles.informations}>
-                  <Text style={styles.textInformations}>Quilometragem</Text>
-                  <Text style={styles.textInformations}>{data.vehicle_characteristic.currentKm}</Text>
+            </View>
+
+            <View style={styles.actionContainer}>
+              <Text style={styles.title}>Ações</Text>
+
+              <View style={styles.actionCard}>
+
+                <TouchableOpacity style={styles.rowAction}>
+                  <Text>Fazer checklist</Text>
+                  <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
+                </TouchableOpacity>
+
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                <TouchableOpacity style={styles.rowAction}>
+                  <Text>Relatório</Text>
+                  <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
+                </TouchableOpacity>
+
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                <TouchableOpacity style={styles.rowAction}>
+                  <Text>Trocar status</Text>
+                  <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
+                </TouchableOpacity>
+
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+
+                <TouchableOpacity style={styles.rowAction}>
+                  <Text>Agendar manutenção</Text>
+                  <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
+                </TouchableOpacity>
+
               </View>
+            </View>
           </View>
 
-          {
-            renderMaintenance()
-          }
-          {
-            renderFuel()
-          }
-
-          <TouchableOpacity style={styles.btn} >
-            <Text style={styles.btnText}>Fazer checkout</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btn} >
-            <Text style={styles.btnText}>Gerar relatório</Text>
-          </TouchableOpacity>
-        </View>
+        
         </ScrollView>
     </View>
   );
@@ -212,108 +204,164 @@ export default function Vehicle({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.primary.white,
     flexDirection: 'column',
   },
   img:{
     width: '100%',
-    height: 217,
-    elevation: 10,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    height: 240,
+    elevation: 2,
   },
-  containerInformations:{
-    paddingHorizontal: 8,
-    height: 'auto',
+  identificationCard:{
+    marginTop: 26, 
+    padding: 10,
     width: '100%',
-    marginTop: 13,
-    paddingBottom: 36,
-  },
-  identification:{
-    width: '100%',
-    backgroundColor: '#FFF',
-    height: 'auto',
+    backgroundColor: colors.primary.white,
     borderRadius: 5,
-    borderColor: '#000',
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: 5,
-  },
-  textIdentification:{
-    fontSize: 22,
-    fontWeight: 'bold'
-  },
-  informations:{
-    display: 'flex',
+    elevation: 2,
     flexDirection: 'row',
-    width: '100%',
-    height: 'auto',
+    justifyContent: 'space-between',
+  },
+  leftColumn:{
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  rightColumn:{
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  identificationCardHeader:{
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  textInformations:{
-    flexShrink: 1,
-    fontSize: 16
+  statusContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5
   },
-  nextMain:{
-    width: '100%',
-    backgroundColor: '#FFF',
-    height: 'auto',
-    borderRadius: 5,
-    borderColor: '#000',
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: 5,
-    marginTop: 10,
-
+  statusDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: colors.icon.green,
+    borderRadius: 4,
+    marginRight: 4,
   },
-  observacao:{
+  plate:{
     fontSize: 16,
-    marginBottom: 10,
+    fontWeight: 'bold',
+    color: colors.text.primary,
   },
-  observacaoInformacao:{
-    marginBottom: 16,
-
+  textInfo:{
+    fontSize: 13,
+    color: colors.text.primary,
   },
-  btn:{
-    width: "100%",
-    backgroundColor: "#176585",
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#176585',
-    borderRadius: 5,
+  containerWithIcon:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 5,
+  },
+  driverButton:{
+    width: 98,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 12,
-  },
-  btnText:{
-    fontSize: 16,
-    color: '#FFF'
-  },
-  containerBtn:{
-    display: 'flex',
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 6,
-    marginTop: 16,
-  },
-  abastecimento:{
-    width: '100%',
-    backgroundColor: '#FFF',
-    height: 'auto',
+    backgroundColor: colors.primary.green,
     borderRadius: 5,
-    borderColor: '#000',
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: 5,
-    marginTop: 10,
-    marginBottom: 13
   },
-  textWithoutHistory:{
-    color: '#AB0C0C'
+  fuelContainer:{
+    marginTop: 26,
+    width: '100%',
+  },
+  title:{
+    fontSize: 16,
+    color: colors.text.primary,
+  },
+  fuelCard:{ 
+    flexDirection: 'column',
+    borderRadius: 5,
+    backgroundColor: colors.primary.white,
+    elevation: 2,
+    marginTop: 15,
+  },
+  row:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 7,
+  },
+  cardButton:{
+    width: '100%',
+    backgroundColor: colors.primary.main,
+    height: 40,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+  maintenanceContainer:{
+    marginTop: 26,
+    width: '100%',
+  },
+  maintenanceCard:{
+    flexDirection: 'column',
+    borderRadius: 5,
+    backgroundColor: colors.primary.white,
+    elevation: 2,
+    marginTop: 15,
+  },
+  serviceBoxMade:{
+    width: '100%',
+    height: 116,
+    backgroundColor: colors.primary.white,
+    borderRadius: 5,
+    borderColor: colors.primary.main,
+    borderWidth: 1,
+    marginTop: 10,
+    padding: 5
+  },
+  serviceMade:{
+    height: 22,
+    width: 89,
+    backgroundColor: colors.primary.main,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionContainer:{
+    marginTop: 26,
+    width: '100%',
+    marginBottom: 30,
+  },
+  actionCard:{
+    flexDirection: 'column',
+    borderRadius: 5,
+    backgroundColor: colors.primary.white,
+    elevation: 2,
+    marginTop: 15,
+    width: '100%',
+    height: 'auto',
+    padding: 10
+  },
+  rowAction:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    height: 'auto'
   }
-
+  
+  
 });
+
+/**
+ *<View style={styles.identificationCardHeader}>  
+                
+                
+              </View>
+ * 
+ * / */
