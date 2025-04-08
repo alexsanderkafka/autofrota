@@ -205,7 +205,7 @@ export default function Login({ navigation }) {
               <View style={[styles.checkBox, { backgroundColor: remember ? colors.primary.green : colors.primary.white, borderColor: remember ? colors.primary.green : colors.border.main }]}>
                 {remember && <Icon name="check" size={20} color="#FFF" />}
               </View>
-              <Text>Aceito os termos</Text>
+              <Text>Lembrar-me</Text>
             </Pressable>
             
             <Text style={{color: colors.text.other}} onPress={forgetPassword}>Esqueceu a senha?</Text>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef }from 'react';
 
 import {
     StyleSheet,
@@ -9,15 +9,17 @@ import {
     ScrollView,
     SafeAreaView,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Animated,
+    Dimensions
 } from 'react-native';
 
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AddNewFuel from './modal/AddNewFuel';
 
 function FuelCard({ data }) {
-
     return(
         <View style={styles.fuelCard}>
             <View style={styles.row}>
@@ -57,9 +59,14 @@ function FuelCard({ data }) {
     );
 }
 
+const { height } = Dimensions.get('window');
+
 export default function Fuel({ navigation }) {
 
     const [latestElement, setLatestElement] = useState(false);
+
+    const [visible, setVisible] = useState(false);
+    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
     const fuel = [
         {
@@ -98,7 +105,9 @@ export default function Fuel({ navigation }) {
         return(
             <View style={styles.latestElement}>
                 <ActivityIndicator
-                size="large" color={colors.primary.main} />
+                size="large" color={colors.primary.main} 
+                style={{ marginTop: 20, marginBottom: 20 }}
+                />
             </View>
         );
     }
@@ -123,6 +132,15 @@ export default function Fuel({ navigation }) {
         }*/
     }
 
+    function openModalAddFuel(){
+        setVisible(true);
+        Animated.timing(slideAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }
+
     return(
         <View style={styles.container}>
             
@@ -133,7 +151,8 @@ export default function Fuel({ navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <FlatList 
+            <FlatList
+            showsVerticalScrollIndicator={false} 
             data={fuel}
             keyExtractor={ item => String(item.id)}
             renderItem={ ({ item }) => <FuelCard data={item} />}
@@ -142,13 +161,20 @@ export default function Fuel({ navigation }) {
             }}
             onEndReachedThreshold={1} 
             ListFooterComponent={renderFooterFlatList}
-            //style={styles.list}
+            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+            style={styles.list}
             />
 
         
-            <TouchableOpacity style={styles.fab} onPress={sendToAddFuel}>
+            <TouchableOpacity style={styles.fab} onPress={openModalAddFuel}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
+
+            {
+                visible && (
+                    <AddNewFuel visible={setVisible} slideAnim={slideAnim}/>
+                )
+            }
         
         </View>
     )
@@ -165,7 +191,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: colors.primary.white,
         elevation: 2,
-        marginTop: 20,
         padding: 10,
         marginHorizontal: 15,
     },
@@ -186,8 +211,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         elevation: 2, // para Android
-      },
-      fieldSelectDate:{
+    },
+    fieldSelectDate:{
         marginTop: 30,
         width: '50%',
         height: 38,
@@ -198,21 +223,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 15,
-        marginBottom: 26
-      },
-      rangeDateSelect:{
+        marginBottom: 6
+    },
+    rangeDateSelect:{
         fontSize: 10,
         color: colors.text.gray,
         marginLeft: 10,
         textAlign: 'center',
-      },
-      dateButton:{
+    },
+    dateButton:{
         backgroundColor: colors.primary.main,
         width: 38,
         height: '100%',
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-      }
-    
+    },
+    list:{
+        marginTop: 20,
+        paddingVertical: 6
+    }
 });

@@ -14,8 +14,8 @@ export default function BottomNavigation() {
   return (
     <Tab.Navigator
     screenOptions={{
-        tabBarActiveTintColor: '#176585',
-        tabBarInactiveTintColor: '#000',
+        tabBarActiveTintColor: colors.text.other,
+        tabBarInactiveTintColor: colors.icon.main,
         tabBarLabelStyle: {
           marginBottom: 5,
         },
@@ -26,7 +26,7 @@ export default function BottomNavigation() {
         component={Home}
         options={{
           title: "AutoFrota",
-          headerTintColor: colors.text.title,
+          headerTintColor: colors.text.other,
           headerStyle: {
               backgroundColor: '#FFF'
           },
@@ -40,7 +40,7 @@ export default function BottomNavigation() {
 
         <Tab.Screen name="Veículos" component={Vehicles}
         options={{
-            headerTintColor: colors.text.title,
+            headerTintColor: colors.text.other,
             tabBarIcon: ({ focused }) => <Icon
             name="car"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
@@ -50,7 +50,7 @@ export default function BottomNavigation() {
 
         <Tab.Screen name="Relatórios" component={ReportScreen}
         options={{
-            headerTintColor: colors.text.title,
+            headerTintColor: colors.text.other,
             tabBarIcon: ({ focused }) => <Icon
             name="chart-bar"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
@@ -60,7 +60,7 @@ export default function BottomNavigation() {
 
       <Tab.Screen name="Configurações" component={Settings}
         options={{
-            headerTintColor: colors.text.title,
+            headerTintColor: colors.text.other,
             tabBarIcon: ({ focused }) => <Icon
             name="cog"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}

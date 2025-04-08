@@ -60,7 +60,9 @@ export default function Vehicles( {navigation} ) {
         return(
           <View style={styles.latestElement}>
             <ActivityIndicator
-            size="large" color={colors.primary.main} />
+            size="large" color={colors.primary.main} 
+            style={{ marginTop: 20, marginBottom: 20 }}
+            />
           </View>
         );
     }
@@ -138,24 +140,28 @@ export default function Vehicles( {navigation} ) {
                 </ScrollView>
             </View>
 
-            <View style={styles.searchField}>
-                <TextInput
-                style={{ marginLeft: 10, flex: 1,}}
-                placeholder='Digite a placa...'
-                value={search}
-                onChangeText={ (text) => setSearch(text)}
-                />
 
-                <TouchableOpacity
-                style={ styles.searchButton }
-                >
-                    <Icon name="magnify" size={24} color={colors.icon.white}/>
+            <View paddingHorizontal={15}>
+              <View style={styles.searchField}>
+                  <TextInput
+                  style={{ marginLeft: 10, flex: 1,}}
+                  placeholder='Digite a placa...'
+                  value={search}
+                  onChangeText={ (text) => setSearch(text)}
+                  />
 
-                </TouchableOpacity>
+                  <TouchableOpacity
+                  style={ styles.searchButton }
+                  >
+                      <Icon name="magnify" size={24} color={colors.icon.white}/>
 
+                  </TouchableOpacity>
+
+              </View>
             </View>
 
             <FlatList 
+            showsVerticalScrollIndicator={false}  
             data={vehicles}
             keyExtractor={ item => String(item.vehicle_characteristic.id)}
             renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
@@ -178,12 +184,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: colors.primary.white,
-        paddingHorizontal: 15,
+        
     },
     buttonContainer:{
         width: '100%',
         height: 'auto',
         marginTop: 30,
+        paddingHorizontal: 15,
     },
     filter:{
         width: 'auto',
@@ -222,6 +229,8 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     list:{
-        marginTop: 26
+        marginTop: 16,
+        paddingHorizontal: 15,
+        paddingTop: 10
     }
 });

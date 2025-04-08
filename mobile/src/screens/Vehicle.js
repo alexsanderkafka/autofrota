@@ -29,8 +29,12 @@ export default function Vehicle({ navigation, route }) {
     
   }
 
-  function sendToFuel(){
+  function goToFuel(){
     navigation.navigate('Fuel', vehicleId);
+  }
+
+  function goToMaintenance(){
+    navigation.navigate('Maintenance', vehicleId);
   }
 
   return (
@@ -110,7 +114,7 @@ export default function Vehicle({ navigation, route }) {
                   </View>
                 </View>
 
-                <TouchableOpacity style={styles.cardButton} onPress={ sendToFuel }>
+                <TouchableOpacity style={styles.cardButton} onPress={ goToFuel }>
                   <Text style={{ color: colors.text.white, fontSize: 13 }}>Abastecimentos</Text>
                 </TouchableOpacity>
 
@@ -123,7 +127,7 @@ export default function Vehicle({ navigation, route }) {
 
               <View style={styles.maintenanceCard}>
 
-                <View style={{ paddingLef: 10, paddingRight: 10, paddingTop: 10 }}>
+                <View style={{ paddingHorizontal: 10, paddingTop: 10 }}>
                   <View style={styles.row}>
                     <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
                     <Text>00/00/2030</Text>
@@ -152,7 +156,7 @@ export default function Vehicle({ navigation, route }) {
     
                 </View>
 
-                <TouchableOpacity style={styles.cardButton} onPress={ () => {}}>
+                <TouchableOpacity style={styles.cardButton} onPress={ goToMaintenance }>
                   <Text style={{ color: colors.text.white, fontSize: 13 }}>Manutenções</Text>
                 </TouchableOpacity>
 

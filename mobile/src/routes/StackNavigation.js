@@ -15,10 +15,17 @@ import {
     colors
 } from '../theme'
 
+import { Portal, Provider } from 'react-native-paper';
+
+import { 
+    TouchableOpacity,
+} from "react-native";
+
 const Stack = createNativeStackNavigator();
 
 export default function MyStack(){
     return (
+        <Provider>
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Onboarding">
 
@@ -55,7 +62,7 @@ export default function MyStack(){
                     headerStyle:{
                         backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: colors.text.title,
+                    headerTintColor: colors.text.other,
                 }}
             />
 
@@ -67,7 +74,7 @@ export default function MyStack(){
                     headerStyle:{
                         backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: colors.text.title,
+                    headerTintColor: colors.text.other,
                 }}
             />
 
@@ -79,10 +86,12 @@ export default function MyStack(){
                     headerStyle:{
                         backgroundColor: colors.primary.white,
                     },
-                    headerTintColor: colors.text.title,
+                    headerTintColor: colors.text.other,
                 }}
             />
+
             </Stack.Navigator>  
       </NavigationContainer>
+      </Provider>
     );
 }

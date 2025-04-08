@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../service/api';
-import VehicleListTile from '../components/VehicleListTile';
 import {Picker} from '@react-native-picker/picker';
 import Icon from 'react-native-ico-material-design';
 
@@ -20,11 +19,13 @@ import { colors } from '../theme';
 import InfoCard from '../components/InfoCard';
 import ActionButton from '../components/ActionButton';
 
+import VehicleListTile from '../components/VehicleListTile';
+
 export default function HomeScreen({ navigation }) {
 
   const [token, setToken] = useState('');
   const [businessId, setId] = useState('');
-  const [vehicles, setVehicles] = useState([]);
+  //const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState("todos");
   const [notFoundVehicles, setNotFoundVehicles] = useState(false);
@@ -36,122 +37,199 @@ export default function HomeScreen({ navigation }) {
 
   const sizePage = 12;
 
-  useEffect(() => {
-    async function getInStorage(){
-      try {
-        const tokenJwt = await AsyncStorage.getItem('tokenJwt');
-        const value = await AsyncStorage.getItem('businessId');
-        
-        setId(value);
-        setToken(tokenJwt);
-      } catch (error) {
-        console.log("AsyncStorage error todos: " + error);
+  const vehicles = [
+    {
+      "brand": "Renault",
+      "model": "Kwid",
+      "year": "2020",
+      "plate": "AAA-2345",
+      "vehicle_code": "VC2020BMW",
+      "image_perfil": "../../assets/images/kwid.jpg",
+      "internal_image": {
+        "id": 1,
+        "frontImage": "assets/images/front_image6.jpg",
+        "leftImage": "assets/images/left_image6.jpg",
+        "rearImage": "assets/images/rear_image6.jpg",
+        "rightImage": "assets/images/right_image6.jpg"
+      },
+      "external_image": {
+        "id": 6,
+        "frontImage": "assets/images/external_front_image6.jpg",
+        "leftImage": "assets/images/external_left_image6.jpg",
+        "rearImage": "assets/images/external_rear_image6.jpg",
+        "rightImage": "assets/images/external_right_image6.jpg"
+      },
+      "maintenance": {
+        "id": 40,
+        "date_maintenance": null,
+        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
+        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
+        "observation": "Verificação de freios",
+        "status": "em dia"
+      },
+      "fuel": {
+        "id": null,
+        "fuel_type": null,
+        "km": null,
+        "latest_fuel": null,
+        "litter": 0,
+        "price": 0
+      },
+      "vehicle_characteristic": {
+        "id": 1,
+        "vehicleType": "Carro",
+        "color": "Amarelo",
+        "chassiNumber": "9BG116GW04C400003",
+        "currentKm": "30000",
+        "avgConsume": 13.2,
+        "engineLiter": 1.8,
+        "fuelType": "Gasolina",
+        "renavam": "67890123456",
+        "status": true
+      },
+      "business": {
+        "id": 1,
+        "name": "Transporte Rápido Ltda",
+        "cnpj": "12345678000101",
+        "phone": "(48) 98765-4321",
+        "created": "2023-01-15T03:00:00.000+00:00"
+      }
+    },
+    {
+      "brand": "Renault",
+      "model": "Kwid",
+      "year": "2020",
+      "plate": "PQR-0000",
+      "vehicle_code": "VC2020BMW",
+      "image_perfil": "../../assets/images/kwid.jpg",
+      "internal_image": {
+        "id": 6,
+        "frontImage": "assets/images/front_image6.jpg",
+        "leftImage": "assets/images/left_image6.jpg",
+        "rearImage": "assets/images/rear_image6.jpg",
+        "rightImage": "assets/images/right_image6.jpg"
+      },
+      "external_image": {
+        "id": 6,
+        "frontImage": "assets/images/external_front_image6.jpg",
+        "leftImage": "assets/images/external_left_image6.jpg",
+        "rearImage": "assets/images/external_rear_image6.jpg",
+        "rightImage": "assets/images/external_right_image6.jpg"
+      },
+      "maintenance": {
+        "id": 40,
+        "date_maintenance": null,
+        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
+        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
+        "observation": "Verificação de freios",
+        "status": "em dia"
+      },
+      "fuel": {
+        "id": null,
+        "fuel_type": null,
+        "km": null,
+        "latest_fuel": null,
+        "litter": 0,
+        "price": 0
+      },
+      "vehicle_characteristic": {
+        "id": 2,
+        "vehicleType": "Carro",
+        "color": "Amarelo",
+        "chassiNumber": "9BG116GW04C400003",
+        "currentKm": "30000",
+        "avgConsume": 13.2,
+        "engineLiter": 1.8,
+        "fuelType": "Gasolina",
+        "renavam": "67890123456",
+        "status": true
+      },
+      "business": {
+        "id": 1,
+        "name": "Transporte Rápido Ltda",
+        "cnpj": "12345678000101",
+        "phone": "(48) 98765-4321",
+        "created": "2023-01-15T03:00:00.000+00:00"
+      }
+    },
+    {
+      "brand": "Renault",
+      "model": "Kwid",
+      "year": "2020",
+      "plate": "VVV-0000",
+      "vehicle_code": "VC2020BMW",
+      "image_perfil": "../../assets/images/kwid.jpg",
+      "internal_image": {
+        "id": 6,
+        "frontImage": "assets/images/front_image6.jpg",
+        "leftImage": "assets/images/left_image6.jpg",
+        "rearImage": "assets/images/rear_image6.jpg",
+        "rightImage": "assets/images/right_image6.jpg"
+      },
+      "external_image": {
+        "id": 6,
+        "frontImage": "assets/images/external_front_image6.jpg",
+        "leftImage": "assets/images/external_left_image6.jpg",
+        "rearImage": "assets/images/external_rear_image6.jpg",
+        "rightImage": "assets/images/external_right_image6.jpg"
+      },
+      "maintenance": {
+        "id": 40,
+        "date_maintenance": null,
+        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
+        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
+        "observation": "Verificação de freios",
+        "status": "em dia"
+      },
+      "fuel": {
+        "id": null,
+        "fuel_type": null,
+        "km": null,
+        "latest_fuel": null,
+        "litter": 0,
+        "price": 0
+      },
+      "vehicle_characteristic": {
+        "id": 3,
+        "vehicleType": "Carro",
+        "color": "Amarelo",
+        "chassiNumber": "9BG116GW04C400003",
+        "currentKm": "30000",
+        "avgConsume": 13.2,
+        "engineLiter": 1.8,
+        "fuelType": "Gasolina",
+        "renavam": "67890123456",
+        "status": true
+      },
+      "business": {
+        "id": 1,
+        "name": "Transporte Rápido Ltda",
+        "cnpj": "12345678000101",
+        "phone": "(48) 98765-4321",
+        "created": "2023-01-15T03:00:00.000+00:00"
       }
     }
-    getInStorage();
-  }, []);
+  ]
 
- 
-  useEffect( () => {
-    getAllVehicles();
-  }, [token, businessId]);
-
-  useEffect( () => {
-    if(selected == 'todos'){
-      getAllVehicles();
-    }else{
-      getStatusVehicles();
-    }    
-  }, [selected]);
-
-  async function getAllVehicles(){
-    try {
-
-      let response = await api.get(`/vehicles/${businessId}?page=${page}`, {
-        headers:{
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      console.log(response.data.hasOwnProperty("_embedded"));
-
-      if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
-
-      setVehicles([...vehicles, ...response.data._embedded.vehicleDTOList]);
-
-      setTotalPages(response.data.page.totalPages);
-      setLoading(false);
-      setNotFoundVehicles(false);
-      setTotalVehicles(response.data.page.totalElements);
-
-    } catch (error) {
-      console.log("Caiu em error");
-      setLoading(false);
-      setNotFoundVehicles(true);
-      setMessage("Nenhum veículo cadastrado.")
-      console.log("Error: " + error);
-    }
+  function renderFooterFlatList(){
+          if(!latestElement) return null;
+      
+          return(
+            <View style={styles.latestElement}>
+              <ActivityIndicator
+              size="large" color={colors.primary.main} 
+              style={{ marginTop: 20, marginBottom: 20 }}
+              />
+            </View>
+          );
   }
 
-  async function getStatusVehicles(){
-    try {
-      let response = await api.get(`/vehicles/${selected}/${businessId}?page=${page}`, {
-        headers:{
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
-
-      setVehicles([...vehicles, ...response.data._embedded.vehicleDTOList]);
-
-      setLoading(false);
-      setNotFoundVehicles(false);
-      setTotalPages(response.data.page.totalPages);
-      setTotalVehicles(response.data.page.totalElements);
-
-    } catch (error) {
-      setLoading(false);
-      setNotFoundVehicles(true);
-      setMessage(`Nenhum veículo com a manutenção ${selected}.`)
-      console.log("Error: " + error);
-    }
-  }
-
-
-
-  if(loading){
-    return(
-      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <ActivityIndicator 
-        color={colors.primary.blue}
-        size={45}
-        />
-      </View>
-    );
-  }else if(notFoundVehicles){
-    return(
+  return(
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
       
-      <View style={styles.containerCenter}>
-        <Icon
-          name="car-front"
-          height="72"
-          width="72"
-          color="#176585"
-        />
-        <Text style={styles.textNotFoundVehicles}>{message}</Text>
-      </View>
-
-      </View>
-    );
-  }else{
-    return (
-      <ScrollView>
-      <View style={styles.container}>
-      
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2 }}>
-          <View style={styles.infosContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
+          <View style={styles.infosContainer} >
               <InfoCard icon="car" amount="50" title="Veículos Ativos" color={colors.icon.green}/>
               <InfoCard icon="wrench" amount="50" title="Em Manutenção" color={colors.icon.yellow}/>
               <InfoCard icon="alert" amount="50" title="Em Alerta" color={colors.icon.red}/>
@@ -184,19 +262,22 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         <View style={styles.recentVehiclesContainer}>
-          <Text style={styles.titles}>Veículos recentes</Text>
-          <Text style={styles.titles}>Remove</Text>
-            
-          
-          
+          <Text style={styles.titles} paddingHorizontal={15}>Veículos recentes</Text>
 
+
+          <FlatList 
+          data={vehicles}
+          keyExtractor={ item => String(item.vehicle_characteristic.id)}
+          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
+          onEndReachedThreshold={1} 
+          ListFooterComponent={renderFooterFlatList}
+          style={styles.list}
+          />
         </View>
-        
-  
       </View>
-      </ScrollView>
-    );
-  }
+    </ScrollView>
+  );
+  
 }
 
 const styles = StyleSheet.create({
@@ -204,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#000',
     backgroundColor: colors.primary.white,
-    paddingHorizontal: 15,
+
   },
   infosContainer:{
     width: '100%',
@@ -213,7 +294,8 @@ const styles = StyleSheet.create({
     marginBottom: 26,
     display: 'flex',
     flexDirection: 'row',
-    gap: 15
+    gap: 15,
+    marginHorizontal: 15
   },
   containerPicker:{
     width: '100%',
@@ -237,7 +319,8 @@ const styles = StyleSheet.create({
   },
   mapContainer:{
     width: '100%',
-    height: 'auto'
+    height: 'auto',
+    paddingHorizontal: 15
   },
   titles:{
     fontSize: 16,
@@ -254,7 +337,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   actionContainer:{
-    marginTop: 16
+    marginTop: 16,
+    paddingHorizontal: 15,
   },
   buttonContainer:{
     flexDirection: 'row',
@@ -264,7 +348,10 @@ const styles = StyleSheet.create({
     
   },
   recentVehiclesContainer:{
-    marginTop: 26
+    marginTop: 26,
+  },
+  list:{
+    paddingHorizontal: 15,
   },
 
 
@@ -317,49 +404,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
-
-
-/*
-<FlatList 
-          data={vehicles}
-          keyExtractor={ item => String(item.vehicle_characteristic.id)}
-          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
-          onEndReached={() => {
-            loadMoreVehicles();
-          }}
-          onEndReachedThreshold={1} 
-          ListFooterComponent={renderFooterFlatList}
-          />
-
-<View style={styles.container}>
-
-      <View style={styles.containerPicker}>
-        <Picker
-          selectedValue={selected}
-          onValueChange={(itemValue, itemIndex) => {
-            console.log("Value picker: " + itemValue);
-            setSelected(itemValue);
-            setLoading(true);
-            setVehicles([]);
-            setPage(0);
-          }}
-          style={styles.picker}
-          >
-          <Picker.Item label="Todos" value="todos" />
-          <Picker.Item label="Em dia" value="em dia" />
-          <Picker.Item label="Feito" value="feito" />
-          <Picker.Item label="Atrasado" value="atrasada" />
-        </Picker>
-      </View>
-      
-      <View style={styles.containerCenter}>
-        <Icon
-          name="car-front"
-          height="72"
-          width="72"
-          color="#176585"
-        />
-        <Text style={styles.textNotFoundVehicles}>{message}</Text>
-      </View>
-
-    </View>*/

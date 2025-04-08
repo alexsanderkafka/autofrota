@@ -14,12 +14,9 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/
 
 export default function VehicleListTile({ data, navigation}){
 
-    const [fontsLoaded] = useFonts({
-      Roboto_400Regular,
-      Roboto_700Bold
-    });
+    //console.log(data);
 
-    var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
+    //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
     var nextDate = new Date(data.maintenance.next_maintenance).toLocaleDateString('pt-BR');
 
     let image = imageMap[data.image_perfil] || require("../../assets/images/gol.jpg");

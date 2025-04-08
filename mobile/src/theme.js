@@ -20,6 +20,7 @@ export const colors = {
         dark: '#1e40ab',
         black: '#000',
         other: '#343440',
+        
     },
     shadow:{
         black: 'rgba(0, 0, 0, 0.2)'
