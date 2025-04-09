@@ -18,7 +18,7 @@ import SwitchButton from '../components/SwitchButton';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Settings() {
+export default function Settings({ navigation }) {
 
     const [businessId, setBusinessId] = useState();
     const [token, setToken] = useState("");
@@ -73,6 +73,10 @@ export default function Settings() {
         }
     }
 
+    function goToProfile(){
+        navigation.navigate('Profile');
+    }
+
     if(loading){
         return(
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -85,7 +89,7 @@ export default function Settings() {
     }else{
         return (
             <SafeAreaView style={styles.container}>
-               <TouchableOpacity style={styles.profileButtonButton}>
+               <TouchableOpacity style={styles.profileButtonButton} onPress={goToProfile}>
                     <Image
                     source={businessImage}
                     style={styles.profileImage}

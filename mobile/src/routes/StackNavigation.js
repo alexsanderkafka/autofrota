@@ -20,6 +20,7 @@ import { Portal, Provider } from 'react-native-paper';
 import { 
     TouchableOpacity,
 } from "react-native";
+import Profile from '../screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,18 @@ export default function MyStack(){
                 component={Fuel}
                 options={{
                     title: "Abastecimentos",
+                    headerStyle:{
+                        backgroundColor: colors.primary.white,
+                    },
+                    headerTintColor: colors.text.other,
+                }}
+            />
+
+            <Stack.Screen 
+                name="Profile" 
+                component={Profile}
+                options={{
+                    title: "Perfil",
                     headerStyle:{
                         backgroundColor: colors.primary.white,
                     },
