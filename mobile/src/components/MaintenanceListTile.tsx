@@ -7,9 +7,15 @@ import {
     View,
     Image,
     TouchableOpacity
-  } from 'react-native';
+} from 'react-native';
 
-export default function MaintenanceListTile({ data, navigation}){
+interface Props{
+    data: any;
+    navigation: any;
+}
+
+
+export default function MaintenanceListTile({ data, navigation}: Props){
 
     var nextMaintenance = new Date(data.next_maintenance).toLocaleDateString('pt-BR');
     //var dayMaintenance = new Date(data.date_maintenance).toLocaleDateString('pt-BR');

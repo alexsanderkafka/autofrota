@@ -11,7 +11,15 @@ import {
   } from 'react-native';
 import { colors } from '../theme';
 
-export default function InfoCard({ icon, amount, title, color}){
+interface Props{
+    icon: string;
+    amount: string;
+    title: string;
+    color: string;
+}
+
+
+export default function InfoCard({ icon, amount, title, color}: Props){
     return(
         <View style={styles.card}>
 
@@ -46,6 +54,9 @@ const styles = StyleSheet.create({
     title:{
         marginTop: 11,
         color: colors.text.secondaray
+    },
+    count:{
+
     }
     
 });

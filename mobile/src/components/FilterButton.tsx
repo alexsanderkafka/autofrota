@@ -9,7 +9,12 @@ import {
 
 import { colors } from '../theme';
 
-export default function FilterButton({ text }){
+interface Props{
+    text: string;
+}
+
+
+export default function FilterButton({ text }: Props){
     return(
         <TouchableOpacity style={styles.filter}>
             <Text style={styles.textButton}>{text}</Text>

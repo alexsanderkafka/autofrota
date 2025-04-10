@@ -21,7 +21,11 @@ import ActionButton from '../components/ActionButton';
 
 import VehicleListTile from '../components/VehicleListTile';
 
-export default function HomeScreen({ navigation }) {
+interface Props{
+  navigation: any;
+}
+
+export default function HomeScreen({ navigation }: Props) {
 
   const [token, setToken] = useState('');
   const [businessId, setId] = useState('');
@@ -262,7 +266,7 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         <View style={styles.recentVehiclesContainer}>
-          <Text style={styles.titles} paddingHorizontal={15}>Veículos recentes</Text>
+          <Text style={[styles.titles, {paddingHorizontal:15}]}>Veículos recentes</Text>
 
 
           <FlatList 

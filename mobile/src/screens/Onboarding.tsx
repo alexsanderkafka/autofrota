@@ -47,7 +47,11 @@ const slides = [
   },
 ];
 
-export default function OnboardingScreen ({ navigation }){
+interface Props {
+  navigation: any;
+}
+
+export default function OnboardingScreen ({ navigation }: Props){
 
   const [isLastSlide, setIsLastSlide] = useState(false);
 
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
   },
   textStartNow:{
     fontSize: 13,
-    fontColor: colors.text.secondaray,
+    color: colors.text.secondaray,
     textAlign: "center",
     marginTop: 10,
   }

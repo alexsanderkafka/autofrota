@@ -19,7 +19,12 @@ import Checklist from './modal/CheckList';
 
 const { height } = Dimensions.get('window');
 
-export default function Vehicle({ navigation, route }) {
+interface Props{
+  navigation: any;
+  route: any;
+}
+
+export default function Vehicle({ navigation, route }: Props) {
 
   const [visible, setVisible] = useState(false);
   const [visibleChecklist, setVisibleChecklist] = useState(false);
@@ -110,7 +115,7 @@ export default function Vehicle({ navigation, route }) {
 
               <View style={styles.fuelCard}>
 
-                <View style={{ paddingLef: 10, paddingRight: 10, paddingTop: 10 }}>
+                <View style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10 }}>
                   <View style={styles.row}>
                     <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
                     <Text>00/00/2030</Text>
@@ -402,6 +407,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 'auto'
+  },
+  statusText:{
+
   }
   
   
