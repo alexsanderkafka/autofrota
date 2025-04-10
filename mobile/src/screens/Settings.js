@@ -77,6 +77,10 @@ export default function Settings({ navigation }) {
         navigation.navigate('Profile');
     }
 
+    function goToChangePassword(){
+        navigation.navigate('ChangePassword');
+    }
+
     if(loading){
         return(
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -131,7 +135,7 @@ export default function Settings({ navigation }) {
                <View style={styles.securityContainer}>
                     <Text style={styles.titles}>Segurança</Text>
 
-                    <TouchableOpacity style={styles.actionBox}>
+                    <TouchableOpacity style={styles.actionBox} onPress={goToChangePassword}>
                         <View style={styles.securityAction}>
                             <View style={styles.iconGroup}>
                                 <Icon name="lock" size={24} color={colors.icon.mainBlue}/>

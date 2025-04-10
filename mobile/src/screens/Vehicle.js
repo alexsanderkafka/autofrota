@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import imageMap from '../service/image';
 import {
     StyleSheet,
@@ -6,13 +6,26 @@ import {
     View, 
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Dimensions,
+    Animated
 } from 'react-native';
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import AddNewMaintenance from './modal/AddNewMaintenance';
+import Checklist from './modal/CheckList';
+
+const { height } = Dimensions.get('window');
+
 export default function Vehicle({ navigation, route }) {
+
+  const [visible, setVisible] = useState(false);
+  const [visibleChecklist, setVisibleChecklist] = useState(false);
+
+  const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
+  const slideAnimCheckList = useRef(new Animated.Value(height)).current; // começa fora da tela
 
   const data = route.params;
 
@@ -36,6 +49,24 @@ export default function Vehicle({ navigation, route }) {
   function goToMaintenance(){
     navigation.navigate('Maintenance', vehicleId);
   }
+
+  function openModalAddMaitenance(){
+          setVisible(true);
+          Animated.timing(slideAnim, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: true,
+          }).start();
+  }
+
+  function openChecklistModal(){
+    setVisibleChecklist(true);
+    Animated.timing(slideAnimCheckList, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+    }).start();
+}
 
   return (
     <View style={styles.container}>
@@ -169,7 +200,7 @@ export default function Vehicle({ navigation, route }) {
 
               <View style={styles.actionCard}>
 
-                <TouchableOpacity style={styles.rowAction}>
+                <TouchableOpacity style={styles.rowAction} onPress={openChecklistModal}>
                   <Text>Fazer checklist</Text>
                   <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
                 </TouchableOpacity>
@@ -190,7 +221,7 @@ export default function Vehicle({ navigation, route }) {
 
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
 
-                <TouchableOpacity style={styles.rowAction}>
+                <TouchableOpacity style={styles.rowAction} onPress={ openModalAddMaitenance }>
                   <Text>Agendar manutenção</Text>
                   <Icon name="chevron-right" size={24} color={colors.icon.mainBlue} />
                 </TouchableOpacity>
@@ -201,6 +232,20 @@ export default function Vehicle({ navigation, route }) {
 
         
         </ScrollView>
+
+        {
+          visibleChecklist && (
+            <Checklist visible={setVisibleChecklist} slideAnim={slideAnimCheckList}/>
+          )
+        }
+
+        {
+          visible && (
+            <AddNewMaintenance visible={setVisible} slideAnim={slideAnim}/>
+          )
+        }
+
+        
     </View>
   );
 }

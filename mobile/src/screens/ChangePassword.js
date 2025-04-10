@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef} from 'react';
-import Icon from 'react-native-ico-material-design';
 
 import { 
   StyleSheet,
@@ -9,180 +8,146 @@ import {
   TouchableOpacity,
   Animated,
   SafeAreaView,
+  Image
 } from 'react-native';
+import { colors } from '../theme';
 
-/*
-    <View style={styles.logo}>
-                    <Icon
-                    name="car-front"
-                    height="72"
-                    width="72"
-                    color="#176585"
-                    style={{ marginRight: 13 }} 
-                    />
-                    <Icon
-                    name="car-front"
-                    height="72"
-                    width="72"
-                    color="#176585"
-                    style={{ marginRight: 13 }} 
-                    />
-                    <Icon
-                    name="car-front"
-                    height="72"
-                    width="72"
-                    color="#176585"
-                    />          
-                </View>
- */
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ChangePassword({ navigation }) {
 
-    const [currentPass, setCurrentPass] = useState('');
-    const [newPass, setNewPass] = useState('');
+    const [password, setPassword] = useState('');
+    const [eyeButtonPassword, setEyeButtonPassword] = useState(false);
+
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [eyeButtonConfirmPassword, setEyeButtonConfirmPassword] = useState(false);
 
     return(
-        <SafeAreaView style={styles.containerSafeArea}>
-            <View style={styles.container}>
-                
+        <View style={styles.body}>
 
-                <Text style={styles.title}>Altere sua senha</Text>
+            <Image source={require('../../assets/logo/image.jpg')} style={styles.logoImage}/>
 
-                <Text style={styles.descriptions}>Crie uma senha longa e complexa, use números e símbolos, letras maiúsculas e minúsculas.</Text>
+            <Text style={styles.title}>Altere sua senha</Text>
 
-                <View style={styles.containerFields}>
-
-                    <Text style={styles.titleField}>Senha atual</Text>
-                    <View style={styles.sectionField}>
-                        <TextInput
-                        style={styles.inputs}
-                        placeholder='Senha atual'
-                        value={newPass}
-                        onChangeText={ (text) => setCurrentPass(text)}
-                        />
-
-                        
-                        <TouchableOpacity>
-                            <Icon
-                            name="turn-visibility-off-button"
-                            height="24"
-                            width="24"
-                            color="#176585"
-                            style={styles.icon}
-                            />      
-                        </TouchableOpacity> 
-                    </View>
-
-                </View>
-
-                <View style={styles.containerFields}>
-
-                <Text style={styles.titleField}>Nova senha</Text>
-
-                    <View style={styles.sectionField}>
-                        <TextInput
-                        style={styles.inputs}
-                        placeholder='Nova senha'
-                        value={newPass}
-                        onChangeText={ (text) => setNewPass(text)}
-                        />
-
-                        <TouchableOpacity>
-                            <Icon
-                            name="visibility-button"
-                            height="24"
-                            width="24"
-                            color="#176585"
-                            style={styles.icon}
-                            />      
-                        </TouchableOpacity> 
-                    </View>
-                   
-
-                </View>
-
-                <TouchableOpacity style={styles.btn}>
-                    <Text style={styles.btnText}>Alterar senha</Text>
+            <Text style={styles.descriptions}>Crie uma senha longa e complexa, use números e símbolos, letras maiúsculas e minúsculas.</Text>
+            
+            <View style={styles.inputContainer} >
+                <Icon name="lock" size={24} color={colors.icon.main}/>
+                <TextInput
+                style={styles.inputs}
+                placeholder='Nova senha'
+                secureTextEntry={eyeButtonPassword ? false : true}
+                value={password}
+                onChangeText={ (text) => setPassword(text)}
+                />
+                <TouchableOpacity style={styles.eyeBtn} onPress={() => setEyeButtonPassword(!eyeButtonPassword)}>
+                        {
+                          !eyeButtonPassword ? (
+                            <Icon name="eye" size={24} color={colors.icon.main}/>
+                          ) :
+                          (
+                            <Icon name="eye-off" size={24} color={colors.icon.main}/>
+                          )
+                        }
                 </TouchableOpacity>
-
-
             </View>
-        </SafeAreaView>
+
+            <View style={styles.inputContainer} >
+                <Icon name="lock" size={24} color={colors.icon.main}/>
+                <TextInput
+                style={styles.inputs}
+                placeholder='Confirme a nova senha'
+                secureTextEntry={eyeButtonConfirmPassword ? false : true}
+                value={confirmPassword}
+                onChangeText={ (text) => setConfirmPassword(text)}
+                />
+                <TouchableOpacity style={styles.eyeBtn} onPress={() => setEyeButtonConfirmPassword(!eyeButtonConfirmPassword)}>
+                        {
+                          !eyeButtonConfirmPassword ? (
+                            <Icon name="eye" size={24} color={colors.icon.main}/>
+                          ) :
+                          (
+                            <Icon name="eye-off" size={24} color={colors.icon.main}/>
+                          )
+                        }
+                </TouchableOpacity>
+            </View>
+
+
+            <TouchableOpacity style={styles.btn} onPress={() => {}}>
+                <Text style={styles.btnText}>Entrar</Text>
+            </TouchableOpacity>
+            
+
+
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    containerSafeArea:{
+    body:{
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    container: {
-      backgroundColor: '#FFF',
-      flexDirection: 'column',
-      paddingHorizontal: 20,
-      height: 'auto',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    logo:{
-        flexDirection: 'row',
-        display: 'flex',
-        justifyContent: 'center'
+        
+        alignItems: 'center',
+        paddingHorizontal: 30,
+        paddingVertical: 30
     },
     title:{
+        marginTop: 15,
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 15,
+        color: colors.text.primary,
         marginBottom: 15,
         textAlign: 'center'
     },
     descriptions:{
-        maxWidth: 270,
-        textAlign: 'center',
         fontSize: 16,
-        marginBottom: 30
+        textAlign: 'center',
+        marginBottom: 48
     },
-    containerFields:{
-        width: '100%',
-        height: 'auto'
+    logoImage:{
+        width: 169,
+        height: 78,
+        marginBottom: 10,
+        marginTop: 20,
     },
-    titleField:{
-        fontSize: 12,
-        fontWeight: 'bold'
-    },
-    sectionField:{
+    inputContainer:{
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFF',
-        borderWidth: 2,
-        borderColor: '#176585',
+        width: '100%',
+        fontSize: 18,
+        color: '#000',
+        borderWidth: 1,
         borderRadius: 5,
-        marginBottom: 20,
+        borderColor: colors.border.main,
+        marginBottom: 15,
+        paddingVertical: 11,
+        paddingHorizontal: 10,
+        justifyContent: 'space-between'
     },
     inputs:{
+        padding: 0,
+        marginLeft: 5,
+        fontSize: 15,
         flex: 1,
-        fontSize: 18,
-        marginLeft: 2
     },
-    icon:{
-        marginHorizontal: 8
+    eyeBtn:{
+        marginLeft: 10,
     },
     btn:{
         width: "100%",
-        backgroundColor: "#176585",
-        height: 40,
+        backgroundColor: colors.primary.main,
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 12,
+        paddingVertical: 12,
+        paddingHorizontal: 38,
     },
     btnText:{
         fontSize: 16,
-        color: '#FFF'
+        color: colors.text.white,
     },
 });
