@@ -9,7 +9,8 @@ import {
     Text,
     TextInput,
     Pressable,
-    ScrollView
+    ScrollView,
+    FlatList
 } from 'react-native'
 
 import { Portal, Provider } from 'react-native-paper';
@@ -19,17 +20,44 @@ import { colors } from '../../theme';
 const { height } = Dimensions.get('window');
 
 
+function ChecklistCard({ item }){
+
+}
+
 export default function Checklist({visible, slideAnim}){
 
-    const [tire, setTire] = useState(false);
-    const [breaks, setBreaks] = useState(false);
-    const [headlights, setHeadlights] = useState(false);
-    const [oil, setOil] = useState(false);
-    const [chain, setChain] = useState(false);
-    const [fuel, setFuel] = useState(false);
-    const [battery, setBattery] = useState(false);
-    const [mirrors, setMirrors] = useState(false);
-    const [helmet, setHelmet] = useState(false);
+    const [checklist, setChecklist] = useState({
+        tire: false,
+        breaks: false,
+        headlights: false,
+        oil: false,
+        chain: false,
+        fuel: false,
+        battery: false,
+        mirrors: false,
+        helmet: false,
+        water: false,
+        wiperBlade: false,
+        airConditioner: false,
+        carJack: false,
+    });
+
+    const dataItems = [
+        { label: "Pneu", description: "Calibragem, desgate", valueKey: "tire" },
+        { label: "Freios", description: "Pastilhas, fluido, regulagem do frio", valueKey: "breaks" },
+        { label: "Faróis/Lanternas", description: "Baixa, alta, seta", valueKey: "headlights" },
+        { label: "Óleo do motor", description: "Nível, qualidade, filtro, vencimento", valueKey: "oil" },
+        { label: "Corrente/Coroa", description: "Tensão, lubrificação", valueKey: "chain" },
+        { label: "Combustível", description: "Nível adequado", valueKey: "fuel" },
+        { label: "Bateria", description: "Carga, terminais, condições", valueKey: "battery" },
+        { label: "Retrovisores", description: "Ajustados, defeitos", valueKey: "mirrors" },
+        { label: "Capacete", description: "Viseira, fecho, estrutura, interna", valueKey: "helmet" },
+        { label: "Água do Radiador", description: "Nível, qualidade", valueKey: "water" },
+        { label: "Palhetas", description: "Funcionamento, desgate", valueKey: "wiperBlade" },
+        { label: "Ar-condicionado", description: "Funcionamento, filtros, odores", valueKey: "airConditioner" },
+    ];
+
+    const [lastStep, setLastStep] = useState(false);
 
     function closeModal(){
         Animated.timing(slideAnim, {
@@ -40,6 +68,98 @@ export default function Checklist({visible, slideAnim}){
             visible(false);
         });
     }
+
+    function toggleItem(key){
+        setChecklist((prev) => ({
+          ...prev,
+          [key]: !prev[key],
+        }));
+    };
+
+    function checklistCard({ item }){
+        return(
+            <View style={styles.checkListCard}>
+                <Pressable
+                onPress={() => toggleItem(item.valueKey)}
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}
+                >
+                    <View style={[styles.checkBox, { backgroundColor: checklist[item.valueKey] ? colors.primary.green : colors.primary.white, borderColor: checklist[item.valueKey] ? colors.primary.green : colors.border.main }]}>
+                        {checklist[item.valueKey] && <Icon name="check" size={20} color="#FFF" />}
+                    </View>
+                </Pressable>
+
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
+                    <Text style={styles.titleItem}>{ item.label}</Text>
+                    <Text style={styles.descriptionItem}>{ item.description }</Text>
+                </View>
+            </View>
+        );
+    }
+
+    function disapprovedCard({ item }){
+
+        if(!checklist[item.valueKey]){
+            return(
+                <View style={styles.disapprovedItemsCard}>
+                                
+                    <Text style={styles.disapprovedTitle}>{ item.label }</Text>
+                    <Text style={styles.descriptionItem}>{ item.description }</Text>
+                               
+                </View>
+            );
+        }
+
+    }
+
+    function renderChecklist(){
+        return(
+            <View style={{ flex: 1 }}>  
+                <FlatList 
+                showsVerticalScrollIndicator={false}  
+                data={dataItems}
+                
+                renderItem={checklistCard}
+                keyExtractor={(item) => item.key}
+                style={styles.list}
+                ListFooterComponent={
+                    <TouchableOpacity style={styles.finalButton} onPress={() => setLastStep(true)}>
+                        <Text style={styles.btnText}>Finalizar</Text>
+                    </TouchableOpacity>
+                }
+                />
+            </View>
+        );
+    }
+
+    function renderLastStep(){
+        return(
+            <View style={{ flex: 1 }}>
+                <FlatList 
+                showsVerticalScrollIndicator={false}  
+                data={dataItems}
+                
+                renderItem={disapprovedCard}
+                keyExtractor={(item) => item.key}
+                style={styles.list}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => setLastStep(false)}>
+                            <Text style={styles.backBtnText}>Voltar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.scheduledMaintenanceButton} onPress={ closeModal }>
+                            <Text style={styles.scheduledMaintenanceTextButton}>Agendar manutenção</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+                />                
+            </View>
+        )
+    }
+
 
     return(
         <Portal>
@@ -52,190 +172,10 @@ export default function Checklist({visible, slideAnim}){
                     <Text style={styles.headerTitle}>Checklist</Text>
                 </View>
 
+                {
+                    lastStep ? renderLastStep() : renderChecklist()
+                }
 
-                    <ScrollView showsVerticalScrollIndicator={false} style={{ paddingHorizontal: 15, marginTop: 10, paddingBottom: 30}}>
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setTire(!tire)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: tire ? colors.primary.green : colors.primary.white, borderColor: tire ? colors.primary.green : colors.border.main }]}>
-                                    {tire && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Pneu</Text>
-                                <Text style={styles.descriptionItem}>Calibragem, desgate</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setBreaks(!breaks)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: breaks ? colors.primary.green : colors.primary.white, borderColor: breaks ? colors.primary.green : colors.border.main }]}>
-                                    {breaks && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Freios</Text>
-                                <Text style={styles.descriptionItem}>Pastilhas, fluido, regulagem do frio</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setHeadlights(!headlights)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: headlights ? colors.primary.green : colors.primary.white, borderColor: headlights ? colors.primary.green : colors.border.main }]}>
-                                    {headlights && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Faróis/Lanternas</Text>
-                                <Text style={styles.descriptionItem}>Baixa, alta, seta</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setOil(!oil)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: oil ? colors.primary.green : colors.primary.white, borderColor: oil ? colors.primary.green : colors.border.main }]}>
-                                    {oil && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Óleo do motor</Text>
-                                <Text style={styles.descriptionItem}>Nível, qualidade, filtro, vencimento</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setChain(!chain)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: chain ? colors.primary.green : colors.primary.white, borderColor: chain ? colors.primary.green : colors.border.main }]}>
-                                    {chain && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Corrente/Coroa</Text>
-                                <Text style={styles.descriptionItem}>Tensão, lubrificação</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setFuel(!fuel)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: fuel ? colors.primary.green : colors.primary.white, borderColor: fuel ? colors.primary.green : colors.border.main }]}>
-                                    {fuel && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Combustível</Text>
-                                <Text style={styles.descriptionItem}>Nível adequado</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setBattery(!battery)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: battery ? colors.primary.green : colors.primary.white, borderColor: battery ? colors.primary.green : colors.border.main }]}>
-                                    {battery && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Bateria</Text>
-                                <Text style={styles.descriptionItem}>Carga, terminais, condições</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setMirrors(!mirrors)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: mirrors ? colors.primary.green : colors.primary.white, borderColor: mirrors ? colors.primary.green : colors.border.main }]}>
-                                    {mirrors && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Retrovisores</Text>
-                                <Text style={styles.descriptionItem}>Ajustados, defeitos</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.checkListCard}>
-                            <Pressable
-                            onPress={() => setHelmet(!helmet)}
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                            >
-                                <View style={[styles.checkBox, { backgroundColor: helmet ? colors.primary.green : colors.primary.white, borderColor: helmet ? colors.primary.green : colors.border.main }]}>
-                                    {helmet && <Icon name="check" size={20} color="#FFF" />}
-                                </View>
-                            </Pressable>
-
-                            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                                <Text style={styles.titleItem}>Capacete</Text>
-                                <Text style={styles.descriptionItem}>Viseira, fecho, estrutura, interna</Text>
-                            </View>
-                        </View>
-                        
-                        
-                        <TouchableOpacity style={styles.finalButton} onPress={() => {}}>
-                            <Text style={styles.btnText}>Entrar</Text>
-                        </TouchableOpacity>
-                        
-
-                        
-                    </ScrollView>
-                
-                
-        
             </Animated.View>
         </Portal>
     );
@@ -299,18 +239,73 @@ const styles = StyleSheet.create({
         color: colors.text.primary
     },
     finalButton:{
-        width: "100%",
+        flex: 1,
         backgroundColor: colors.primary.main,
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 12,
         paddingVertical: 12,
-        paddingHorizontal: 38,
         marginBottom: 30
     },
     btnText:{
         fontSize: 16,
         color: colors.text.white,
+    },
+    disapprovedItemsCard:{
+        width: '100%',
+        padding: 10,
+        backgroundColor: colors.primary.white,
+        borderRadius: 5,
+        elevation: 2,
+        marginTop: 20,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+    disapprovedTitle:{
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: colors.text.red
+    },
+    buttonContainer:{
+        width: '100%',
+        height: 'auto',
+        flexDirection: 'row',
+        marginBottom: 30,
+        gap: 18
+    },
+    backButton:{
+        flex: 1,
+        backgroundColor: colors.primary.white,
+        borderRadius: 5,
+        borderColor: colors.border.main,
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 12,
+        paddingVertical: 12,
+    },
+    backBtnText:{
+        fontSize: 13,
+        color: colors.text.primary,
+    },
+    scheduledMaintenanceButton:{
+        flex: 1,
+        backgroundColor: colors.primary.main,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 12,
+        paddingVertical: 12,
+        
+    },
+    scheduledMaintenanceTextButton:{
+        fontSize: 13,
+        color: colors.text.white,
+    },
+    list:{
+        marginTop: 16,
+        paddingHorizontal: 15,
+        paddingTop: 10
     }
 });

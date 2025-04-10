@@ -14,6 +14,7 @@ export const colors = {
         white: '#FFF',
         other: '#2563EB',
         title: '#3674B5',
+        red: '#FF0000',
     },
     border:{
         main: '#2563EB',
