@@ -22,7 +22,7 @@ export default function Select(){
     const [selectedFuel, setSelectedFuel] = useState(typeFuel[0]);
     const [visible, setVisible] = useState(false)
 
-    function updateItem(item){
+    function updateItem(item: any){
         setSelectedFuel(item)
         setVisible(false)
     }
@@ -91,5 +91,8 @@ const styles = StyleSheet.create({
     },
     item:{
         padding: 10
+    },
+    list:{
+        
     }
 });

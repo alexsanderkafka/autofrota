@@ -12,7 +12,12 @@ import { colors, typography } from '../theme';
 
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 
-export default function VehicleListTile({ data, navigation}){
+interface Props{
+    data: any;
+    navigation: any;
+}
+
+export default function VehicleListTile({ data, navigation}: Props){
 
     //console.log(data);
 
@@ -29,8 +34,6 @@ export default function VehicleListTile({ data, navigation}){
             source={image}
             style={styles.img}
             />
-
-            <View styles={styles.img}></View>
 
             <View style={styles.infoVehicle}>
               <Text style={styles.plate}>{data.plate}</Text>

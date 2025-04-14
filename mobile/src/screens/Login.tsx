@@ -3,6 +3,7 @@ import * as Animatable from 'react-native-animatable';
 import api from '../service/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { 
   StyleSheet,
@@ -22,9 +23,11 @@ import {
   typography
 } from '../theme';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+interface Props {
+  navigation: any;
+}
 
-export default function Login({ navigation }) {
+export default function Login({ navigation }: Props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +44,7 @@ export default function Login({ navigation }) {
 
     async function searchToken(){
       try {
-        const value = await AsyncStorage.getItem('tokenJwt');
+        const value: any = await AsyncStorage.getItem('tokenJwt');
         setToken(value);
       } catch (error) {
         console.log("AsyncStorage error: " + error);
@@ -77,8 +80,8 @@ export default function Login({ navigation }) {
     }
   }, [showAlert]);
 
-  function verifyToken(tokenJwt){
-    let decoded = jwtDecode(tokenJwt);
+  function verifyToken(tokenJwt: string){
+    let decoded: any = jwtDecode(tokenJwt);
 
     const now = new Date();
     const expDate = new Date(decoded.exp * 1000);
@@ -114,7 +117,7 @@ export default function Login({ navigation }) {
 
           navigation.navigate('BottomNavigation');
         }
-      }catch(error){  
+      }catch(error: any){  
         let currentStatus = error.response.status;
 
         if(currentStatus === 401){
@@ -333,5 +336,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#fff'
+  },
+  textCreateAccount:{
+
   }
 });

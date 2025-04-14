@@ -14,7 +14,12 @@ import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function ChangePassword({ navigation }) {
+interface Props{
+    navigation: any;
+}
+
+
+export default function ChangePassword({ navigation }: Props) {
 
     const [password, setPassword] = useState('');
     const [eyeButtonPassword, setEyeButtonPassword] = useState(false);

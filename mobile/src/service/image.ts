@@ -1,4 +1,4 @@
-const imageMap = {
+const imageMap: any = {
     "../../assets/images/civic.jpg": require("../../assets/images/civic.jpg"),
     "../../assets/images/corolla1.jpg": require("../../assets/images/corolla1.jpg"),
     "../../assets/images/corolla2.jpg": require("../../assets/images/corolla2.jpg"),

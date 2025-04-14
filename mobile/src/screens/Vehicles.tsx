@@ -17,9 +17,13 @@ import VehicleListTile from "../components/VehicleListTile";
 import api from "../service/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Vehicles( {navigation} ) {
+interface Props{
+  navigation: any;
+}
 
-    const [vehicles, setVehicles] = useState([]);
+export default function Vehicles( {navigation}: Props ) {
+
+    const [vehicles, setVehicles] = useState<any[]>([]);
     const [search, setSearch] = useState('');
     const [latestElement, setLatestElement] = useState(false);
 
@@ -38,8 +42,8 @@ export default function Vehicles( {navigation} ) {
     useEffect(() => {
         async function getInStorage(){
           try {
-            const tokenJwt = await AsyncStorage.getItem('tokenJwt');
-            const value = await AsyncStorage.getItem('businessId');
+            const tokenJwt: any= await AsyncStorage.getItem('tokenJwt');
+            const value: any = await AsyncStorage.getItem('businessId');
             
             setId(value);
             setToken(tokenJwt);
@@ -117,6 +121,10 @@ export default function Vehicles( {navigation} ) {
         }
     }
 
+    async function getStatusVehicles(){
+
+    }
+
 
     return (
         <View style={styles.container}>
@@ -141,7 +149,7 @@ export default function Vehicles( {navigation} ) {
             </View>
 
 
-            <View paddingHorizontal={15}>
+            <View style={{ paddingHorizontal: 15}}>
               <View style={styles.searchField}>
                   <TextInput
                   style={{ marginLeft: 10, flex: 1,}}
@@ -163,7 +171,7 @@ export default function Vehicles( {navigation} ) {
             <FlatList 
             showsVerticalScrollIndicator={false}  
             data={vehicles}
-            keyExtractor={ item => String(item.vehicle_characteristic.id)}
+            //keyExtractor={ item => String(item.vehicle_characteristic.id)}
             renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
             onEndReached={() => {
                 loadMoreVehicles();
@@ -232,5 +240,8 @@ const styles = StyleSheet.create({
         marginTop: 16,
         paddingHorizontal: 15,
         paddingTop: 10
+    },
+    latestElement:{
+
     }
 });

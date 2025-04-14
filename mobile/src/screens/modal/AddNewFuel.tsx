@@ -19,7 +19,13 @@ import Select from '../../components/Select';
 
 const { height } = Dimensions.get('window');
 
-export default function AddNewFuel({visible, slideAnim}){
+interface Props{
+    visible: any;
+    slideAnim: any;
+}
+
+
+export default function AddNewFuel({visible, slideAnim}: Props){
 
 
     const [total, setTotal] = useState('');
@@ -49,7 +55,7 @@ export default function AddNewFuel({visible, slideAnim}){
                     <Text style={styles.headerTitle}>Novo abastecimento</Text>
                 </View>
 
-                <View paddingHorizontal={15}>
+                <View style={{ paddingHorizontal:15 }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 19}}>
                         <View style={styles.fieldSelectDate}>

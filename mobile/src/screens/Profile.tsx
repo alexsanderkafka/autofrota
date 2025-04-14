@@ -16,7 +16,11 @@ import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Profile({ navigation }){
+interface Props{
+    navigation: any;
+}
+
+export default function Profile({ navigation }: Props){
     const businessImage = require('../../assets/business.jpg');
 
     return(

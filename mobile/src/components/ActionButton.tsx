@@ -10,11 +10,16 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../theme';
 
-export default function({ icon, text }){
+interface Props{
+    icon: string;
+    text: string;
+}
+
+export default function({ icon, text }: Props){
     return(
         <TouchableOpacity style={styles.button}>
             <Icon name={icon} size={24} color={colors.primary.main} />
-            <Text style={{ colors: colors.text.other, fontSize: 13 }}>{text}</Text>
+            <Text style={{ color: colors.text.other, fontSize: 13 }}>{text}</Text>
         </TouchableOpacity>
     );
 }

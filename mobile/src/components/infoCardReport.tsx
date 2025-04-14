@@ -11,7 +11,14 @@ import {
   } from 'react-native';
 import { colors } from '../theme';
 
-export default function InfoCardReport({ icon, amount, title, color}){
+interface Props{
+    icon: string;
+    amount: string;
+    title: string;
+    color: string;
+}
+
+export default function InfoCardReport({ icon, amount, title, color}: Props){
     return(
         <View style={styles.card}>
             <Icon name={icon} size={24} color={color}/>
@@ -36,6 +43,9 @@ const styles = StyleSheet.create({
     },
     title:{
         color: colors.text.primary
+    },
+    count:{
+        
     }
     
 });

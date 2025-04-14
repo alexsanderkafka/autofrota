@@ -18,11 +18,15 @@ import SwitchButton from '../components/SwitchButton';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Settings({ navigation }) {
+interface Props{
+    navigation: any;
+}
+
+export default function Settings({ navigation }: Props) {
 
     const [businessId, setBusinessId] = useState();
     const [token, setToken] = useState("");
-    const [business, setBusiness] = useState();
+    const [business, setBusiness] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [dateCreated, setDateCreated] = useState("");
     const [cnpjFormatter, setCnpj] = useState("");
@@ -32,8 +36,8 @@ export default function Settings({ navigation }) {
     useEffect(() => {
         async function getInStorage(){
             try {
-              const jwt = await AsyncStorage.getItem('tokenJwt');
-              const id = await AsyncStorage.getItem('businessId');
+              const jwt: any= await AsyncStorage.getItem('tokenJwt');
+              const id: any = await AsyncStorage.getItem('businessId');
               
               setToken(jwt);
               setBusinessId(id);
@@ -187,7 +191,6 @@ const styles = StyleSheet.create({
     profileImage:{
         width: 48,
         height: 48,
-        borderRadius: 5,
         resizeMode: 'cover',
         borderRadius: 50,
     },
@@ -258,7 +261,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 12,
         paddingVertical: 12,
         paddingHorizontal: 38,
         marginTop: 40,

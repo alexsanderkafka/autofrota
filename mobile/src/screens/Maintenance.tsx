@@ -23,7 +23,9 @@ import AddNewMaintenance from './modal/AddNewMaintenance';
 
 const { height } = Dimensions.get('window');
 
-function MaintenanceMadeCard({ data }){
+
+
+function MaintenanceMadeCard({ data }: any){
     return(
         <View style={styles.maintenanceCard}>
         
@@ -58,7 +60,7 @@ function MaintenanceMadeCard({ data }){
                 <View style={styles.serviceBoxMade}>
                     
                 {
-                    data.services.map((service, index) => (
+                    data.services.map((service: any, index: any) => (
                         <View key={index} style={styles.serviceMade}>
                             <Text style={{ color: colors.text.white, fontSize: 10 }}>{service}</Text>
                         </View>
@@ -71,7 +73,7 @@ function MaintenanceMadeCard({ data }){
     );
 }
 
-function MaintenanceScheduledCard({ data }){
+function MaintenanceScheduledCard({ data }: any){
     return(
         <View style={styles.maintenanceCard}>
         
@@ -97,7 +99,12 @@ function MaintenanceScheduledCard({ data }){
 }
 
 
-export default function Maintenance({ navigation, route }) {
+interface Props{
+    navigation: any;
+    route: any;
+}
+
+export default function Maintenance({ navigation, route }: Props) {
 
     /*
     const [token, setToken] = useState('');
@@ -119,7 +126,7 @@ export default function Maintenance({ navigation, route }) {
     
     
 
-    const maintenancesScheduled = [
+    const maintenancesScheduled: any = [
         {
             id: 1,
             date: "11/12/2030",
@@ -137,7 +144,7 @@ export default function Maintenance({ navigation, route }) {
         },
     ]
 
-    const maintenancesMade = [
+    const maintenancesMade: any = [
         {
             id: 1,
             date: "11/12/2030",
@@ -233,7 +240,6 @@ export default function Maintenance({ navigation, route }) {
 
             <FlatList 
             showsVerticalScrollIndicator={false} 
-            gap={20}
             data={filter === 'scheduled' ? maintenancesScheduled : maintenancesMade}
             keyExtractor={ item => String(item.id)}
             renderItem={ ({ item }) => filter === 'scheduled' ? <MaintenanceScheduledCard data={item} /> : <MaintenanceMadeCard data={item} />}
@@ -358,6 +364,9 @@ const styles = StyleSheet.create({
     list:{
         marginTop: 20,
         paddingVertical: 6
+    },
+    latestElement:{
+
     }
 
 

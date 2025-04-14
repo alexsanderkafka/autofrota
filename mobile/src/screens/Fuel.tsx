@@ -19,7 +19,7 @@ import { colors } from '../theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddNewFuel from './modal/AddNewFuel';
 
-function FuelCard({ data }) {
+function FuelCard({ data }: any) {
     return(
         <View style={styles.fuelCard}>
             <View style={styles.row}>
@@ -61,7 +61,11 @@ function FuelCard({ data }) {
 
 const { height } = Dimensions.get('window');
 
-export default function Fuel({ navigation }) {
+interface Props{
+    navigation: any;
+}
+
+export default function Fuel({ navigation }: Props) {
 
     const [latestElement, setLatestElement] = useState(false);
 
@@ -242,5 +246,8 @@ const styles = StyleSheet.create({
     list:{
         marginTop: 20,
         paddingVertical: 6
+    },
+    latestElement:{
+        
     }
 });

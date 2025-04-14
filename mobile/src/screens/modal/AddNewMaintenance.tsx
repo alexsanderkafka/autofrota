@@ -18,11 +18,16 @@ import FilterButton from '../../components/FilterButton';
 
 const { height } = Dimensions.get('window');
 
-export default function AddNewMaintenance({visible, slideAnim}){
+interface Props{
+    visible: any;
+    slideAnim: any;
+}
+
+export default function AddNewMaintenance({visible, slideAnim}: Props){
 
     const [total, setTotal] = useState('');
     const [service, setService] = useState('');
-    const [addedServies, setAddedServices] = useState([]);
+    const [addedServies, setAddedServices] = useState<any>([]);
     const [observation, setObservation] = useState('');
 
     const [filter, setFilter] = useState('made'); //scheduled
@@ -66,7 +71,7 @@ export default function AddNewMaintenance({visible, slideAnim}){
 
                         <View style={styles.addedServices}>
                             {
-                                addedServies.map((service, index) => (
+                                addedServies.map((service: any, index: any) => (
                                     <View key={index} style={styles.serviceMade}>
                                         <Text style={{ color: colors.text.white, fontSize: 10 }}>{service}</Text>
                                     </View>
@@ -112,7 +117,7 @@ export default function AddNewMaintenance({visible, slideAnim}){
                     <FilterButton text="Agendar"/>
                 </View>
 
-                <View paddingHorizontal={15}>
+                <View style={{ paddingHorizontal: 15 }}>
                     <View style={styles.fieldSelectDate}>
                         <Text style={styles.rangeDateSelect}>00/00/0000</Text>
                         <TouchableOpacity style={styles.dateButton}>
@@ -240,7 +245,6 @@ const styles = StyleSheet.create({
     },
     inputContainer:{
         flexDirection: 'row',
-        alignItems: 'center',
         width: '100%',
         maxHeight: 38,
         fontSize: 18,

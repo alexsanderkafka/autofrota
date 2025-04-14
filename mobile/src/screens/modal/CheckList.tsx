@@ -19,14 +19,15 @@ import { colors } from '../../theme';
 
 const { height } = Dimensions.get('window');
 
-
-function ChecklistCard({ item }){
-
+interface Props{
+    visible: any;
+    slideAnim: any;
 }
 
-export default function Checklist({visible, slideAnim}){
 
-    const [checklist, setChecklist] = useState({
+export default function Checklist({visible, slideAnim}: any){
+
+    const [checklist, setChecklist] = useState<any>({
         tire: false,
         breaks: false,
         headlights: false,
@@ -42,7 +43,7 @@ export default function Checklist({visible, slideAnim}){
         carJack: false,
     });
 
-    const dataItems = [
+    const dataItems: any = [
         { label: "Pneu", description: "Calibragem, desgate", valueKey: "tire" },
         { label: "Freios", description: "Pastilhas, fluido, regulagem do frio", valueKey: "breaks" },
         { label: "Faróis/Lanternas", description: "Baixa, alta, seta", valueKey: "headlights" },
@@ -69,14 +70,14 @@ export default function Checklist({visible, slideAnim}){
         });
     }
 
-    function toggleItem(key){
-        setChecklist((prev) => ({
+    function toggleItem(key: any){
+        setChecklist((prev: any) => ({
           ...prev,
           [key]: !prev[key],
         }));
     };
 
-    function checklistCard({ item }){
+    function checklistCard({ item }: any){
         return(
             <View style={styles.checkListCard}>
                 <Pressable
@@ -99,7 +100,7 @@ export default function Checklist({visible, slideAnim}){
         );
     }
 
-    function disapprovedCard({ item }){
+    function disapprovedCard({ item }: any): any{
 
         if(!checklist[item.valueKey]){
             return(
@@ -122,7 +123,7 @@ export default function Checklist({visible, slideAnim}){
                 data={dataItems}
                 
                 renderItem={checklistCard}
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item) => item.valueKey}
                 style={styles.list}
                 ListFooterComponent={
                     <TouchableOpacity style={styles.finalButton} onPress={() => setLastStep(true)}>
@@ -142,7 +143,7 @@ export default function Checklist({visible, slideAnim}){
                 data={dataItems}
                 
                 renderItem={disapprovedCard}
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item) => item.valueKey}
                 style={styles.list}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
