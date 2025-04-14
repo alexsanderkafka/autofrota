@@ -1,0 +1,4 @@
+CREATE TABLE Permission(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(50) NOT NULL
+)
