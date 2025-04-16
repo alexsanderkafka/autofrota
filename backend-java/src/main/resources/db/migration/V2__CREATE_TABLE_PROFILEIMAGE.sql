@@ -1,4 +1,4 @@
 CREATE TABLE ProfileImage(
     id INT PRIMARY KEY AUTO_INCREMENT,
     url TEXT NOT NULL
-)
+);

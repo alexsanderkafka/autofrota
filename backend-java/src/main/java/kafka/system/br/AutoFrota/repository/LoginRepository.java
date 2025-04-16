@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthenticationRepository extends JpaRepository<Login, Long> {
+public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query("""
-            SELECT a FROM Authentication a
+            SELECT a FROM Login a
             WHERE a.email = :email
             """)
     Login findByBusinessEmail(@Param("email") String email);

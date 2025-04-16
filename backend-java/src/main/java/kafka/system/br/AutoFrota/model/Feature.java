@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Entity(name = "Permission")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Feature {
     
     @Id
@@ -33,5 +35,7 @@ public class Feature {
 
     @Column(name = "reports", nullable = false)
     private boolean checklist;
+
+    public Feature(){}
     
 }

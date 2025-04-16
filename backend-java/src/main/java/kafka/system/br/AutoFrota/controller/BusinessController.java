@@ -1,6 +1,6 @@
 package kafka.system.br.AutoFrota.controller;
 
-import kafka.system.br.AutoFrota.service.BusinessService;
+import kafka.system.br.AutoFrota.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BusinessController {
 
     @Autowired
-    private BusinessService service;
+    private CompanyService service;
 
     @GetMapping("/{businessId}")
     private ResponseEntity<?> getBusinessById(@PathVariable(value = "businessId") Long id){

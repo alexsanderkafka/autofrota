@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Entity(name = "Permission")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Service {
     
     @Id
@@ -31,4 +33,7 @@ public class Service {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "maintenance_id")
     private Maintenance maintenance;
+
+    public Service() {
+    }
 }

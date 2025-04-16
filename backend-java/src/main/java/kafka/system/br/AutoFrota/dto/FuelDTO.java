@@ -10,37 +10,43 @@ public record FuelDTO(
         @Null
         Long id,
         @Null
-        @JsonProperty("latest_fuel")
-        Date latestFuel,
+        float liters,
         @Null
-        float litter,
+        @JsonProperty("total_value")
+        float totalValue,
         @Null
-        float price,
+        Integer km,
         @Null
-        String km,
+        Date date,
         @Null
         @JsonProperty("fuel_type")
-        String fuelType
+        String fuelType,
+        @Null
+        @JsonProperty("vehicle_id")
+        Long vehicleId
 ) {
-    public FuelDTO(Fuel fuel) {
+
+
+    public FuelDTO(Fuel fuel){
         this(
                 fuel.getId(),
-                fuel.getLatestFuel(),
-                fuel.getLitter(),
-                fuel.getPrice(),
+                fuel.getLiters(),
+                fuel.getTotalValue(),
                 fuel.getKm(),
-                fuel.getFuelType()
+                fuel.getDate(),
+                fuel.getType(),
+                fuel.getVehicle().getId()
         );
     }
-
+    
     public FuelDTO() {
         this(
               null,
-              null,
               0,
               0,
+              0,
               null,
-              null
+              null, null
         );
     }
 }

@@ -15,6 +15,7 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
+    /* 
     @GetMapping("/{id}")
     public ResponseEntity<?> getAllVehiclesByBusinessId(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -29,8 +30,9 @@ public class VehicleController {
         var result = vehicleService.getAllVehiclesByBusinessId(pageable, id);
 
         return ResponseEntity.ok(result);
-    }
+    }*/
 
+    /*
     @GetMapping("/{status}/{id}")
     public ResponseEntity<?> getAllVehiclesWithStatusMaintenanceByBusinessId(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -46,6 +48,6 @@ public class VehicleController {
         var result = vehicleService.getAllVehiclesWithStatusMaintenance(pageable, id, status);
 
         return ResponseEntity.ok(result);
-    }
+    }*/
 }
 

@@ -1,7 +1,9 @@
 package kafka.system.br.AutoFrota.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity(name = "Login")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Login implements UserDetails {
 
     @Id
@@ -28,16 +32,6 @@ public class Login implements UserDetails {
 
     @Column(name = "status", nullable = false, length = 255)
     private boolean active;
-
-    public Login() {
-    }
-
-    public Login(Long id, String email, String password, boolean active) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.active = active;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

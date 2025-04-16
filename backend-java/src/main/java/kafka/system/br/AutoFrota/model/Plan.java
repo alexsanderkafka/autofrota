@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Entity(name = "VehicleImage")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Plan {
     
     @Id
@@ -38,5 +40,8 @@ public class Plan {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "feature_id")
     private Feature feature;
+
+    public Plan() {
+    }
 
 }

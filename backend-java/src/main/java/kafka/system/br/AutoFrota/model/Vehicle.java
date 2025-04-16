@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Entity(name = "Vehicle")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Vehicle {
 
     @Id
@@ -55,5 +57,7 @@ public class Vehicle {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "status_id")
-    private Company vehicleStatus;
+    private VehicleStatus vehicleStatus;
+
+    public Vehicle() {}
 }

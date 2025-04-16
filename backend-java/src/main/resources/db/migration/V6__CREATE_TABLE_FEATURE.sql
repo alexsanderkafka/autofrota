@@ -6,4 +6,4 @@ CREATE TABLE Feature(
     manage_vehicles BOOLEAN NOT NULL,
     checklist BOOLEAN NOT NULL,
     reports BOOLEAN NOT NULL
-)
+);

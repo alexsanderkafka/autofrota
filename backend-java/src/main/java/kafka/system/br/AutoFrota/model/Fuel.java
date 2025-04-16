@@ -1,7 +1,9 @@
 package kafka.system.br.AutoFrota.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -10,6 +12,8 @@ import java.util.Date;
 @Entity(name = "Fuel")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Fuel {
 
     @Id

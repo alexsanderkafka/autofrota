@@ -8,7 +8,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import kafka.system.br.AutoFrota.dto.TokenDTO;
 import kafka.system.br.AutoFrota.exception.InvalidTokenException;
-import kafka.system.br.AutoFrota.repository.AuthenticationRepository;
+import kafka.system.br.AutoFrota.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +34,7 @@ public class TokenProvider {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private AuthenticationRepository authenticationRepository;
+    private LoginRepository authenticationRepository;
 
     private Algorithm algorithm = null;
 

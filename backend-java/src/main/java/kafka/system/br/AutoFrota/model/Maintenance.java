@@ -1,11 +1,17 @@
 package kafka.system.br.AutoFrota.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Table(name = "Maintenance")
 @Entity(name = "Maintenance")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Maintenance {
 
     @Id
@@ -14,9 +20,6 @@ public class Maintenance {
 
     @Column(name = "date", nullable = false)
     private Date date;
-
-    @Column(name = "date_next_maintenance", nullable = false)
-    private Date dateNextMaintenance;
 
     @Column(name = "done", nullable = false)
     private boolean done;
@@ -30,5 +33,8 @@ public class Maintenance {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
+
+    public Maintenance() {
+    }
 
 }

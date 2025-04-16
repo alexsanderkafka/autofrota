@@ -3,4 +3,4 @@ CREATE TABLE Login(
     email VARCHAR(50) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     active BOOLEAN NOT NULL
-)
+);

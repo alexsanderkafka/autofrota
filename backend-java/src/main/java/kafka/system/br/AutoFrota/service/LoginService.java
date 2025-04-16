@@ -1,8 +1,8 @@
 package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.AuthenticationDTO;
-import kafka.system.br.AutoFrota.dto.TokenDTO;
-import kafka.system.br.AutoFrota.repository.AuthenticationRepository;
+//import kafka.system.br.AutoFrota.dto.TokenDTO;
+import kafka.system.br.AutoFrota.repository.LoginRepository;
 import kafka.system.br.AutoFrota.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class LoginService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private AuthenticationRepository authenticationRepository;
+    private LoginRepository authenticationRepository;
 
     public ResponseEntity<?> signin(AuthenticationDTO data) {
         try{

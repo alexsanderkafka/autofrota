@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Entity(name = "Driver")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Driver {
 
     @Id
@@ -38,4 +40,7 @@ public class Driver {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "login_id")
     private Login login;
+
+    public Driver() {
+    }
 }

@@ -1,7 +1,8 @@
 package kafka.system.br.AutoFrota.service;
 
-import kafka.system.br.AutoFrota.dto.BusinessDTO;
-import kafka.system.br.AutoFrota.repository.AuthenticationRepository;
+import kafka.system.br.AutoFrota.dto.CompanyDTO;
+import kafka.system.br.AutoFrota.repository.CompanyRepository;
+import kafka.system.br.AutoFrota.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,10 +10,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BusinessService implements UserDetailsService {
+public class CompanyService implements UserDetailsService {
 
     @Autowired
-    private AuthenticationRepository authenticationRepository;
+    private LoginRepository authenticationRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,9 +33,12 @@ public class BusinessService implements UserDetailsService {
         //return null;
     }
 
-    public BusinessDTO getBusinessById(Long id){
-        var authentication = authenticationRepository.findByBusinessId(id);
+    public CompanyDTO getBusinessById(Long id){
+        //var login = authenticationRepository.findByBusinessId(id);
 
-        return new BusinessDTO(authentication.getEmail(), authentication.getBusiness());
+        var currentCompany = companyRepository.findById(id);
+
+
+        return new CompanyDTO(currentCompany);
     }
 }

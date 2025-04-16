@@ -1,28 +1,36 @@
 package kafka.system.br.AutoFrota.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.Null;
 import kafka.system.br.AutoFrota.model.Maintenance;
 
 import java.util.Date;
 
 public record MaintenanceDTO(
+        @Null
         Long id,
-        @JsonProperty("latest_maintenance")
-        Date latestMaintenance,
-        @JsonProperty("next_maintenance")
-        Date nextMaintenance,
-        @JsonProperty("date_maintenance")
-        Date dateMaintenance,
+        @Null
+        Date date,
+        @Null
+        boolean done,
+        @Null
         String observation,
-        String status
+        @Null
+        boolean scheduled,
+        @Null
+        @JsonProperty("vehicle_id")
+        Long vehicleId
+
 ) {
-    public MaintenanceDTO(Maintenance maintenance) {
+    
+    public MaintenanceDTO(Maintenance maintenance){
         this(
                 maintenance.getId(),
-                maintenance.getLatestMaintenance(),
-                maintenance.getDateNextMaintenance(),
-                maintenance.getDateMaintenance(),
+                maintenance.getDate(),
+                maintenance.isDone(),
                 maintenance.getObservation(),
-                maintenance.getStatus()
+                maintenance.isScheduled(),
+                maintenance.getVehicle().getId()
         );
     }
 
@@ -30,9 +38,9 @@ public record MaintenanceDTO(
         this(
                 null,
                 null,
+                false,
                 null,
-                null,
-                null,
+                false,
                 null
         );
     }

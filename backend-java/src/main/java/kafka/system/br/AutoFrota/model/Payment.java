@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Entity(name = "VehicleImage")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Payment {
     
     @Id
@@ -57,5 +59,5 @@ public class Payment {
     @JoinColumn(name = "company_id")
     private Company company;
     
-    
+    public Payment(){}
 }
