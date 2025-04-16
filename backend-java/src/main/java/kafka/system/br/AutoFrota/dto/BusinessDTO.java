@@ -1,6 +1,6 @@
 package kafka.system.br.AutoFrota.dto;
 
-import kafka.system.br.AutoFrota.model.Business;
+import kafka.system.br.AutoFrota.model.Company;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ public record BusinessDTO(
         String cnpj,
         String phone
 ) {
-    public BusinessDTO(String email, Business business) {
+    public BusinessDTO(String email, Company business) {
         this(
                 email,
                 business.getName(),

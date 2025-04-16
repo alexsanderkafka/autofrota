@@ -9,5 +9,7 @@ CREATE TABLE Payment (
     merchantAccountId VARCHAR(255),
     confirmedDatePayment DATE,
     plan_id INT NOT NULL,
+    company_id INT NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES Company(id),
     FOREIGN KEY (plan_id) REFERENCES Plan(id)
 );

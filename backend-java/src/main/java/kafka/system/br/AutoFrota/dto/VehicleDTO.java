@@ -21,7 +21,7 @@ public record VehicleDTO(
         ExternalImage externalImage,
         @JsonProperty("internal_image")
         InternalImage internalImage,
-        Business business,
+        Company business,
         @JsonProperty("maintenance")
         MaintenanceDTO maintenanceDTO,
         @JsonProperty("fuel")

@@ -7,9 +7,7 @@ CREATE TABLE Company (
     zip_code VARCHAR(30) NOT NULL,
     address VARCHAR(255) NOT NULL,
     image_id INT NOT NULL,
-    payment_id INT NOT NULL,
     login_id INT NOT NULL,
     FOREIGN KEY (image_id) REFERENCES ProfileImage(id),
-    FOREIGN KEY (payment_id) REFERENCES Payment(id),
-    FOREIGN KEY (login_id) REFERENCES Login(id)
+    FOREIGN KEY (login_id) REFERENCES Login(id),
 );
