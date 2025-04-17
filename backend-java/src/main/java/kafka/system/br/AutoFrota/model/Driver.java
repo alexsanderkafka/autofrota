@@ -13,13 +13,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "Driver")
+@Table(name = "driver")
 @Entity(name = "Driver")
-@Getter
-@Setter
-@AllArgsConstructor
 public class Driver {
 
     @Id
@@ -42,5 +40,53 @@ public class Driver {
     private Login login;
 
     public Driver() {
+    }
+
+    public Driver(Long id, String name, Company company, ProfileImage profileImage, Login login) {
+        this.id = id;
+        this.name = name;
+        this.company = company;
+        this.profileImage = profileImage;
+        this.login = login;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public ProfileImage getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
 }

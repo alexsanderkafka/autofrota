@@ -11,13 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "Permission")
-@Entity(name = "Permission")
-@Getter
-@Setter
-@AllArgsConstructor
+@Table(name = "service")
+@Entity(name = "Service")
 public class Service {
     
     @Id
@@ -35,5 +33,44 @@ public class Service {
     private Maintenance maintenance;
 
     public Service() {
+    }
+
+    public Service(Long id, String type, float totalValue, Maintenance maintenance) {
+        this.id = id;
+        this.type = type;
+        this.totalValue = totalValue;
+        this.maintenance = maintenance;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public float getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(float totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public Maintenance getMaintenance() {
+        return maintenance;
+    }
+
+    public void setMaintenance(Maintenance maintenance) {
+        this.maintenance = maintenance;
     }
 }

@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/business")
-public class BusinessController {
+@RequestMapping("/company")
+public class CompanyController {
 
     @Autowired
     private CompanyService service;
 
-    @GetMapping("/{businessId}")
-    private ResponseEntity<?> getBusinessById(@PathVariable(value = "businessId") Long id){
+    @GetMapping("/{companyId}")
+    private ResponseEntity<?> getBusinessById(@PathVariable(value = "companyId") Long id){
         var currentBusiness = service.getBusinessById(id);
 
         return ResponseEntity.ok(currentBusiness);

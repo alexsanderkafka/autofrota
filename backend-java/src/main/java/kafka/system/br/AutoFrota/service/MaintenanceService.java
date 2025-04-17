@@ -19,9 +19,10 @@ public class MaintenanceService {
     @Autowired
     private PagedResourcesAssembler<MaintenanceDTO> pagedResourcesAssembler;
 
+    /*
     public PagedModel<EntityModel<MaintenanceDTO>> getAllMaintenanceByVehicleId(Pageable pageable, Long id){
         Page<MaintenanceDTO> maintenance = maintenanceRepository.findAllMaintenanceByVehicleId(id, pageable).<MaintenanceDTO>map(MaintenanceDTO::new);
 
         return pagedResourcesAssembler.toModel(maintenance);
-    }
+    }*/
 }

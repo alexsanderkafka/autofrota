@@ -47,7 +47,7 @@ public record VehicleDTO(
                 vehicle.getTypeFuel(),
                 vehicle.getKm(),
                 vehicle.getCategory(),
-                vehicle.isActivate(),
+                vehicle.isActive(),
                 vehicle.getVehicleImage().getId(),
                 vehicle.getCompany().getId(),
                 vehicle.getVehicleStatus().getId()

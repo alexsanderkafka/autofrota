@@ -1,5 +1,7 @@
 package kafka.system.br.AutoFrota.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import kafka.system.br.AutoFrota.security.TokenProvider;
 import kafka.system.br.AutoFrota.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,22 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+    @GetMapping()
+    public ResponseEntity<?> searchRecentVehicles(
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+
+        String token = authorizationHeader.replace("Bearer ", "");
+        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
+
+        var vehicles = vehicleService.searchRecentVehiclesByCompanyEmail(decodedToken.getSubject());
+
+        return ResponseEntity.ok(vehicles);
+    }
 
     /* 
     @GetMapping("/{id}")

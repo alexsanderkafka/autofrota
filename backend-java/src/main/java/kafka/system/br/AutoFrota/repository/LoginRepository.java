@@ -14,11 +14,12 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
             SELECT a FROM Login a
             WHERE a.email = :email
             """)
-    Login findByBusinessEmail(@Param("email") String email);
+    Login findByCompanyEmail(@Param("email") String email);
 
+    /*
     @Query("""
-            SELECT a FROM Authentication a
+            SELECT a FROM Login a
             WHERE a.business.id = :id
             """)
-    Login findByBusinessId(@Param("id") Long id);
+    Login findByBusinessId(@Param("id") Long id);*/
 }

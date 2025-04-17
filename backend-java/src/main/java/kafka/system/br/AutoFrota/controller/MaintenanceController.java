@@ -15,6 +15,8 @@ public class MaintenanceController {
     @Autowired
     private MaintenanceService service;
 
+    /*
+
     @GetMapping("/{vehicleId}")
     public ResponseEntity<?> getAllMaintenanceByVehicleId(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -29,6 +31,6 @@ public class MaintenanceController {
         var result = service.getAllMaintenanceByVehicleId(pageable, id);
 
         return ResponseEntity.ok(result);
-    }
+    }*/
 
 }

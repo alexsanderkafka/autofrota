@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> {
 
+    /*
     @Query("""
             SELECT m FROM Maintenance m
             WHERE m.vehicle.business.id = :id
@@ -37,5 +38,6 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
             AND
             m.status = :status
             """)
-    Maintenance findOneLatestStatusMaintenance(@Param("id") Long id, @Param("status") String status);
+    Maintenance findOneLatestStatusMaintenance(@Param("id") Long id, @Param("status") String status);*/
+
 }

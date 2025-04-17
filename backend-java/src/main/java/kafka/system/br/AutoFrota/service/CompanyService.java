@@ -22,7 +22,7 @@ public class CompanyService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        var business = authenticationRepository.findByBusinessEmail(username);
+        var business = authenticationRepository.findByCompanyEmail(username);
 
         if(business != null){
             return business;

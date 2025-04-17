@@ -15,6 +15,8 @@ public class AuthenticationController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody AuthenticationDTO dto){
+        System.out.println(dto);
+
         return loginService.signin(dto);
     }
 }

@@ -12,12 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "Login")
+@Table(name = "login")
 @Entity(name = "Login")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Login implements UserDetails {
 
     @Id
@@ -30,8 +26,50 @@ public class Login implements UserDetails {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "status", nullable = false, length = 255)
+    @Column(name = "active", nullable = false, length = 255)
     private boolean active;
+
+    public Login() {
+    }
+
+    public Login(Long id, String email, String password, boolean active) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.active = active;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

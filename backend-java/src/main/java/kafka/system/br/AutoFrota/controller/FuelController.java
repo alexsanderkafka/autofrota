@@ -15,6 +15,7 @@ public class FuelController {
     @Autowired
     private FuelService service;
 
+    /*
     @GetMapping("/{vehicleId}")
     public ResponseEntity<?> getAllFuelByVehicleId(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -29,6 +30,6 @@ public class FuelController {
         var result = service.getAllFuelByVehicleId(pageable, id);
 
         return ResponseEntity.ok(result);
-    }
+    }*/
 
 }

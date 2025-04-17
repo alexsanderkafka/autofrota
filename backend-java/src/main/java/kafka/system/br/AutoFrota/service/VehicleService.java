@@ -14,9 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class VehicleService {
@@ -32,5 +34,12 @@ public class VehicleService {
 
     @Autowired
     private FuelRepository fuelRepository;
+
+    public Stream<VehicleDTO> searchRecentVehiclesByCompanyEmail(String email){
+
+        Stream<VehicleDTO> currentVehicles = vehicleRepository.findRecentVehiclesByCompanyEmail(email).stream().<VehicleDTO>map(VehicleDTO::new);
+
+        return currentVehicles;
+    }
 
 }

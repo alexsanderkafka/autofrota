@@ -47,8 +47,10 @@ public class TokenProvider {
     public TokenDTO createAccessToken(String name, Long id){
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliSeconds);
+
         var accessToken = getAccessToken(name, now, validity);
         var refreshToken = getRefreshToken(name, now, validity);
+
         return new TokenDTO(id, name, true, now, validity, accessToken, refreshToken);
     }
 
@@ -61,7 +63,7 @@ public class TokenProvider {
         String username = decodedJWT.getSubject();
         //List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
 
-        var business = authenticationRepository.findByBusinessEmail(username);
+        var business = authenticationRepository.findByCompanyEmail(username);
 
         if (business != null){
             return createAccessToken(username, business.getId());
@@ -100,7 +102,7 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private DecodedJWT decodedToken(String token) {
+    public DecodedJWT decodedToken(String token) {
         Algorithm alg = Algorithm.HMAC256(secretKey.getBytes());
         JWTVerifier jwtVerifier = JWT.require(alg).build();
 

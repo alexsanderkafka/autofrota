@@ -8,13 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Table(name = "profileimage")
 @Entity(name = "ProfileImage")
-@Table(name = "ProfileImage")
-@Getter
-@Setter
-@AllArgsConstructor
 public class ProfileImage {
 
     @Id
@@ -24,6 +22,27 @@ public class ProfileImage {
     @Column(name = "url", nullable = false)
     private String url;
 
+    public ProfileImage() {
+    }
 
+    public ProfileImage(Long id, String url) {
+        this.id = id;
+        this.url = url;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

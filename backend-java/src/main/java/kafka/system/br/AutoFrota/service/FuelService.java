@@ -18,10 +18,4 @@ public class FuelService {
 
     @Autowired
     private PagedResourcesAssembler<FuelDTO> pagedResourcesAssembler;
-
-    public PagedModel<EntityModel<FuelDTO>> getAllFuelByVehicleId(Pageable pageable, Long id){
-        Page<FuelDTO> fuel = fuelRepository.findAllFuelByVehicleId(id, pageable).map(FuelDTO::new);
-
-        return pagedResourcesAssembler.toModel(fuel);
-    }
 }
