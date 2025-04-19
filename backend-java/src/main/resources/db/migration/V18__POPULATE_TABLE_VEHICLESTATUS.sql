@@ -1,5 +1,5 @@
 INSERT INTO VehicleStatus (type) VALUES
-('Ativo'),
-('Em manutenção'),
-('Aviso'),
-('Em uso');
+('ACTIVE'),
+('MAINTENANCE'),
+('ALERT'),
+('USAGE');

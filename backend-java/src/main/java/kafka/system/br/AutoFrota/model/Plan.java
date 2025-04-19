@@ -21,6 +21,7 @@ public class Plan {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "plan_id")
     private Long id;
 
     @Column(name = "name", nullable = false)

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Vehicle;
 
 import java.util.List;
@@ -14,30 +15,41 @@ import java.util.List;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    @Query("""
-            SELECT v FROM Vehicle v
+
+        @Query("""
+                SELECT v FROM Vehicle v
+                WHERE v.company.login.email = :email
+                ORDER BY v.id DESC
+                LIMIT 3
+                """)
+        List<Vehicle> findRecentVehiclesByCompanyEmail(@Param("email") String email);
+
+
+        @Query("""
+                SELECT 
+                        SUM(CASE WHEN vs.type = 'MAINTENANCE' THEN 1 ELSE 0 END) AS maintenance,
+                        SUM(CASE WHEN vs.type = 'ACTIVE' THEN 1 ELSE 0 END) AS active,
+                        SUM(CASE WHEN vs.type = 'ALERT' THEN 1 ELSE 0 END) AS alert,
+                        SUM(CASE WHEN vs.type = 'USAGE' THEN 1 ELSE 0 END) AS `usage`
+                FROM VehicleStatus vs
+                JOIN Vehicle v ON vs.id = v.vehicleStatus.id
+                JOIN Company c ON v.company.id = c.id
+                JOIN Login l ON c.login.id = l.id
+                WHERE l.email = :email
+                """)
+        VehicleStatusDTO findVehicleCountByStatus(@Param("email") String email);
+
+
+
+        @Query("""
+            SELECT v 
+            FROM Vehicle v
+            JOIN VehicleStatus vs ON v.vehicleStatus.id = vs.id
             WHERE v.company.login.email = :email
-            ORDER BY v.id DESC
-            LIMIT 3
-            """)
-    List<Vehicle> findRecentVehiclesByCompanyEmail(@Param("email") String email);
-
-    /*
-    @Query("""
-            SELECT v FROM Vehicle v
-            WHERE v.Company.id = :id
-            """)
-    Page<Vehicle> findAllVehiclesByBusinessId(@Param("id") Long id, Pageable pageable);
-
-    @Query("""
-            SELECT v FROM Vehicle v
-            INNER JOIN Maintenance m
-            ON v.id = m.Vehicle.id
-            WHERE v.Company.id = :id
             AND
-            m.status = :status
+            vs.type = :status
             """)
-    Page<Vehicle> findAllVehiclesDelayedMaintenance(@Param("id") Long id, @Param("status") String status, Pageable pageable);*/
+        Page<Vehicle> findAllVehiclesByCompanyEmail(@Param("email") String email, @Param("status") String status, Pageable pageable);
 
 }
 

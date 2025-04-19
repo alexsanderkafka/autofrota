@@ -20,6 +20,7 @@ public class Service {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "service_id")
     private Long id;
 
     @Column(name = "type", nullable = false, length = 50)

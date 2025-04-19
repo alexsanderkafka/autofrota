@@ -9,8 +9,8 @@ CREATE TABLE Vehicle (
     active BOOLEAN DEFAULT TRUE,
     image_id INT NOT NULL,
     company_id INT NOT NULL,
-    status_id INT NOT NULL,
+    vehiclestatus_id INT NOT NULL,
     FOREIGN KEY (image_id) REFERENCES VehicleImage(id),
     FOREIGN KEY (company_id) REFERENCES Company(id),
-    FOREIGN KEY (status_id) REFERENCES VehicleStatus(id)
+    FOREIGN KEY (vehiclestatus_id) REFERENCES VehicleStatus(id)
 );

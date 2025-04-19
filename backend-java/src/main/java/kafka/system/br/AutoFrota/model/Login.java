@@ -18,6 +18,7 @@ public class Login implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "login_id")
     private Long id;
 
     @Column(name = "email", nullable = false, length = 255)

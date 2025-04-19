@@ -23,6 +23,7 @@ public class Payment {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "payment_id")
     private Long id;
 
     @Column(name = "collectorId", nullable = true)

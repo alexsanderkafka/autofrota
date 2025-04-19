@@ -9,8 +9,8 @@ spring:
   jpa:
     database: mysql
   datasource:
-    url: jdbc:mysql://host:3306/auto_frota
+    url: jdbc:mysql://3306/auto_frota
     username: username
-    password: senha
+    password: password
   flyway:
     enabled: true

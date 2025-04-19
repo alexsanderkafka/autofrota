@@ -14,6 +14,7 @@ public class Maintenance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "maintenance_id")
     private Long id;
 
     @Column(name = "date", nullable = false)

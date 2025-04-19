@@ -1,6 +1,8 @@
 package kafka.system.br.AutoFrota.controller;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+
+import jakarta.validation.constraints.Null;
 import kafka.system.br.AutoFrota.security.TokenProvider;
 import kafka.system.br.AutoFrota.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,28 @@ public class VehicleController {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @GetMapping()
+    @GetMapping("/{vehicleStatus}")
+    public ResponseEntity<?> getAllVehiclesByBusinessId(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction,
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "vehicleStatus") String vehicleStatus
+    ){
+        String token = authorizationHeader.replace("Bearer ", "");
+        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
+
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
+
+        var result = vehicleService.searchAllVehiclesByCompanyEmail(pageable, decodedToken.getSubject(), vehicleStatus);
+
+        return ResponseEntity.ok(result);
+    }
+
+
+    @GetMapping("/recent")
     public ResponseEntity<?> searchRecentVehicles(
             @RequestHeader("Authorization") String authorizationHeader
     ){
@@ -33,22 +56,18 @@ public class VehicleController {
         return ResponseEntity.ok(vehicles);
     }
 
-    /* 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getAllVehiclesByBusinessId(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "12") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            @PathVariable(value = "id") Long id
+    @GetMapping("/status")
+    public ResponseEntity<?> countVehiclesByVehicleStatus(
+            @RequestHeader("Authorization") String authorizationHeader
     ){
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
+        String token = authorizationHeader.replace("Bearer ", "");
+        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
 
-        var result = vehicleService.getAllVehiclesByBusinessId(pageable, id);
+        var countStatus = vehicleService.countByStatus(decodedToken.getSubject());
 
-        return ResponseEntity.ok(result);
-    }*/
+        return ResponseEntity.ok(countStatus);
+    }
 
     /*
     @GetMapping("/{status}/{id}")

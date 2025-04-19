@@ -1,4 +1,4 @@
-INSERT INTO Vehicle (plate, brand, model, type_fuel, km, category, active, image_id, company_id, status_id) VALUES
+INSERT INTO Vehicle (plate, brand, model, type_fuel, km, category, active, image_id, company_id, vehiclestatus_id) VALUES
 -- Carros
 ('ABC1A01', 'Toyota', 'Corolla', 'Gasoline', '12000', 'carro', TRUE, 1, 1, 1),
 ('ABC1A02', 'Ford', 'Focus', 'Diesel', '15000', 'carro', TRUE, 1, 1, 1),

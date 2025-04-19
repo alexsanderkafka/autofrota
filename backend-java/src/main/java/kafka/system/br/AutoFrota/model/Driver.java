@@ -22,6 +22,7 @@ public class Driver {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "driver_id")
     private Long id;
 
     @Column(name = "name", nullable = false, length = 100)

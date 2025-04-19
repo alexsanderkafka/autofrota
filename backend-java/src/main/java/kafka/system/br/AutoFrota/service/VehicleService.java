@@ -3,11 +3,14 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
+import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.model.Maintenance;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
 import kafka.system.br.AutoFrota.repository.VehicleRepository;
+import kafka.system.br.AutoFrota.utils.TypeVehicleStatusEnum;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,4 +45,26 @@ public class VehicleService {
         return currentVehicles;
     }
 
+    public VehicleStatusDTO countByStatus(String email) {
+
+        //Varificar o e-mail se existe no banco
+
+        VehicleStatusDTO result = vehicleRepository.findVehicleCountByStatus(email);
+
+        return result;
+    }
+
+    public PagedModel<EntityModel<VehicleDTO>> searchAllVehiclesByCompanyEmail(Pageable pageable, String email, String status) {
+
+        //Varificar o e-mail se existe no banco
+        //Verificar o status válido
+
+        Page<VehicleDTO> result = vehicleRepository.findAllVehiclesByCompanyEmail(email, status, pageable).map(VehicleDTO::new);
+
+
+        return pagedResourcesAssembler.toModel(result);
+    }
+
 }
+
+

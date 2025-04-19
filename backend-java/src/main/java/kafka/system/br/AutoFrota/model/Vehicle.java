@@ -17,6 +17,7 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "vehicle_id")
     private Long id;
 
     @Column(name = "plate", nullable = false, length = 20)
@@ -49,7 +50,7 @@ public class Vehicle {
     private Company company;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "vehiclestatus_id")
     private VehicleStatus vehicleStatus;
 
     public Vehicle() {

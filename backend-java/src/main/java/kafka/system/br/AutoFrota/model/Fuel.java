@@ -14,6 +14,7 @@ public class Fuel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "fuel_id")
     private Long id;
 
     @Column(name = "liters", nullable = false)
