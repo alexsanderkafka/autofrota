@@ -9,6 +9,15 @@ import org.springframework.data.repository.query.Param;
 
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> {
 
+        @Query("""
+            SELECT 
+                SUM(s.totalValue) AS totalExpense
+            FROM Maintenance m
+                JOIN Service s ON m.id = s.maintenance.id
+            WHERE m.vehicle.company.login.email = :email
+            """)
+        Double findTotalExpensesWithMaintenanceByCompany(@Param("email") String email);
+
     /*
     @Query("""
             SELECT m FROM Maintenance m

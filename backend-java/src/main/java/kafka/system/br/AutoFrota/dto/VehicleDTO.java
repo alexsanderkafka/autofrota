@@ -21,7 +21,7 @@ public record VehicleDTO(
         @Null
         String typeFuel,
         @Null
-        String km,
+        Long km,
         @Null
         String category,
         @Null

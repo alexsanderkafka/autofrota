@@ -4,7 +4,7 @@ CREATE TABLE Vehicle (
     brand VARCHAR(100) NOT NULL,
     model VARCHAR(50) NOT NULL,
     type_fuel VARCHAR(30) NOT NULL,
-    km VARCHAR(100) NOT NULL,
+    km BIGINT NOT NULL,
     category VARCHAR(50) NOT NULL,
     active BOOLEAN DEFAULT TRUE,
     image_id INT NOT NULL,

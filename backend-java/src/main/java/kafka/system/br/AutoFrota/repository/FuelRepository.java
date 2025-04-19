@@ -10,4 +10,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface FuelRepository extends JpaRepository<Fuel, Long> {
     //Page<Fuel> findAllFuelByVehicleId(Long id, Pageable pageable);
+
+    @Query("""
+            SELECT 
+                SUM(f.totalValue) AS totalExpense
+            FROM Fuel f
+            WHERE f.vehicle.company.login.email = :email
+            """)
+    Double findTotalExpensesWithFuelByCompany(@Param("email") String email);
 }

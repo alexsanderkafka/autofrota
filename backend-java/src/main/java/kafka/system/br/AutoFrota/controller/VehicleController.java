@@ -69,22 +69,7 @@ public class VehicleController {
         return ResponseEntity.ok(countStatus);
     }
 
-    /*
-    @GetMapping("/{status}/{id}")
-    public ResponseEntity<?> getAllVehiclesWithStatusMaintenanceByBusinessId(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "12") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            @PathVariable(value = "id") Long id,
-            @PathVariable(value = "status") String status
-    ){
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
-
-        var result = vehicleService.getAllVehiclesWithStatusMaintenance(pageable, id, status);
-
-        return ResponseEntity.ok(result);
-    }*/
+    //Falta criar o endpoint POST para salvar um vehicle
 }
 

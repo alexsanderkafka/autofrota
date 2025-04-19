@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import kafka.system.br.AutoFrota.dto.ReportDTO;
 import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Vehicle;
 
@@ -50,6 +51,23 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             vs.type = :status
             """)
         Page<Vehicle> findAllVehiclesByCompanyEmail(@Param("email") String email, @Param("status") String status, Pageable pageable);
+
+
+        @Query("""
+            SELECT 
+                COUNT(v.id) AS totalVehicles
+            FROM Vehicle v
+            WHERE v.company.login.email = :email
+            """)
+        Long findAllVehiclesByCompany(@Param("email") String email);
+
+        @Query("""
+            SELECT 
+                SUM(v.km) AS totalVehicles
+            FROM Vehicle v
+            WHERE v.company.login.email = :email
+            """)
+        Long findTotalKmByCompany(@Param("email") String email);
 
 }
 

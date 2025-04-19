@@ -33,7 +33,7 @@ public class Vehicle {
     private String typeFuel;
 
     @Column(name = "km", nullable = false, length = 100)
-    private String km;
+    Long km;
 
     @Column(name = "category", nullable = false, length = 50)
     private String category;
@@ -56,7 +56,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(Long id, String plate, String brand, String model, String typeFuel, String km, String category, boolean activate, VehicleImage vehicleImage, Company company, VehicleStatus vehicleStatus) {
+    public Vehicle(Long id, String plate, String brand, String model, String typeFuel, Long km, String category, boolean activate, VehicleImage vehicleImage, Company company, VehicleStatus vehicleStatus) {
         this.id = id;
         this.plate = plate;
         this.brand = brand;
@@ -110,11 +110,11 @@ public class Vehicle {
         this.typeFuel = typeFuel;
     }
 
-    public String getKm() {
+    public Long getKm() {
         return km;
     }
 
-    public void setKm(String km) {
+    public void setKm(Long km) {
         this.km = km;
     }
 
