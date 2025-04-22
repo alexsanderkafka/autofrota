@@ -35,6 +35,8 @@ public class LoginService {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
+
+
             return ResponseEntity.ok(tokenProvider.createAccessToken(email, currentLogin.getId()));
         }catch (UsernameNotFoundException e){
             throw e;

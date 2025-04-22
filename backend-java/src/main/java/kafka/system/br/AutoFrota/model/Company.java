@@ -1,5 +1,9 @@
 package kafka.system.br.AutoFrota.model;
 
+import java.util.UUID;
+
+import org.hibernate.annotations.UuidGenerator;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +23,10 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "company_id")
     private Long id;
+
+    @Column(name = "external_id", nullable = false, unique = true, updatable = false)
+    @UuidGenerator
+    private UUID externalId;
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;

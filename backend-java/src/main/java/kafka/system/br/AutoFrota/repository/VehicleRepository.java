@@ -12,6 +12,7 @@ import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Vehicle;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
@@ -19,11 +20,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
         @Query("""
                 SELECT v FROM Vehicle v
-                WHERE v.company.login.email = :email
+                WHERE CAST(v.company.externalId AS String) = :userId
                 ORDER BY v.id DESC
                 LIMIT 3
                 """)
-        List<Vehicle> findRecentVehiclesByCompanyEmail(@Param("email") String email);
+        List<Vehicle> findRecentVehiclesByCompany(@Param("userId") String userId);
 
 
         @Query("""
@@ -35,39 +36,37 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
                 FROM VehicleStatus vs
                 JOIN Vehicle v ON vs.id = v.vehicleStatus.id
                 JOIN Company c ON v.company.id = c.id
-                JOIN Login l ON c.login.id = l.id
-                WHERE l.email = :email
+                WHERE CAST(v.company.externalId AS String) = :userId
                 """)
-        VehicleStatusDTO findVehicleCountByStatus(@Param("email") String email);
-
+        VehicleStatusDTO findVehicleCountByStatus(@Param("userId") String userId);
 
 
         @Query("""
             SELECT v 
             FROM Vehicle v
             JOIN VehicleStatus vs ON v.vehicleStatus.id = vs.id
-            WHERE v.company.login.email = :email
+            WHERE CAST(v.company.externalId AS String) = :userId
             AND
             vs.type = :status
             """)
-        Page<Vehicle> findAllVehiclesByCompanyEmail(@Param("email") String email, @Param("status") String status, Pageable pageable);
+        Page<Vehicle> findAllVehiclesByCompany(@Param("userId") String userId, @Param("status") String status, Pageable pageable);
 
 
         @Query("""
             SELECT 
                 COUNT(v.id) AS totalVehicles
             FROM Vehicle v
-            WHERE v.company.login.email = :email
+            WHERE v.company.externalId = :userId
             """)
-        Long findAllVehiclesByCompany(@Param("email") String email);
+        Long findTotalVehiclesByCompany(@Param("userId") String userId);
 
         @Query("""
             SELECT 
                 SUM(v.km) AS totalVehicles
             FROM Vehicle v
-            WHERE v.company.login.email = :email
+            WHERE CAST(v.company.externalId AS String) = :userId
             """)
-        Long findTotalKmByCompany(@Param("email") String email);
+        Long findTotalKmByCompany(@Param("userId") String userId);
 
 }
 

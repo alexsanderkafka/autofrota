@@ -15,7 +15,7 @@ public interface FuelRepository extends JpaRepository<Fuel, Long> {
             SELECT 
                 SUM(f.totalValue) AS totalExpense
             FROM Fuel f
-            WHERE f.vehicle.company.login.email = :email
+            WHERE CAST(f.vehicle.company.externalId AS String) = :userId
             """)
-    Double findTotalExpensesWithFuelByCompany(@Param("email") String email);
+    Double findTotalExpensesWithFuelByCompany(@Param("userId") String userId);
 }

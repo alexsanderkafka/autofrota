@@ -1,5 +1,7 @@
 package kafka.system.br.AutoFrota.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,14 @@ public class ReportService {
     @Autowired
     private MaintenanceRepository maintenanceRepository;
     
-    public ReportDTO countTotalReport(String email){
+    public ReportDTO countTotalReport(String userId){
 
         //verificar o email se existe
 
-        Long countVehicles = vehicleRepository.findAllVehiclesByCompany(email);
-        Long totalKm = vehicleRepository.findTotalKmByCompany(email);
-        Double totalFuel = fuelRepository.findTotalExpensesWithFuelByCompany(email);
-        Double totalMaintenance = maintenanceRepository.findTotalExpensesWithMaintenanceByCompany(email);
+        Long countVehicles = vehicleRepository.findTotalVehiclesByCompany(userId);
+        Long totalKm = vehicleRepository.findTotalKmByCompany(userId);
+        Double totalFuel = fuelRepository.findTotalExpensesWithFuelByCompany(userId);
+        Double totalMaintenance = maintenanceRepository.findTotalExpensesWithMaintenanceByCompany(userId);
 
         return new ReportDTO(countVehicles, totalKm, totalFuel, totalMaintenance);
     }

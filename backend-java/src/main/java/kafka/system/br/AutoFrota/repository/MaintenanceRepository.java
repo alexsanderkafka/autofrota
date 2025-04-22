@@ -14,9 +14,9 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
                 SUM(s.totalValue) AS totalExpense
             FROM Maintenance m
                 JOIN Service s ON m.id = s.maintenance.id
-            WHERE m.vehicle.company.login.email = :email
+            WHERE CAST(m.vehicle.company.externalId AS String) = :userId
             """)
-        Double findTotalExpensesWithMaintenanceByCompany(@Param("email") String email);
+        Double findTotalExpensesWithMaintenanceByCompany(@Param("userId") String userId);
 
     /*
     @Query("""

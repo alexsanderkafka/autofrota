@@ -3,6 +3,7 @@ package kafka.system.br.AutoFrota.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,15 +26,13 @@ public class ReportController {
     private TokenProvider tokenProvider;
 
 
-    @GetMapping("/total")
+    @GetMapping("/{userId}/total")
     public ResponseEntity<?> getTotalReportsWithMaintenanceAndFuel(
-        @RequestHeader("Authorization") String authorizationHeader
+        @RequestHeader("Authorization") String authorizationHeader,
+        @PathVariable(value = "userId") String userId
     ){
 
-        String token = authorizationHeader.replace("Bearer ", "");
-        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
-
-        ReportDTO report = reportService.countTotalReport(decodedToken.getSubject());
+        ReportDTO report = reportService.countTotalReport(userId);
 
         return ResponseEntity.ok(report);
     }

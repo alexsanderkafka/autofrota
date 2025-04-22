@@ -1,5 +1,6 @@
 CREATE TABLE Company (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    external_id CHAR(36) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     cnpj VARCHAR(30),
     cpf VARCHAR(30),

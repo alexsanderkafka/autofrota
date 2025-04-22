@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -38,28 +39,30 @@ public class VehicleService {
     @Autowired
     private FuelRepository fuelRepository;
 
-    public Stream<VehicleDTO> searchRecentVehiclesByCompanyEmail(String email){
+    public Stream<VehicleDTO> searchRecentVehiclesByCompany(String userId){
 
-        Stream<VehicleDTO> currentVehicles = vehicleRepository.findRecentVehiclesByCompanyEmail(email).stream().<VehicleDTO>map(VehicleDTO::new);
+        //Verificar se realmenter esse id existe
+
+        Stream<VehicleDTO> currentVehicles = vehicleRepository.findRecentVehiclesByCompany(userId).stream().<VehicleDTO>map(VehicleDTO::new);
 
         return currentVehicles;
     }
 
-    public VehicleStatusDTO countByStatus(String email) {
+    public VehicleStatusDTO countByStatus(String userId) {
 
-        //Varificar o e-mail se existe no banco
+        //Verificar se realmenter esse id existe
 
-        VehicleStatusDTO result = vehicleRepository.findVehicleCountByStatus(email);
+        VehicleStatusDTO result = vehicleRepository.findVehicleCountByStatus(userId);
 
         return result;
     }
 
-    public PagedModel<EntityModel<VehicleDTO>> searchAllVehiclesByCompanyEmail(Pageable pageable, String email, String status) {
+    public PagedModel<EntityModel<VehicleDTO>> searchAllVehiclesByCompany(Pageable pageable, String userId, String status) {
 
-        //Varificar o e-mail se existe no banco
+        //Verificar se realmenter esse id existe
         //Verificar o status válido
 
-        Page<VehicleDTO> result = vehicleRepository.findAllVehiclesByCompanyEmail(email, status, pageable).map(VehicleDTO::new);
+        Page<VehicleDTO> result = vehicleRepository.findAllVehiclesByCompany(userId, status, pageable).map(VehicleDTO::new);
 
 
         return pagedResourcesAssembler.toModel(result);

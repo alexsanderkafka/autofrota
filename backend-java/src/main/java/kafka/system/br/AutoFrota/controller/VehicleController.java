@@ -1,9 +1,5 @@
 package kafka.system.br.AutoFrota.controller;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
-
-import jakarta.validation.constraints.Null;
-import kafka.system.br.AutoFrota.security.TokenProvider;
 import kafka.system.br.AutoFrota.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,52 +15,44 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @Autowired
-    private TokenProvider tokenProvider;
-
-    @GetMapping("/{vehicleStatus}")
-    public ResponseEntity<?> getAllVehiclesByBusinessId(
+    @GetMapping("/{userId}/{vehicleStatus}")
+    public ResponseEntity<?> getAllVehiclesByCompany(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction,
             @RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable(value = "vehicleStatus") String vehicleStatus
+            @PathVariable(value = "vehicleStatus") String vehicleStatus,
+            @PathVariable(value = "userId") String userId
     ){
-        String token = authorizationHeader.replace("Bearer ", "");
-        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
-
+    
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
 
-        var result = vehicleService.searchAllVehiclesByCompanyEmail(pageable, decodedToken.getSubject(), vehicleStatus);
+        var result = vehicleService.searchAllVehiclesByCompany(pageable, userId, vehicleStatus);
 
         return ResponseEntity.ok(result);
     }
 
 
-    @GetMapping("/recent")
-    public ResponseEntity<?> searchRecentVehicles(
-            @RequestHeader("Authorization") String authorizationHeader
+    @GetMapping("/{userId}/recent")
+    public ResponseEntity<?> searchRecentVehiclesByCompany(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "userId") String userId
     ){
 
-        String token = authorizationHeader.replace("Bearer ", "");
-        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
-
-        var vehicles = vehicleService.searchRecentVehiclesByCompanyEmail(decodedToken.getSubject());
+        var vehicles = vehicleService.searchRecentVehiclesByCompany(userId);
 
         return ResponseEntity.ok(vehicles);
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<?> countVehiclesByVehicleStatus(
-            @RequestHeader("Authorization") String authorizationHeader
+    @GetMapping("/{userId}/status")
+    public ResponseEntity<?> countVehiclesByVehicleStatusByCompany(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "userId") String userId
     ){
 
-        String token = authorizationHeader.replace("Bearer ", "");
-        DecodedJWT decodedToken = tokenProvider.decodedToken(token);
-
-        var countStatus = vehicleService.countByStatus(decodedToken.getSubject());
+        var countStatus = vehicleService.countByStatus(userId);
 
         return ResponseEntity.ok(countStatus);
     }
