@@ -20,11 +20,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
         @Query("""
                 SELECT v FROM Vehicle v
-                WHERE CAST(v.company.externalId AS String) = :userId
+                WHERE CAST(v.company.externalId AS String) = :externalId
                 ORDER BY v.id DESC
                 LIMIT 3
                 """)
-        List<Vehicle> findRecentVehiclesByCompany(@Param("userId") String userId);
+        List<Vehicle> findRecentVehiclesByCompany(@Param("externalId") String externalId);
 
 
         @Query("""
@@ -36,37 +36,37 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
                 FROM VehicleStatus vs
                 JOIN Vehicle v ON vs.id = v.vehicleStatus.id
                 JOIN Company c ON v.company.id = c.id
-                WHERE CAST(v.company.externalId AS String) = :userId
+                WHERE CAST(v.company.externalId AS String) = :externalId
                 """)
-        VehicleStatusDTO findVehicleCountByStatus(@Param("userId") String userId);
+        VehicleStatusDTO findVehicleCountByStatus(@Param("externalId") String externalId);
 
 
         @Query("""
             SELECT v 
             FROM Vehicle v
             JOIN VehicleStatus vs ON v.vehicleStatus.id = vs.id
-            WHERE CAST(v.company.externalId AS String) = :userId
+            WHERE CAST(v.company.externalId AS String) = :externalId
             AND
             vs.type = :status
             """)
-        Page<Vehicle> findAllVehiclesByCompany(@Param("userId") String userId, @Param("status") String status, Pageable pageable);
+        Page<Vehicle> findAllVehiclesByCompany(@Param("externalId") String externalId, @Param("status") String status, Pageable pageable);
 
 
         @Query("""
             SELECT 
                 COUNT(v.id) AS totalVehicles
             FROM Vehicle v
-            WHERE v.company.externalId = :userId
+            WHERE v.company.externalId = :externalId
             """)
-        Long findTotalVehiclesByCompany(@Param("userId") String userId);
+        Long findTotalVehiclesByCompany(@Param("externalId") String externalId);
 
         @Query("""
             SELECT 
                 SUM(v.km) AS totalVehicles
             FROM Vehicle v
-            WHERE CAST(v.company.externalId AS String) = :userId
+            WHERE CAST(v.company.externalId AS String) = :externalId
             """)
-        Long findTotalKmByCompany(@Param("userId") String userId);
+        Long findTotalKmByCompany(@Param("externalId") String externalId);
 
 }
 

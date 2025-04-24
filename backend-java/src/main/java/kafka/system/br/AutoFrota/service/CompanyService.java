@@ -1,6 +1,7 @@
 package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.CompanyDTO;
+import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,16 @@ public class CompanyService implements UserDetailsService {
         //return null;
     }
 
-    public CompanyDTO getBusinessById(Long id){
+    public CompanyDTO getBusinessById(String id){
         //var login = authenticationRepository.findByBusinessId(id);
 
-        var currentCompany = companyRepository.findById(id);
+        Company currentCompany = companyRepository.findByExternalId(id);
 
+        //verificar se a company existe
 
-        return new CompanyDTO(currentCompany);
+        CompanyDTO dto = new CompanyDTO(currentCompany);
+        
+
+        return dto;
     }
 }

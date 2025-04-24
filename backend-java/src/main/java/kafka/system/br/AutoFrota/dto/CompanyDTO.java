@@ -8,14 +8,20 @@ public record CompanyDTO(
         String email,
         String name,
         String cnpj,
+        String cpf,
+        String zipCode,
+        String address,
         String phone
 ) {
-    public CompanyDTO(Optional<Company> company) {
+    public CompanyDTO(Company company) {
         this(
-                company.get().getLogin().getEmail(),
-                company.get().getName(),
-                company.get().getCnpj(),
-                company.get().getPhone()
+                company.getLogin().getEmail(),
+                company.getName(),
+                company.getCnpj(),
+                company.getCpf(),
+                company.getZipCode(),
+                company.getAddress(),
+                company.getPhone()
         );
     }
 }

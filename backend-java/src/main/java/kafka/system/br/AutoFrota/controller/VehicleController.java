@@ -15,44 +15,44 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @GetMapping("/{userId}/{vehicleStatus}")
+    @GetMapping("/{companyId}/{vehicleStatus}")
     public ResponseEntity<?> getAllVehiclesByCompany(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction,
             @RequestHeader("Authorization") String authorizationHeader,
             @PathVariable(value = "vehicleStatus") String vehicleStatus,
-            @PathVariable(value = "userId") String userId
+            @PathVariable(value = "companyId") String companyId
     ){
     
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
 
-        var result = vehicleService.searchAllVehiclesByCompany(pageable, userId, vehicleStatus);
+        var result = vehicleService.searchAllVehiclesByCompany(pageable, companyId, vehicleStatus);
 
         return ResponseEntity.ok(result);
     }
 
 
-    @GetMapping("/{userId}/recent")
+    @GetMapping("/{companyId}/recent")
     public ResponseEntity<?> searchRecentVehiclesByCompany(
             @RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable(value = "userId") String userId
+            @PathVariable(value = "companyId") String companyId
     ){
 
-        var vehicles = vehicleService.searchRecentVehiclesByCompany(userId);
+        var vehicles = vehicleService.searchRecentVehiclesByCompany(companyId);
 
         return ResponseEntity.ok(vehicles);
     }
 
-    @GetMapping("/{userId}/status")
+    @GetMapping("/{companyId}/status")
     public ResponseEntity<?> countVehiclesByVehicleStatusByCompany(
             @RequestHeader("Authorization") String authorizationHeader,
-            @PathVariable(value = "userId") String userId
+            @PathVariable(value = "companyId") String companyId
     ){
 
-        var countStatus = vehicleService.countByStatus(userId);
+        var countStatus = vehicleService.countByStatus(companyId);
 
         return ResponseEntity.ok(countStatus);
     }

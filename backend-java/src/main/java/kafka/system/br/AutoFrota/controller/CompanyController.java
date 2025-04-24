@@ -16,7 +16,7 @@ public class CompanyController {
     private CompanyService service;
 
     @GetMapping("/{companyId}")
-    private ResponseEntity<?> getBusinessById(@PathVariable(value = "companyId") Long id){
+    private ResponseEntity<?> getBusinessById(@PathVariable(value = "companyId") String id){
         var currentBusiness = service.getBusinessById(id);
 
         return ResponseEntity.ok(currentBusiness);
