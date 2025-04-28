@@ -18,4 +18,17 @@ public interface FuelRepository extends JpaRepository<Fuel, Long> {
             WHERE CAST(f.vehicle.company.externalId AS String) = :externalId
             """)
     Double findTotalExpensesWithFuelByCompany(@Param("externalId") String externalId);
+
+
+    @Query("""
+            SELECT 
+                f
+            FROM Fuel f
+            WHERE CAST(f.vehicle.company.externalId AS String) = :externalId
+            AND
+            f.vehicle.id = :vehicleId
+            ORDER BY f.date DESC
+            LIMIT 1
+            """)
+    Fuel findLastFuelByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
 }

@@ -15,6 +15,17 @@ public class FuelController {
     @Autowired
     private FuelService service;
 
+    @GetMapping("/{companyId}/{vehicleId}/last")
+    public ResponseEntity<?> getLastFuelByVehicleId(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+        var result = service.getLastFuel(companyId, vehicleId);
+
+        return ResponseEntity.ok(result);
+    }
+
     /*
     @GetMapping("/{vehicleId}")
     public ResponseEntity<?> getAllFuelByVehicleId(
@@ -31,5 +42,7 @@ public class FuelController {
 
         return ResponseEntity.ok(result);
     }*/
+
+
 
 }

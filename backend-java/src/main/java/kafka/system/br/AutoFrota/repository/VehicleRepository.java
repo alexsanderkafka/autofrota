@@ -68,5 +68,14 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             """)
         Long findTotalKmByCompany(@Param("externalId") String externalId);
 
+        @Query("""
+            SELECT 
+                v
+            FROM Vehicle v
+            WHERE CAST(v.company.externalId AS String) = :externalId
+            AND v.id = :vehicleId
+            """)
+        Vehicle findInfosByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
+
 }
 

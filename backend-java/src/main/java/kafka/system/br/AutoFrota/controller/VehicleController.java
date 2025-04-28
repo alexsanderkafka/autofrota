@@ -57,6 +57,19 @@ public class VehicleController {
         return ResponseEntity.ok(countStatus);
     }
 
+    @GetMapping("/{companyId}/{vehicleId}/infos")
+    public ResponseEntity<?> getInfoVehicleByVehicleId(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+
+        var vehicle = vehicleService.getInfoVehicle(companyId,vehicleId);
+
+        return ResponseEntity.ok(vehicle);
+    }
+    
+
 
     //Falta criar o endpoint POST para salvar um vehicle
 }

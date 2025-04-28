@@ -15,6 +15,39 @@ public class MaintenanceController {
     @Autowired
     private MaintenanceService service;
 
+    @GetMapping("/{companyId}/{vehicleId}/scheduled")
+    public ResponseEntity<?> getScheduledMaintenanceByVehicleId(
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+        var result = service.getScheduledMaintenance(companyId, vehicleId);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/{companyId}/{vehicleId}/last")
+    public ResponseEntity<?> getLastMaintenanceByVehicleId(
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+        var result = service.getLastMaintenance(companyId, vehicleId);
+
+        return ResponseEntity.ok(result);
+    }
+
+
+    /*
+    @GetMapping("/{companyId}/{vehicleId}/last")
+    public ResponseEntity<?> getScheduledMaintenanceByVehicleId(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+        var result = service.getScheduledMaintenance(companyId, vehicleId);
+
+        return ResponseEntity.ok(result);
+    }*/
+
     /*
 
     @GetMapping("/{vehicleId}")

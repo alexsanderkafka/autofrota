@@ -1,4 +1,4 @@
-INSERT INTO Maintenance (date, done, observations, scheduled, vehicle_id) VALUES
+INSERT INTO Maintenance (date, done, observation, scheduled, vehicle_id) VALUES
 -- Vehicle 1
 ('2025-03-01', TRUE, 'Troca de óleo e filtros', FALSE, 1),
 ('2025-03-15', FALSE, 'Revisão agendada para freios', TRUE, 1),

@@ -1,5 +1,6 @@
 package kafka.system.br.AutoFrota.repository;
 
+import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
 import kafka.system.br.AutoFrota.model.Maintenance;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +14,40 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
             SELECT 
                 SUM(s.totalValue) AS totalExpense
             FROM Maintenance m
-                JOIN Service s ON m.id = s.maintenance.id
-            WHERE CAST(m.vehicle.company.externalId AS String) = :userId
+                JOIN Services s ON m.id = s.maintenance.id
+            WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
             """)
-        Double findTotalExpensesWithMaintenanceByCompany(@Param("userId") String userId);
+        Double findTotalExpensesWithMaintenanceByCompany(@Param("externalId") String externalId);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = false
+            AND
+                m.scheduled = true
+            ORDER BY m.date DESC
+            LIMIT 1
+            """)
+        Maintenance findScheduledMaintenanceByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = false
+            ORDER BY m.date DESC
+            LIMIT 1
+            """)
+        Maintenance findLastMaintenanceByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
 
     /*
     @Query("""

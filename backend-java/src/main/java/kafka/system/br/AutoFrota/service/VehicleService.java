@@ -6,6 +6,7 @@ import kafka.system.br.AutoFrota.dto.VehicleDTO;
 import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.model.Maintenance;
+import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
 import kafka.system.br.AutoFrota.repository.VehicleRepository;
@@ -66,6 +67,18 @@ public class VehicleService {
 
 
         return pagedResourcesAssembler.toModel(result);
+    }
+
+    public VehicleDTO getInfoVehicle(String externalId, Long vehicleId) {
+        
+        //Verificar se realmenter esse id existe
+        //Precisa verificar o null
+
+        Vehicle result = vehicleRepository.findInfosByVehicleIdAndCompany(externalId, vehicleId);//.orsElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        VehicleDTO vehicleDto = new VehicleDTO(result);
+
+        return vehicleDto;
     }
 
 }

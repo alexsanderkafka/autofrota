@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Table(name = "service")
-@Entity(name = "Service")
-public class Service {
+@Entity(name = "Services")
+public class Services {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Service {
     @JoinColumn(name = "maintenance_id")
     private Maintenance maintenance;
 
-    public Service() {
+    public Services() {
     }
 
-    public Service(Long id, String type, float totalValue, Maintenance maintenance) {
+    public Services(Long id, String type, float totalValue, Maintenance maintenance) {
         this.id = id;
         this.type = type;
         this.totalValue = totalValue;
