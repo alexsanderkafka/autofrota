@@ -12,18 +12,13 @@ public record FuelDTO(
         @Null
         float liters,
         @Null
-        @JsonProperty("total_value")
         float totalValue,
         @Null
         Integer km,
         @Null
         Date date,
         @Null
-        @JsonProperty("fuel_type")
-        String fuelType,
-        @Null
-        @JsonProperty("vehicle_id")
-        Long vehicleId
+        String fuelType
 ) {
 
 
@@ -34,8 +29,7 @@ public record FuelDTO(
                 fuel.getTotalValue(),
                 fuel.getKm(),
                 fuel.getDate(),
-                fuel.getType(),
-                fuel.getVehicle().getId()
+                fuel.getType()
         );
     }
     
@@ -46,7 +40,7 @@ public record FuelDTO(
               0,
               0,
               null,
-              null, null
+              null
         );
     }
 }

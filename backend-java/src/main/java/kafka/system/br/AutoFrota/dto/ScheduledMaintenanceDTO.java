@@ -16,4 +16,11 @@ public record ScheduledMaintenanceDTO(
         );
     }
 
+    public ScheduledMaintenanceDTO(Maintenance maintenance) {
+        this(
+            new MaintenanceDTO(maintenance),
+            maintenance.getServices().stream().map(ServiceDTO::new).toList()
+        );
+    }
+
 }

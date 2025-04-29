@@ -1,5 +1,6 @@
 package kafka.system.br.AutoFrota.service;
 
+import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +31,28 @@ public class MaintenanceService {
 
     @Autowired
     private PagedResourcesAssembler<MaintenanceDTO> pagedResourcesAssembler;
+
+    @Autowired
+    private PagedResourcesAssembler<ScheduledMaintenanceDTO> pagedResourcesAssemblerScheduled;
+
+    public PagedModel<EntityModel<MaintenanceDTO>> getAllScheduledMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
+        //Verificar vehicle id
+        //Verificar retorno null
+
+        Page<MaintenanceDTO> result = maintenanceRepository.findAllScheduledMaintenanceByVehicleIdAndCompany(vehicleId, companyId, pageable).map(MaintenanceDTO::new);
+
+        return pagedResourcesAssembler.toModel(result);
+    }
+
+    public PagedModel<EntityModel<ScheduledMaintenanceDTO>> getAllDoneMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
+        
+        //Verificar vehicle id
+        //Verificar retorno null
+
+        Page<ScheduledMaintenanceDTO> result = maintenanceRepository.findAllDoneMaintenanceByVehicleIdAndCompany(vehicleId, companyId, pageable).map(ScheduledMaintenanceDTO::new);
+
+        return pagedResourcesAssemblerScheduled.toModel(result);
+    }
 
     public MaintenanceDTO getScheduledMaintenance(String companyId, Long vehicleId) {
         //Verificar se realmenter esse id existe
@@ -48,39 +72,37 @@ public class MaintenanceService {
         //Precisa verificar o null
         //Retorno vazio se não existe
         //Retorno caso o companyId não exista
-
         
         Maintenance maintenance = maintenanceRepository.findLastMaintenanceByVehicleIdAndCompany(companyId, vehicleId);
-        MaintenanceDTO maintenanceDTO = new MaintenanceDTO(maintenance);
 
-        
-        List<Services> services = serviceRepository.findAllByMaintenanceId(maintenance.getId());
-        List<ServiceDTO> servicesDto = services.stream().map(ServiceDTO::new).toList();
-
-        ScheduledMaintenanceDTO scheduledMaintenanceDto = new ScheduledMaintenanceDTO(maintenanceDTO, servicesDto);
+        ScheduledMaintenanceDTO scheduledMaintenanceDto = new ScheduledMaintenanceDTO(maintenance);
 
         return scheduledMaintenanceDto;
     }
 
-    /*
-    public MaintenanceDTO getScheduledMaintenance(String companyId, Long vehicleId) {
+    public PagedModel<EntityModel<MaintenanceDTO>> getAllFilterDoneMaintenanceByVehicleId(Long vehicleId, String companyId, DateFilterDTO filter, Pageable pageable) {
+        
         //Verificar se realmenter esse id existe
         //Precisa verificar o null
         //Retorno vazio se não existe
         //Retorno caso o companyId não exista
 
-        Maintenance result = maintenanceRepository.findScheduledMaintenanceByVehicleIdAndCompany(companyId, vehicleId);
 
-        MaintenanceDTO maintenanceDto = new MaintenanceDTO(result);
-
-        return maintenanceDto;
+        Page<MaintenanceDTO> result = maintenanceRepository.findAllFilterDoneMaintenanceByVehicleIdAndCompany(vehicleId, companyId, filter.startDate(), filter.endDate(), pageable).map(MaintenanceDTO::new);
         
-    }*/
+        return pagedResourcesAssembler.toModel(result);
+    }
 
-    /*
-    public PagedModel<EntityModel<MaintenanceDTO>> getAllMaintenanceByVehicleId(Pageable pageable, Long id){
-        Page<MaintenanceDTO> maintenance = maintenanceRepository.findAllMaintenanceByVehicleId(id, pageable).<MaintenanceDTO>map(MaintenanceDTO::new);
+    public PagedModel<EntityModel<MaintenanceDTO>> getAllFilterScheduledMaintenanceByVehicleId(Long vehicleId, String companyId, DateFilterDTO filter, Pageable pageable) {
+        
+        //Verificar se realmenter esse id existe
+        //Precisa verificar o null
+        //Retorno vazio se não existe
+        //Retorno caso o companyId não exista
 
-        return pagedResourcesAssembler.toModel(maintenance);
-    }*/
+
+        Page<MaintenanceDTO> result = maintenanceRepository.findAllFilterScheduledMaintenanceByVehicleIdAndCompany(vehicleId, companyId, filter.startDate(), filter.endDate(), pageable).map(MaintenanceDTO::new);
+        
+        return pagedResourcesAssembler.toModel(result);
+    }
 }

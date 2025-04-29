@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "maintenance")
 @Entity(name = "Maintenance")
@@ -29,6 +30,9 @@ public class Maintenance {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
+
+    @OneToMany(mappedBy = "maintenance", fetch = FetchType.LAZY)
+    private List<Services> services;
 
     public Maintenance() {
     }
@@ -88,5 +92,13 @@ public class Maintenance {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public List<Services> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Services> services) {
+        this.services = services;
     }
 }
