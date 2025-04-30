@@ -1,0 +1,635 @@
+{
+	"info": {
+		"_postman_id": "e3d12250-8840-4e33-8fa0-7ffc41576e1b",
+		"name": "Auto frota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27099370",
+		"_collection_link": "https://warped-satellite-158160.postman.co/workspace/Team-Workspace~19b784ec-8042-4ab2-84ab-c11cccf2ac94/collection/27099370-e3d12250-8840-4e33-8fa0-7ffc41576e1b?action=share&source=collection_link&creator=27099370"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Signin with email and password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"contato@transporterapido.com\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/auth/signin",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "Find all vehicles by company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MzQ2MzQ5LCJpYXQiOjE3NDUzMzU1NDl9.qywfGIjJX3uzbPL3xKkmKsolAuL-f6q8JbIWAhev-Nk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/active?page=0&direction=desc",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"active"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "direction",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find recent vehicles by company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1NTMwODE2LCJpYXQiOjE3NDU1MjAwMTZ9.yD0b_qMCoF8KEz9BpVS3OcGnZiw-QslY6VmHQusT1hw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/recent",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"recent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find count vehicles by vehicle status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MzQ2MzQ5LCJpYXQiOjE3NDUzMzU1NDl9.qywfGIjJX3uzbPL3xKkmKsolAuL-f6q8JbIWAhev-Nk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/status",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get infos by vehicle id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/20/infos",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"20",
+								"infos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Maintenance",
+			"item": [
+				{
+					"name": "find all scheduled maintenance by vehicle id and company id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/scheduled",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all",
+								"scheduled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all done maintenance by vehicle id and company id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/done",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all",
+								"done"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get scheduled maintenance by vehicle id and external id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/scheduled",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"scheduled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get last maintenance by vehicle id and external id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/scheduled",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"scheduled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all maintenance by filter (done)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2025-03-01T03:00:00.000+00:00\",\r\n    \"endDate\": \"2025-03-30T03:00:00.000+00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/done/filter",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all",
+								"done",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all maintenance by filter (scheduled)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2025-03-01T03:00:00.000+00:00\",\r\n    \"endDate\": \"2025-03-30T03:00:00.000+00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/scheduled/filter",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all",
+								"scheduled",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fuel",
+			"item": [
+				{
+					"name": "Find all fuel by vehicle id and company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzMyNzQ1Mjg1LCJpYXQiOjE3MzI3MzQ0ODV9.66AFBaioGaID8cwVrxFuJ7-0R4ZLBreVvaI90aPtrTo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/all",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"fuel",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get last fuel by vehicle id and external id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/20/last",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"fuel",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"20",
+								"last"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all fuel by filter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"startDate\": \"2025-01-15T03:00:00.000+00:00\",\r\n    \"endDate\": \"2025-03-30T03:00:00.000+00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/all/filter",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"fuel",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"1",
+								"all",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Get business external id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzMyODA5NzAzLCJpYXQiOjE3MzI3OTg5MDN9.8RJtymwSDgCO9mfrje1cyazeY0aw2mGYOh7Sla7r_tE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/business/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"business",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"João Silva Santos\",\r\n    \"email\": \"joao.silva@empresa.com.br\",\r\n    \"pass\": \"Senha123Segura!\",\r\n    \"confirmPass\": \"Senha123Segura!\",\r\n    \"zipCode\": \"12345-678\",\r\n    \"cnpj\": \"12.345.678/0001-90\",\r\n    \"address\": \"Rua Principal, 250 - Centro, São Paulo - SP\",\r\n    \"phone\": \"+55 (11) 98765-4321\",\r\n    \"plan\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mercadopago",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/webhook/mercado-pago",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"webhook",
+								"mercado-pago"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "count total",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MTEyOTc1LCJpYXQiOjE3NDUxMDIxNzV9.rkxLr9BY8qMgD7ucKnTctzePK-HTSJvlxaihdPCu2rk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/reports/total",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports",
+								"total"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "get all drivers by company id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"drivers",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
