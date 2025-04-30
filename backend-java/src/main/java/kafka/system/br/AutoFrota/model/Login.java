@@ -30,6 +30,9 @@ public class Login implements UserDetails {
     @Column(name = "active", nullable = false, length = 255)
     private boolean active;
 
+    @OneToOne(mappedBy = "login", fetch = FetchType.LAZY)
+    private Company company;
+
     public Login() {
     }
 
@@ -70,6 +73,14 @@ public class Login implements UserDetails {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     @Override

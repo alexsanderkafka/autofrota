@@ -140,4 +140,12 @@ public class Company {
     public void setLogin(Login login) {
         this.login = login;
     }
+
+    public UUID getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(UUID externalId) {
+        this.externalId = externalId;
+    }
 }

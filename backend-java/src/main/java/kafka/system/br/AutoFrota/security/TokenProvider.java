@@ -8,6 +8,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import kafka.system.br.AutoFrota.dto.TokenDTO;
 import kafka.system.br.AutoFrota.exception.InvalidTokenException;
+import kafka.system.br.AutoFrota.model.Company;
+import kafka.system.br.AutoFrota.model.Login;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,14 +46,14 @@ public class TokenProvider {
         algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
 
-    public TokenDTO createAccessToken(String name, Long id){
+    public TokenDTO createAccessToken(String email, Login login){
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliSeconds);
 
-        var accessToken = getAccessToken(name, now, validity);
-        var refreshToken = getRefreshToken(name, now, validity);
+        var accessToken = getAccessToken(email, now, validity);
+        var refreshToken = getRefreshToken(email, now, validity);
 
-        return new TokenDTO(id, name, true, now, validity, accessToken, refreshToken);
+        return new TokenDTO(login.getCompany().getExternalId(), email, true, now, validity, accessToken, refreshToken);
     }
 
     public TokenDTO refreshToken(String refreshToken){
@@ -60,15 +62,15 @@ public class TokenProvider {
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = jwtVerifier.verify(refreshToken);
 
-        String username = decodedJWT.getSubject();
+        String email = decodedJWT.getSubject();
         //List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
 
-        var business = authenticationRepository.findByCompanyEmail(username);
+        Login login = authenticationRepository.findByCompanyEmail(email);
 
-        if (business != null){
-            return createAccessToken(username, business.getId());
+        if (login != null){
+            return createAccessToken(email, login);
         }else{
-            throw new UsernameNotFoundException("Email " + username + " not found!");
+            throw new UsernameNotFoundException("Email " + email + " not found!");
         }
     }
 
