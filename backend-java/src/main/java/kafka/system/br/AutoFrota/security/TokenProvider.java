@@ -53,6 +53,8 @@ public class TokenProvider {
         var accessToken = getAccessToken(email, now, validity);
         var refreshToken = getRefreshToken(email, now, validity);
 
+        System.out.println("externalID: " + login.getCompany().getExternalId());
+
         return new TokenDTO(login.getCompany().getExternalId(), email, true, now, validity, accessToken, refreshToken);
     }
 

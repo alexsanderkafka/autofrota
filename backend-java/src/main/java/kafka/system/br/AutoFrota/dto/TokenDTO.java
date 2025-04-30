@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public record TokenDTO(
-        UUID externalId,
+        String externalId,
         String email,
         Boolean authenticated,
         Date created,

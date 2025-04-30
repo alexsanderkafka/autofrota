@@ -25,207 +25,112 @@ interface Props{
   navigation: any;
 }
 
+interface Vehicles {
+  id: number;
+  plate: string;
+  brand: string;
+  model: string;
+  typeFuel: string;
+  km: number;
+  category: string;
+  activate: boolean;
+  vehicle_image_id: number;
+  company_id: number;
+  vehicle_status_id: number;
+}
+
+interface StatusCounts {
+  active: number;
+  alert: number;
+  usage: number;
+  maintenance: number;
+}
+
+
 export default function HomeScreen({ navigation }: Props) {
 
   const [token, setToken] = useState('');
-  const [businessId, setId] = useState('');
-  //const [vehicles, setVehicles] = useState([]);
+  const [companyExternalId, setCompanyExternalId] = useState('');
+  const [vehicles, setVehicles] = useState<Vehicles[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState("todos");
   const [notFoundVehicles, setNotFoundVehicles] = useState(false);
   const [message, setMessage] = useState("");
-  const [latestElement, setLatestElement] = useState(false);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalVehicles, setTotalVehicles] = useState(0);
+  const [statusCount, setStatusCount] = useState<StatusCounts>();
 
-  const sizePage = 12;
-
-  const vehicles = [
-    {
-      "brand": "Renault",
-      "model": "Kwid",
-      "year": "2020",
-      "plate": "AAA-2345",
-      "vehicle_code": "VC2020BMW",
-      "image_perfil": "../../assets/images/kwid.jpg",
-      "internal_image": {
-        "id": 1,
-        "frontImage": "assets/images/front_image6.jpg",
-        "leftImage": "assets/images/left_image6.jpg",
-        "rearImage": "assets/images/rear_image6.jpg",
-        "rightImage": "assets/images/right_image6.jpg"
-      },
-      "external_image": {
-        "id": 6,
-        "frontImage": "assets/images/external_front_image6.jpg",
-        "leftImage": "assets/images/external_left_image6.jpg",
-        "rearImage": "assets/images/external_rear_image6.jpg",
-        "rightImage": "assets/images/external_right_image6.jpg"
-      },
-      "maintenance": {
-        "id": 40,
-        "date_maintenance": null,
-        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
-        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
-        "observation": "Verificação de freios",
-        "status": "em dia"
-      },
-      "fuel": {
-        "id": null,
-        "fuel_type": null,
-        "km": null,
-        "latest_fuel": null,
-        "litter": 0,
-        "price": 0
-      },
-      "vehicle_characteristic": {
-        "id": 1,
-        "vehicleType": "Carro",
-        "color": "Amarelo",
-        "chassiNumber": "9BG116GW04C400003",
-        "currentKm": "30000",
-        "avgConsume": 13.2,
-        "engineLiter": 1.8,
-        "fuelType": "Gasolina",
-        "renavam": "67890123456",
-        "status": true
-      },
-      "business": {
-        "id": 1,
-        "name": "Transporte Rápido Ltda",
-        "cnpj": "12345678000101",
-        "phone": "(48) 98765-4321",
-        "created": "2023-01-15T03:00:00.000+00:00"
-      }
-    },
-    {
-      "brand": "Renault",
-      "model": "Kwid",
-      "year": "2020",
-      "plate": "PQR-0000",
-      "vehicle_code": "VC2020BMW",
-      "image_perfil": "../../assets/images/kwid.jpg",
-      "internal_image": {
-        "id": 6,
-        "frontImage": "assets/images/front_image6.jpg",
-        "leftImage": "assets/images/left_image6.jpg",
-        "rearImage": "assets/images/rear_image6.jpg",
-        "rightImage": "assets/images/right_image6.jpg"
-      },
-      "external_image": {
-        "id": 6,
-        "frontImage": "assets/images/external_front_image6.jpg",
-        "leftImage": "assets/images/external_left_image6.jpg",
-        "rearImage": "assets/images/external_rear_image6.jpg",
-        "rightImage": "assets/images/external_right_image6.jpg"
-      },
-      "maintenance": {
-        "id": 40,
-        "date_maintenance": null,
-        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
-        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
-        "observation": "Verificação de freios",
-        "status": "em dia"
-      },
-      "fuel": {
-        "id": null,
-        "fuel_type": null,
-        "km": null,
-        "latest_fuel": null,
-        "litter": 0,
-        "price": 0
-      },
-      "vehicle_characteristic": {
-        "id": 2,
-        "vehicleType": "Carro",
-        "color": "Amarelo",
-        "chassiNumber": "9BG116GW04C400003",
-        "currentKm": "30000",
-        "avgConsume": 13.2,
-        "engineLiter": 1.8,
-        "fuelType": "Gasolina",
-        "renavam": "67890123456",
-        "status": true
-      },
-      "business": {
-        "id": 1,
-        "name": "Transporte Rápido Ltda",
-        "cnpj": "12345678000101",
-        "phone": "(48) 98765-4321",
-        "created": "2023-01-15T03:00:00.000+00:00"
-      }
-    },
-    {
-      "brand": "Renault",
-      "model": "Kwid",
-      "year": "2020",
-      "plate": "VVV-0000",
-      "vehicle_code": "VC2020BMW",
-      "image_perfil": "../../assets/images/kwid.jpg",
-      "internal_image": {
-        "id": 6,
-        "frontImage": "assets/images/front_image6.jpg",
-        "leftImage": "assets/images/left_image6.jpg",
-        "rearImage": "assets/images/rear_image6.jpg",
-        "rightImage": "assets/images/right_image6.jpg"
-      },
-      "external_image": {
-        "id": 6,
-        "frontImage": "assets/images/external_front_image6.jpg",
-        "leftImage": "assets/images/external_left_image6.jpg",
-        "rearImage": "assets/images/external_rear_image6.jpg",
-        "rightImage": "assets/images/external_right_image6.jpg"
-      },
-      "maintenance": {
-        "id": 40,
-        "date_maintenance": null,
-        "latest_maintenance": "2024-10-12T03:00:00.000+00:00",
-        "next_maintenance": "2025-09-12T03:00:00.000+00:00",
-        "observation": "Verificação de freios",
-        "status": "em dia"
-      },
-      "fuel": {
-        "id": null,
-        "fuel_type": null,
-        "km": null,
-        "latest_fuel": null,
-        "litter": 0,
-        "price": 0
-      },
-      "vehicle_characteristic": {
-        "id": 3,
-        "vehicleType": "Carro",
-        "color": "Amarelo",
-        "chassiNumber": "9BG116GW04C400003",
-        "currentKm": "30000",
-        "avgConsume": 13.2,
-        "engineLiter": 1.8,
-        "fuelType": "Gasolina",
-        "renavam": "67890123456",
-        "status": true
-      },
-      "business": {
-        "id": 1,
-        "name": "Transporte Rápido Ltda",
-        "cnpj": "12345678000101",
-        "phone": "(48) 98765-4321",
-        "created": "2023-01-15T03:00:00.000+00:00"
+  useEffect(() => {
+    async function getInStorage(){
+      try {
+        const tokenJwt: any= await AsyncStorage.getItem('tokenJwt');
+        const value: any = await AsyncStorage.getItem('companyExternalId');
+        
+        setCompanyExternalId(value);
+        setToken(tokenJwt);
+      } catch (error) {
+        console.log("AsyncStorage error todos: " + error);
       }
     }
-  ]
+    getInStorage();
+  }, []);
 
-  function renderFooterFlatList(){
-          if(!latestElement) return null;
+  useEffect( () => {
+      getRecentVehicles();
+      getStatusCount();
+  }, [token, companyExternalId]);
+
+
+  async function getStatusCount() {
+    try {
+
+      console.log("Id: " + companyExternalId);
+      console.log("Token: " + token);
+
+      let response = await api.get(`/vehicles/${companyExternalId}/status`, {
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      let status: StatusCounts = response.data;
+
+      setStatusCount(status);
+
+      //setLoading(false);
+      //setNotFoundVehicles(false);
       
-          return(
-            <View style={styles.latestElement}>
-              <ActivityIndicator
-              size="large" color={colors.primary.main} 
-              style={{ marginTop: 20, marginBottom: 20 }}
-              />
-            </View>
-          );
+    } catch (error) {
+      console.log("Caiu em error");
+    }
+  }
+
+  async function getRecentVehicles(){
+    try {
+
+      console.log("Id: " + companyExternalId);
+      console.log("Token: " + token);
+
+      let response = await api.get(`/vehicles/${companyExternalId}/recent`, {
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      let listVehicles: Vehicles[] = response.data;
+
+      setVehicles(listVehicles);
+
+      setLoading(false);
+      setNotFoundVehicles(false);
+
+      console.log(vehicles);
+
+    } catch (error) {
+      console.log("Caiu em error");
+      setLoading(false);
+      setNotFoundVehicles(true);
+      setMessage("Nenhum veículo cadastrado.")
+      console.log("Error: " + error);
+    }
   }
 
   return(
@@ -234,10 +139,10 @@ export default function HomeScreen({ navigation }: Props) {
       
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
           <View style={styles.infosContainer} >
-              <InfoCard icon="car" amount="50" title="Veículos Ativos" color={colors.icon.green}/>
-              <InfoCard icon="wrench" amount="50" title="Em Manutenção" color={colors.icon.yellow}/>
-              <InfoCard icon="alert" amount="50" title="Em Alerta" color={colors.icon.red}/>
-              <InfoCard icon="alert" amount="50" title="Test" color={colors.icon.red}/>
+              <InfoCard icon="car" amount={statusCount?.active ?? 50} title="Veículos Ativos" color={colors.icon.green}/>
+              <InfoCard icon="wrench" amount={statusCount?.maintenance ?? 50} title="Em Manutenção" color={colors.icon.yellow}/>
+              <InfoCard icon="alert" amount={statusCount?.alert ?? 50} title="Em Alerta" color={colors.icon.red}/>
+              <InfoCard icon="alert" amount={statusCount?.maintenance ?? 50} title="Em uso" color={colors.icon.red}/>
           </View>
         </ScrollView>
   
@@ -271,10 +176,9 @@ export default function HomeScreen({ navigation }: Props) {
 
           <FlatList 
           data={vehicles}
-          keyExtractor={ item => String(item.vehicle_characteristic.id)}
+          keyExtractor={ item => String(item.id)}
           renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
           onEndReachedThreshold={1} 
-          ListFooterComponent={renderFooterFlatList}
           style={styles.list}
           />
         </View>

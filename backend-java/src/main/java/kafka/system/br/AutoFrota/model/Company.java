@@ -24,9 +24,9 @@ public class Company {
     @JoinColumn(name = "company_id")
     private Long id;
 
+    @UuidGenerator(style = UuidGenerator.Style.AUTO)
     @Column(name = "external_id", nullable = false, unique = true, updatable = false)
-    @UuidGenerator
-    private UUID externalId;
+    private String externalId;
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -141,11 +141,11 @@ public class Company {
         this.login = login;
     }
 
-    public UUID getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public void setExternalId(UUID externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 }

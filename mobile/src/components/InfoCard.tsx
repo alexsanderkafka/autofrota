@@ -13,7 +13,7 @@ import { colors } from '../theme';
 
 interface Props{
     icon: string;
-    amount: string;
+    amount: number;
     title: string;
     color: string;
 }

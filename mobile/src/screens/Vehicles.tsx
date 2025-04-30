@@ -21,6 +21,20 @@ interface Props{
   navigation: any;
 }
 
+interface Vehicles {
+  id: number;
+  plate: string;
+  brand: string;
+  model: string;
+  typeFuel: string;
+  km: number;
+  category: string;
+  activate: boolean;
+  vehicle_image_id: number;
+  company_id: number;
+  vehicle_status_id: number;
+}
+
 export default function Vehicles( {navigation}: Props ) {
 
     const [vehicles, setVehicles] = useState<any[]>([]);
@@ -28,7 +42,8 @@ export default function Vehicles( {navigation}: Props ) {
     const [latestElement, setLatestElement] = useState(false);
 
     const [token, setToken] = useState('');
-    const [businessId, setId] = useState('');
+    const [companyExternalId, setCompanyExternalId] = useState<string>('');
+    const [businessId] = useState('');
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState("todos");
     const [notFoundVehicles, setNotFoundVehicles] = useState(false);
@@ -43,9 +58,9 @@ export default function Vehicles( {navigation}: Props ) {
         async function getInStorage(){
           try {
             const tokenJwt: any= await AsyncStorage.getItem('tokenJwt');
-            const value: any = await AsyncStorage.getItem('businessId');
+            const value: any = await AsyncStorage.getItem('companyId');
             
-            setId(value);
+            setCompanyExternalId(value);
             setToken(tokenJwt);
           } catch (error) {
             console.log("AsyncStorage error todos: " + error);
@@ -55,7 +70,7 @@ export default function Vehicles( {navigation}: Props ) {
     }, []);
 
     useEffect( () => {
-        getAllVehicles();
+        getStatusVehicles(selected);
     }, [token, businessId]);
 
     function renderFooterFlatList(){
@@ -83,46 +98,46 @@ export default function Vehicles( {navigation}: Props ) {
     
         setPage(page + 1);
     
-        if(selected === 'todos'){
-          await getAllVehicles();
-        }else{
-          await getStatusVehicles();
-        }
+        getStatusVehicles(selected);
     }
 
-    async function getAllVehicles(){
-        try {
-    
-          let response = await api.get(`/vehicles/${businessId}?page=${page}`, {
-            headers:{
-              Authorization: `Bearer ${token}`
-            }
-          });
-    
-          console.log(response.data.hasOwnProperty("_embedded"));
-    
-          if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
-    
-          setVehicles([...vehicles, ...response.data._embedded.vehicleDTOList]);
-    
-          setTotalPages(response.data.page.totalPages);
-          setLoading(false);
-          setNotFoundVehicles(false);
-          setTotalVehicles(response.data.page.totalElements);
+    async function getStatusVehicles(status: string){
+      try {
 
-          console.log(Vehicles);
+        console.log("Status: ", status);
     
-        } catch (error) {
-          console.log("Caiu em error");
-          setLoading(false);
-          setNotFoundVehicles(true);
-          setMessage("Nenhum veículo cadastrado.")
-          console.log("Error: " + error);
-        }
-    }
+        let response = await api.get(`/vehicles/${companyExternalId}/active?page=${page}&direction=desc`, {
+          headers:{
+            Authorization: `Bearer ${token}`
+          }
+        });
 
-    async function getStatusVehicles(){
+        console.log(response.data)
 
+        let listVehicles: Vehicles[] = response.data._embedded.vehicleDTOList;
+
+        console.log("Vehicles: ", listVehicles);
+
+  
+        //console.log(response.data.hasOwnProperty("_embedded"));
+        //if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
+  
+        setVehicles([...vehicles, ...listVehicles]);
+  
+        setTotalPages(response.data.page.totalPages);
+        setLoading(false);
+        setNotFoundVehicles(false);
+        setTotalVehicles(response.data.page.totalElements);
+
+        console.log(Vehicles);
+  
+      } catch (error) {
+        console.log("Caiu em error");
+        setLoading(false);
+        setNotFoundVehicles(true);
+        setMessage("Nenhum veículo cadastrado.")
+        console.log("Error: " + error);
+      }
     }
 
 

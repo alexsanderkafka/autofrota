@@ -22,9 +22,9 @@ export default function VehicleListTile({ data, navigation}: Props){
     //console.log(data);
 
     //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
-    var nextDate = new Date(data.maintenance.next_maintenance).toLocaleDateString('pt-BR');
+    var nextDate = new Date("2025-09-12T03:00:00.000+00:00").toLocaleDateString('pt-BR');
 
-    let image = imageMap[data.image_perfil] || require("../../assets/images/gol.jpg");
+    let image = require("../../assets/images/gol.jpg"); //imageMap[data.image_perfil] ||
 
     const imageKm = require("../../assets/icons/km.png");
 
@@ -37,7 +37,7 @@ export default function VehicleListTile({ data, navigation}: Props){
 
             <View style={styles.infoVehicle}>
               <Text style={styles.plate}>{data.plate}</Text>
-              <Text style={styles.vehicleBrand}>Fiat Mobi</Text>
+              <Text style={styles.vehicleBrand}>{data.brand}</Text>
               
               <View style={styles.alertContainer}>
                 <View style={styles.alertIcon}></View>
@@ -49,7 +49,7 @@ export default function VehicleListTile({ data, navigation}: Props){
               <View style={styles.kmContainer}>
                 <Image source={imageKm} style={styles.imageKm} />
 
-                <Text style={styles.textIcon}>79.000km</Text>
+                <Text style={styles.textIcon}>{data.km}km</Text>
 
               </View>
 

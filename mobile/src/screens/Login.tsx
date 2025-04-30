@@ -3,6 +3,7 @@ import * as Animatable from 'react-native-animatable';
 import api from '../service/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode";
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { 
@@ -101,23 +102,35 @@ export default function Login({ navigation }: Props) {
   async function login(){
     let resultVerify = verifyFields();
 
+    console.log("Antes do 200 OK");
+
     if(resultVerify){
+
+      console.log("Verificado com sucesso");
+
       try{
+
+        console.log("Email: " + email);
+        console.log("Senha: " + password);
+        
         let response = await api.post('/auth/signin', {
           email: email,
           password: password
         });
 
-        if(response.status === 200){        
+        if(response.status === 200){ 
+          console.log("Login realizado com sucesso");
+
           let tokenJwt = response.data.accessToken;
-          let id = String(response.data.id);
+          let externalId = response.data.externalId;
         
           AsyncStorage.setItem("tokenJwt", tokenJwt);
-          AsyncStorage.setItem('businessId', id)
+          AsyncStorage.setItem('companyExternalId', externalId)
 
           navigation.navigate('BottomNavigation');
         }
       }catch(error: any){  
+        console.log(error)
         let currentStatus = error.response.status;
 
         if(currentStatus === 401){
