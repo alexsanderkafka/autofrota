@@ -1,9 +1,10 @@
 package kafka.system.br.AutoFrota.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public record TokenDTO(
-        Long id,
+        UUID externalId,
         String email,
         Boolean authenticated,
         Date created,

@@ -1,6 +1,11 @@
 package kafka.system.br.AutoFrota.repository;
 
+import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
+import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
 import kafka.system.br.AutoFrota.model.Maintenance;
+
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,33 +14,106 @@ import org.springframework.data.repository.query.Param;
 
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> {
 
-    @Query("""
-            SELECT m FROM Maintenance m
-            WHERE m.vehicle.business.id = :id
-            """)
-    Page<Maintenance> findAllVehiclesByBusinessId(@Param("id") Long id, Pageable pageable);
 
-    @Query("""
-            SELECT m FROM Maintenance m
-            WHERE m.vehicle.id = :id
+        @Query("""
+            SELECT 
+                SUM(s.totalValue) AS totalExpense
+            FROM Maintenance m
+                JOIN Services s ON m.id = s.maintenance.id
+            WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
             """)
-    Page<Maintenance> findAllMaintenanceByVehicleId(@Param("id") Long id, Pageable pageable);
+        Double findTotalExpensesWithMaintenanceByCompany(@Param("externalId") String externalId);
 
-    @Query("""
-            SELECT m FROM Maintenance m
-            WHERE m.vehicle.id = :id
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
             AND
-            m.id = (SELECT MAX(m2.id) FROM Maintenance m2 WHERE m2.vehicle.id = :id)
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = false
+            AND
+                m.scheduled = true
+            ORDER BY m.date DESC
+            LIMIT 1
             """)
-    Maintenance findOneLatestMaintenance(@Param("id") Long id);
+        Maintenance findScheduledMaintenanceByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
 
-    @Query("""
-            SELECT m FROM Maintenance m
-            WHERE m.vehicle.id = :id
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
             AND
-            m.id = (SELECT MAX(m2.id) FROM Maintenance m2 WHERE m2.vehicle.id = :id)
+                m.vehicle.id = :vehicleId
             AND
-            m.status = :status
+                m.done = true
+            ORDER BY m.date DESC
+            LIMIT 1
             """)
-    Maintenance findOneLatestStatusMaintenance(@Param("id") Long id, @Param("status") String status);
+        Maintenance findLastMaintenanceByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = false
+            AND
+                m.scheduled = true
+            """)
+        Page<Maintenance> findAllScheduledMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, Pageable pageable);
+
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = true
+            """)
+        Page<Maintenance> findAllDoneMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, Pageable pageable);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = true
+            AND
+                m.date >= :startDate
+            AND
+                m.date <= :endDate
+            """)
+        Page<Maintenance> findAllFilterDoneMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.scheduled = true
+            AND
+                m.done = false
+            AND
+                m.date >= :startDate
+            AND
+                m.date <= :endDate
+            """)
+        Page<Maintenance> findAllFilterScheduledMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
+
+
 }

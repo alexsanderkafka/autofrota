@@ -3,20 +3,27 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
+import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.model.Maintenance;
+import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
 import kafka.system.br.AutoFrota.repository.VehicleRepository;
+import kafka.system.br.AutoFrota.utils.TypeVehicleStatusEnum;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class VehicleService {
@@ -33,57 +40,47 @@ public class VehicleService {
     @Autowired
     private FuelRepository fuelRepository;
 
-    public PagedModel<EntityModel<VehicleDTO>> getAllVehiclesByBusinessId(Pageable pageable, Long id){
+    public Stream<VehicleDTO> searchRecentVehiclesByCompany(String userId){
 
-        Page<VehicleDTO> vehiclePage = vehicleRepository.findAllVehiclesByBusinessId(id, pageable).map(v -> {
-            //var maintenanceList =  maintenanceRepository.findAllMaintenanceVehicle(v.getId()).stream().map(MaintenanceDTO::new);
+        //Verificar se realmenter esse id existe
 
-            var maintenance = maintenanceRepository.findOneLatestMaintenance(v.getId());
-            MaintenanceDTO currentMaintenance;
+        Stream<VehicleDTO> currentVehicles = vehicleRepository.findRecentVehiclesByCompany(userId).stream().<VehicleDTO>map(VehicleDTO::new);
 
-            if(maintenance != null){
-                currentMaintenance = new MaintenanceDTO(maintenance);
-            }else{
-                currentMaintenance = new MaintenanceDTO();
-            }
-
-            var fuel = fuelRepository.findOneLatestFuel(v.getId());
-            FuelDTO latestFuel;
-
-            if (fuel != null) {
-                latestFuel = new FuelDTO(fuel);
-            } else {
-                System.out.println("Fuel não encontrado para o veículo com id: " + v.getId());
-                latestFuel = new FuelDTO();
-            }
-
-            return new VehicleDTO(v, currentMaintenance, latestFuel);
-        });
-
-        return pagedResourcesAssembler.toModel(vehiclePage);
+        return currentVehicles;
     }
 
-    public PagedModel<EntityModel<VehicleDTO>> getAllVehiclesWithStatusMaintenance(Pageable pageable, Long id, String status){
+    public VehicleStatusDTO countByStatus(String userId) {
 
-        Page<VehicleDTO> vehiclePage = vehicleRepository.findAllVehiclesDelayedMaintenance(id, status, pageable).map(v -> {
-            System.out.println("Status: " + status);
+        //Verificar se realmenter esse id existe
 
-            var currentMaintenance = new MaintenanceDTO(maintenanceRepository.findOneLatestMaintenance(v.getId()));
+        VehicleStatusDTO result = vehicleRepository.findVehicleCountByStatus(userId);
 
-            var fuel = fuelRepository.findOneLatestFuel(v.getId());
-            FuelDTO latestFuel;
+        return result;
+    }
 
-            if (fuel != null) {
-                latestFuel = new FuelDTO(fuel);
-            } else {
-                System.out.println("Fuel não encontrado para o veículo com id: " + v.getId());
-                latestFuel = new FuelDTO(new Fuel());
-            }
+    public PagedModel<EntityModel<VehicleDTO>> searchAllVehiclesByCompany(Pageable pageable, String userId, String status) {
 
-            return new VehicleDTO(v, currentMaintenance, latestFuel);
-        });
+        //Verificar se realmenter esse id existe
+        //Verificar o status válido
 
-        return pagedResourcesAssembler.toModel(vehiclePage);
+        Page<VehicleDTO> result = vehicleRepository.findAllVehiclesByCompany(userId, status, pageable).map(VehicleDTO::new);
+
+
+        return pagedResourcesAssembler.toModel(result);
+    }
+
+    public VehicleDTO getInfoVehicle(String externalId, Long vehicleId) {
+        
+        //Verificar se realmenter esse id existe
+        //Precisa verificar o null
+
+        Vehicle result = vehicleRepository.findInfosByVehicleIdAndCompany(externalId, vehicleId);//.orsElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        VehicleDTO vehicleDto = new VehicleDTO(result);
+
+        return vehicleDto;
     }
 
 }
+
+

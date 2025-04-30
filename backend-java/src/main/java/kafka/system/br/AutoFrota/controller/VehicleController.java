@@ -15,37 +15,62 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getAllVehiclesByBusinessId(
+    @GetMapping("/{companyId}/{vehicleStatus}")
+    public ResponseEntity<?> getAllVehiclesByCompany(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            @PathVariable(value = "id") Long id
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "vehicleStatus") String vehicleStatus,
+            @PathVariable(value = "companyId") String companyId
     ){
+    
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
 
-        var result = vehicleService.getAllVehiclesByBusinessId(pageable, id);
+        var result = vehicleService.searchAllVehiclesByCompany(pageable, companyId, vehicleStatus);
 
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/{status}/{id}")
-    public ResponseEntity<?> getAllVehiclesWithStatusMaintenanceByBusinessId(
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "12") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            @PathVariable(value = "id") Long id,
-            @PathVariable(value = "status") String status
+
+    @GetMapping("/{companyId}/recent")
+    public ResponseEntity<?> searchRecentVehiclesByCompany(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId
     ){
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
+        var vehicles = vehicleService.searchRecentVehiclesByCompany(companyId);
 
-        var result = vehicleService.getAllVehiclesWithStatusMaintenance(pageable, id, status);
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(vehicles);
     }
+
+    @GetMapping("/{companyId}/status")
+    public ResponseEntity<?> countVehiclesByVehicleStatusByCompany(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId
+    ){
+
+        var countStatus = vehicleService.countByStatus(companyId);
+
+        return ResponseEntity.ok(countStatus);
+    }
+
+    @GetMapping("/{companyId}/{vehicleId}/infos")
+    public ResponseEntity<?> getInfoVehicleByVehicleId(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable(value = "companyId") String companyId,
+            @PathVariable(value = "vehicleId") Long vehicleId
+    ){
+
+        var vehicle = vehicleService.getInfoVehicle(companyId,vehicleId);
+
+        return ResponseEntity.ok(vehicle);
+    }
+    
+
+
+    //Falta criar o endpoint POST para salvar um vehicle
 }
 

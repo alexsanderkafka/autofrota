@@ -2,8 +2,9 @@ package kafka.system.br.AutoFrota.model;
 
 import jakarta.persistence.*;
 
+
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 
 @Table(name = "maintenance")
 @Entity(name = "Maintenance")
@@ -11,36 +12,37 @@ public class Maintenance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "maintenance_id")
     private Long id;
 
-    @Column(name = "latest_maintenance", nullable = false)
-    private Date latestMaintenance;
+    @Column(name = "date", nullable = false)
+    private Date date;
 
-    @Column(name = "date_next_maintenance", nullable = false)
-    private Date dateNextMaintenance;
+    @Column(name = "done", nullable = false)
+    private boolean done;
 
-    @Column(name = "date_maintenance", nullable = true)
-    private Date dateMaintenance;
-
-    @Column(name = "observation", nullable = false, length = 255)
+    @Column(name = "observation", nullable = false)
     private String observation;
 
-    @Column(name = "status", nullable = false, length = 255)
-    private String status;
+    @Column(name = "scheduled", nullable = false)
+    private boolean scheduled;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_identification_id")
-    private VehicleIdentification vehicle;
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
+    @OneToMany(mappedBy = "maintenance", fetch = FetchType.LAZY)
+    private List<Services> services;
 
     public Maintenance() {
     }
 
-    public Maintenance(Long id, Date latestMaintenance, Date dateMaintenance, String observation, String status, VehicleIdentification vehicle) {
+    public Maintenance(Long id, Date date, boolean done, String observation, boolean scheduled, Vehicle vehicle) {
         this.id = id;
-        this.latestMaintenance = latestMaintenance;
-        this.dateMaintenance = dateMaintenance;
+        this.date = date;
+        this.done = done;
         this.observation = observation;
-        this.status = status;
+        this.scheduled = scheduled;
         this.vehicle = vehicle;
     }
 
@@ -52,28 +54,20 @@ public class Maintenance {
         this.id = id;
     }
 
-    public Date getLatestMaintenance() {
-        return latestMaintenance;
+    public Date getDate() {
+        return date;
     }
 
-    public void setLatestMaintenance(Date latestMaintenance) {
-        this.latestMaintenance = latestMaintenance;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Date getDateNextMaintenance() {
-        return dateNextMaintenance;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setDateNextMaintenance(Date dateNextMaintenance) {
-        this.dateNextMaintenance = dateNextMaintenance;
-    }
-
-    public Date getDateMaintenance() {
-        return dateMaintenance;
-    }
-
-    public void setDateMaintenance(Date dateMaintenance) {
-        this.dateMaintenance = dateMaintenance;
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public String getObservation() {
@@ -84,32 +78,27 @@ public class Maintenance {
         this.observation = observation;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isScheduled() {
+        return scheduled;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setScheduled(boolean scheduled) {
+        this.scheduled = scheduled;
     }
 
-    public VehicleIdentification getVehicle() {
+    public Vehicle getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(VehicleIdentification vehicle) {
+    public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Maintenance that = (Maintenance) o;
-        return Objects.equals(id, that.id) && Objects.equals(latestMaintenance, that.latestMaintenance) && Objects.equals(dateNextMaintenance, that.dateNextMaintenance) && Objects.equals(dateMaintenance, that.dateMaintenance) && Objects.equals(observation, that.observation) && Objects.equals(status, that.status) && Objects.equals(vehicle, that.vehicle);
+    public List<Services> getServices() {
+        return services;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, latestMaintenance, dateNextMaintenance, dateMaintenance, observation, status, vehicle);
+    public void setServices(List<Services> services) {
+        this.services = services;
     }
 }

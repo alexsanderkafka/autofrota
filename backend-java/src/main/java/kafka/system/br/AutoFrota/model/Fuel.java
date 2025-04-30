@@ -1,46 +1,51 @@
 package kafka.system.br.AutoFrota.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
-import java.util.Objects;
 
 @Table(name = "fuel")
 @Entity(name = "Fuel")
 public class Fuel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "fuel_id")
     private Long id;
 
-    @Column(name = "latest_fuel", nullable = false)
-    private Date latestFuel;
+    @Column(name = "liters", nullable = false)
+    private float liters;
 
-    @Column(name = "litter", nullable = false)
-    private float litter;
+    @Column(name = "total_value", nullable = false)
+    private float totalValue;
 
-    @Column(name = "price", nullable = false)
-    private float price;
+    @Column(name = "km", nullable = false)
+    private Integer km;
 
-    @Column(name = "km", nullable = false, length = 255)
-    private String km;
+    @Column(name = "date", nullable = false)
+    private Date date;
 
-    @Column(name = "fuel_type", nullable = false, length = 100)
-    private String fuelType;
+    @Column(name = "type", nullable = false, length = 50)
+    private String type;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_identification_id")
-    private VehicleIdentification vehicle;
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
 
     public Fuel() {
     }
 
-    public Fuel(Long id, Date latestFuel, float litter, float price, String km, String fuelType, VehicleIdentification vehicle) {
+    public Fuel(Long id, float liters, float totalValue, Integer km, Date date, String type, Vehicle vehicle) {
         this.id = id;
-        this.latestFuel = latestFuel;
-        this.litter = litter;
-        this.price = price;
+        this.liters = liters;
+        this.totalValue = totalValue;
         this.km = km;
-        this.fuelType = fuelType;
+        this.date = date;
+        this.type = type;
         this.vehicle = vehicle;
     }
 
@@ -52,64 +57,51 @@ public class Fuel {
         this.id = id;
     }
 
-    public Date getLatestFuel() {
-        return latestFuel;
+    public float getLiters() {
+        return liters;
     }
 
-    public void setLatestFuel(Date latestFuel) {
-        this.latestFuel = latestFuel;
+    public void setLiters(float liters) {
+        this.liters = liters;
     }
 
-    public float getLitter() {
-        return litter;
+    public float getTotalValue() {
+        return totalValue;
     }
 
-    public void setLitter(float litter) {
-        this.litter = litter;
+    public void setTotalValue(float totalValue) {
+        this.totalValue = totalValue;
     }
 
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getKm() {
+    public Integer getKm() {
         return km;
     }
 
-    public void setKm(String km) {
+    public void setKm(Integer km) {
         this.km = km;
     }
 
-    public String getFuelType() {
-        return fuelType;
+    public Date getDate() {
+        return date;
     }
 
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public VehicleIdentification getVehicle() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Vehicle getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(VehicleIdentification vehicle) {
+    public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Fuel fuel = (Fuel) o;
-        return Float.compare(litter, fuel.litter) == 0 && Float.compare(price, fuel.price) == 0 && Objects.equals(id, fuel.id) && Objects.equals(latestFuel, fuel.latestFuel) && Objects.equals(km, fuel.km) && Objects.equals(fuelType, fuel.fuelType) && Objects.equals(vehicle, fuel.vehicle);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, latestFuel, litter, price, km, fuelType, vehicle);
     }
 }

@@ -1,0 +1,4 @@
+CREATE TABLE VehicleImage(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    url TEXT NOT NULL
+);

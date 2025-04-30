@@ -1,33 +1,61 @@
 package kafka.system.br.AutoFrota.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import kafka.system.br.AutoFrota.model.*;
+import jakarta.validation.constraints.Null;
+import kafka.system.br.AutoFrota.model.Vehicle;
 
-import java.util.List;
-import java.util.stream.Stream;
+//import kafka.system.br.AutoFrota.model.*;
+
+//import java.util.List;
+//import java.util.stream.Stream;
 
 public record VehicleDTO(
+        @Null
+        Long id,
+        @Null
         String plate,
+        @Null
         String brand,
+        @Null
         String model,
-        String year,
-        @JsonProperty("image_perfil")
-        String imagePerfil,
-        @JsonProperty("vehicle_code")
-        String vehicleCode,
-        @JsonProperty("vehicle_characteristic")
-        VehicleCharacteristic vehicleCharacteristic,
-        @JsonProperty("external_image")
-        ExternalImage externalImage,
-        @JsonProperty("internal_image")
-        InternalImage internalImage,
-        Business business,
-        @JsonProperty("maintenance")
-        MaintenanceDTO maintenanceDTO,
-        @JsonProperty("fuel")
-        FuelDTO fuel
+        @Null
+        String typeFuel,
+        @Null
+        Long km,
+        @Null
+        String category,
+        @Null
+        boolean activate,
+        @Null
+        @JsonProperty("vehicle_image_id")
+        Long vehicleImageId,
+        @Null
+        @JsonProperty("company_id")
+        Long companyId,
+        @Null
+        @JsonProperty("vehicle_status_id")
+        Long vehicleStatusId
 ) {
 
+
+    public VehicleDTO(Vehicle vehicle){
+        this(
+                vehicle.getId(),
+                vehicle.getPlate(),
+                vehicle.getBrand(),
+                vehicle.getModel(),
+                vehicle.getTypeFuel(),
+                vehicle.getKm(),
+                vehicle.getCategory(),
+                vehicle.isActive(),
+                vehicle.getVehicleImage().getId(),
+                vehicle.getCompany().getId(),
+                vehicle.getVehicleStatus().getId()
+        );
+    }
+
+
+    /*
     public VehicleDTO(VehicleIdentification vehicle, MaintenanceDTO maintenanceDto, FuelDTO fuelDto){
         this(
                 vehicle.getPlate(),
@@ -43,6 +71,6 @@ public record VehicleDTO(
                 maintenanceDto,
                 fuelDto
         );
-    }
+    }*/
 }
 
