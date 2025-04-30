@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef} from 'react';
 import * as Animatable from 'react-native-animatable';
-import api from '../service/api';
+import api from '../../service/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode";
 
@@ -22,7 +22,7 @@ import {
 import {
   colors,
   typography
-} from '../theme';
+} from '../../theme';
 
 interface Props {
   navigation: any;
@@ -173,7 +173,7 @@ export default function Login({ navigation }: Props) {
     <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-        <Image source={require('../../assets/logo/image.jpg')} style={styles.logoImage}/>
+        <Image source={require('../../../assets/logo/image.jpg')} style={styles.logoImage}/>
 
         <Text style={styles.welcomeTitle}>Bem-vindo</Text>
         <Text style={styles.welcomeDescription}>Faça o login para continuar</Text>

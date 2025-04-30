@@ -34,14 +34,14 @@ export default function Vehicle({ navigation, route }: Props) {
 
   const data = route.params;
 
-  var vehicleId = data.vehicle_characteristic.id;
+  var vehicleId = data.id;
 
   console.log(vehicleId);
 
-  var dateNextMaintenance = new Date(data.maintenance.next_maintenance).toLocaleDateString('pt-BR');
-  var dateLatestFuel = new Date(data.fuel.latest_fuel).toLocaleDateString('pt-BR');
+  //var dateNextMaintenance = new Date(data.maintenance.next_maintenance).toLocaleDateString('pt-BR');
+  //var dateLatestFuel = new Date(data.fuel.latest_fuel).toLocaleDateString('pt-BR');
 
-  let image = imageMap[data.image_perfil] || require("../../assets/images/gol.jpg");
+  let image = data.vehicleImage.url;
 
   function handleDriverButton() {
     
@@ -71,13 +71,13 @@ export default function Vehicle({ navigation, route }: Props) {
         duration: 300,
         useNativeDriver: true,
     }).start();
-}
+  }
 
   return (
     <View style={styles.container}>
         <ScrollView>
           <Image
-            source={image}
+            source={{ uri:image }}
             style={styles.img}
           />
 

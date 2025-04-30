@@ -24,14 +24,16 @@ export default function VehicleListTile({ data, navigation}: Props){
     //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
     var nextDate = new Date("2025-09-12T03:00:00.000+00:00").toLocaleDateString('pt-BR');
 
-    let image = require("../../assets/images/gol.jpg"); //imageMap[data.image_perfil] ||
+    const image = data.vehicleImage.url; // resolver o problema de uma imagem que não carrega
+
+    console.log(image);
 
     const imageKm = require("../../assets/icons/km.png");
 
     return(
         <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', data)}>
             <Image
-            source={image}
+            source={{ uri: image }}
             style={styles.img}
             />
 

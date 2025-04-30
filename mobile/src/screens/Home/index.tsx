@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../service/api';
+import api from '../../service/api';
 import {Picker} from '@react-native-picker/picker';
 import Icon from 'react-native-ico-material-design';
 
@@ -15,11 +15,11 @@ import {
   ScrollView
 } from 'react-native';
 
-import { colors } from '../theme';
-import InfoCard from '../components/InfoCard';
-import ActionButton from '../components/ActionButton';
+import { colors } from '../../theme';
+import InfoCard from '../../components/InfoCard';
+import ActionButton from '../../components/ActionButton';
 
-import VehicleListTile from '../components/VehicleListTile';
+import VehicleListTile from '../../components/VehicleListTile';
 
 interface Props{
   navigation: any;
@@ -82,9 +82,6 @@ export default function HomeScreen({ navigation }: Props) {
   async function getStatusCount() {
     try {
 
-      console.log("Id: " + companyExternalId);
-      console.log("Token: " + token);
-
       let response = await api.get(`/vehicles/${companyExternalId}/status`, {
         headers:{
           Authorization: `Bearer ${token}`
@@ -105,9 +102,6 @@ export default function HomeScreen({ navigation }: Props) {
 
   async function getRecentVehicles(){
     try {
-
-      console.log("Id: " + companyExternalId);
-      console.log("Token: " + token);
 
       let response = await api.get(`/vehicles/${companyExternalId}/recent`, {
         headers:{
@@ -172,8 +166,6 @@ export default function HomeScreen({ navigation }: Props) {
 
         <View style={styles.recentVehiclesContainer}>
           <Text style={[styles.titles, {paddingHorizontal:15}]}>Veículos recentes</Text>
-
-
           <FlatList 
           data={vehicles}
           keyExtractor={ item => String(item.id)}
