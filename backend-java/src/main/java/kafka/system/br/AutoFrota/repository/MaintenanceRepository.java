@@ -17,9 +17,8 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
 
         @Query("""
             SELECT 
-                SUM(s.totalValue) AS totalExpense
+                SUM(m.totalValue) AS totalExpense
             FROM Maintenance m
-                JOIN Services s ON m.id = s.maintenance.id
             WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
             """)
         Double findTotalExpensesWithMaintenanceByCompany(@Param("externalId") String externalId);
@@ -35,7 +34,7 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
                 m.done = false
             AND
                 m.scheduled = true
-            ORDER BY m.date DESC
+            ORDER BY m.date ASC
             LIMIT 1
             """)
         Maintenance findScheduledMaintenanceByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);

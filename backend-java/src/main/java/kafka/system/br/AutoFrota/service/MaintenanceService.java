@@ -4,6 +4,7 @@ import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
+import kafka.system.br.AutoFrota.exception.MaintenanceNotFoundException;
 import kafka.system.br.AutoFrota.model.Maintenance;
 import kafka.system.br.AutoFrota.model.Services;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
@@ -56,11 +57,12 @@ public class MaintenanceService {
 
     public MaintenanceDTO getScheduledMaintenance(String companyId, Long vehicleId) {
         //Verificar se realmenter esse id existe
-        //Precisa verificar o null
         //Retorno vazio se não existe
         //Retorno caso o companyId não exista
 
         Maintenance result = maintenanceRepository.findScheduledMaintenanceByVehicleIdAndCompany(companyId, vehicleId);
+
+        if(result == null) throw new MaintenanceNotFoundException("Scheduled maintenance not found for vehicle id: " + vehicleId);
 
         MaintenanceDTO maintenanceDto = new MaintenanceDTO(result);
 
@@ -74,6 +76,8 @@ public class MaintenanceService {
         //Retorno caso o companyId não exista
         
         Maintenance maintenance = maintenanceRepository.findLastMaintenanceByVehicleIdAndCompany(companyId, vehicleId);
+
+        if(maintenance == null) throw new MaintenanceNotFoundException("Maintenance not found for vehicle id: " + vehicleId);
 
         ScheduledMaintenanceDTO scheduledMaintenanceDto = new ScheduledMaintenanceDTO(maintenance);
 

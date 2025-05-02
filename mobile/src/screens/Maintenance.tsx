@@ -342,6 +342,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 10,
         padding: 5,
+        
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 5

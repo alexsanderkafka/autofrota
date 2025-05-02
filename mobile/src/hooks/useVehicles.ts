@@ -53,21 +53,17 @@ export default function useVehicles(selected: string){
 
     async function getStatusVehicles(status: string){
         try {    
+
+            console.log("Get Status Vehicles: " + storage!.companyExternalId);
+
             let response = await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
               headers:{
                 Authorization: `Bearer ${storage!.tokenJwt}`
               }
             });
-    
-        console.log(response.data);
+  
     
         let listVehicles: Vehicles[] = response.data._embedded.vehicleDTOList;
-    
-        console.log("Vehicles: ", listVehicles);
-    
-      
-        //console.log(response.data.hasOwnProperty("_embedded"));
-        //if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
       
         setVehicles([...vehicles, ...listVehicles]);
       

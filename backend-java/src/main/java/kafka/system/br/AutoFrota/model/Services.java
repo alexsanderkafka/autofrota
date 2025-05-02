@@ -26,9 +26,6 @@ public class Services {
     @Column(name = "type", nullable = false, length = 50)
     private String type;
 
-    @Column(name = "total_value", nullable = false)
-    private float totalValue;
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "maintenance_id")
     private Maintenance maintenance;
@@ -36,10 +33,9 @@ public class Services {
     public Services() {
     }
 
-    public Services(Long id, String type, float totalValue, Maintenance maintenance) {
+    public Services(Long id, String type, Maintenance maintenance) {
         this.id = id;
         this.type = type;
-        this.totalValue = totalValue;
         this.maintenance = maintenance;
     }
 
@@ -57,14 +53,6 @@ public class Services {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public float getTotalValue() {
-        return totalValue;
-    }
-
-    public void setTotalValue(float totalValue) {
-        this.totalValue = totalValue;
     }
 
     public Maintenance getMaintenance() {
