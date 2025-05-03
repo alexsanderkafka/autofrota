@@ -1,9 +1,7 @@
-
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import Storage from '../service/storage';
 import api from '../service/api';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 interface LastFuel {
     id: number;

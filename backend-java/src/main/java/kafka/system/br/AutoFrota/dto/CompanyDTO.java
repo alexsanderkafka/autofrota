@@ -11,7 +11,8 @@ public record CompanyDTO(
         String cpf,
         String zipCode,
         String address,
-        String phone
+        String phone,
+        String profileImage
 ) {
     public CompanyDTO(Company company) {
         this(
@@ -21,7 +22,8 @@ public record CompanyDTO(
                 company.getCpf(),
                 company.getZipCode(),
                 company.getAddress(),
-                company.getPhone()
+                company.getPhone(),
+                company.getProfileImage().getUrl()
         );
     }
 }
