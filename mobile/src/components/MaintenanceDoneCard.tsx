@@ -16,10 +16,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 interface MaintenanceCardProps {
     date: string;
     totalValue: number;
-    services: string[];
+    services: any[];
     navigation: any;
-    vehicleId: string;
-
+    vehicleId: number;
+    vehicle: boolean;
 }
 
 export default function MaintenanceCard(props: MaintenanceCardProps) {
@@ -36,14 +36,14 @@ export default function MaintenanceCard(props: MaintenanceCardProps) {
                     <Text>{props.date}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
                     <Text>R$ {props.totalValue}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="wrench" size={24} color={colors.icon.mainBlue} />
@@ -63,11 +63,15 @@ export default function MaintenanceCard(props: MaintenanceCardProps) {
                     ))}
                 </View>
             </View>
-        
-            <TouchableOpacity style={styles.cardButton} onPress={ goToMaintenance }>
-                <Text style={{ color: colors.text.white, fontSize: 13 }}>Manutenções</Text>
-            </TouchableOpacity>
-        
+            
+            {
+                props.vehicle && (
+                    <TouchableOpacity style={styles.cardButton} onPress={ goToMaintenance }>
+                        <Text style={{ color: colors.text.white, fontSize: 13 }}>Manutenções</Text>
+                    </TouchableOpacity>
+                )
+
+            }
         </View>
     );
 }
@@ -78,13 +82,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: colors.primary.white,
         elevation: 2,
-        marginTop: 15,
     },
     row:{
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
         gap: 7,
+        marginVertical: 10
     },
     serviceBoxMade:{
         width: '100%',
@@ -98,7 +102,9 @@ const styles = StyleSheet.create({
 
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 5
+        gap: 5,
+
+        marginBottom: 10
     },
     serviceMade:{
         height: 'auto',
@@ -107,7 +113,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         backgroundColor: colors.primary.main,
         borderRadius: 5,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
     cardButton:{
@@ -117,8 +123,6 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10
+        alignItems: 'center'
     },
-
 });

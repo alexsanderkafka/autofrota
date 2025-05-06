@@ -16,11 +16,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 interface FuelCardProps {
     date: string;
     price: number;
-    km: string;
+    km: number;
     fuelType: string;
     liters: number;
     navigation: any;
     vehicleId: number;
+    screenVehicles: boolean;
 }
 
 export default function FuelCard(props: FuelCardProps) {
@@ -37,38 +38,42 @@ export default function FuelCard(props: FuelCardProps) {
                     <Text>{props.date}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
                     <Text>R$ {props.price}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
                     <Text>{props.km}km</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
                     <Text>{props.fuelType}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                             <Icon name="fuel" size={24} color={colors.icon.mainBlue} />
                             <Text>70L</Text>
                 </View>
             </View>
-        
-            <TouchableOpacity style={styles.cardButton} onPress={ goToFuel }>
-                <Text style={{ color: colors.text.white, fontSize: 13 }}>Abastecimentos</Text>
-            </TouchableOpacity>
+
+            {
+                props.screenVehicles && (
+                    <TouchableOpacity style={styles.cardButton} onPress={ goToFuel }>
+                        <Text style={{ color: colors.text.white, fontSize: 13 }}>Abastecimentos</Text>
+                    </TouchableOpacity>
+                )
+            }
         </View>
     );
 }
@@ -78,14 +83,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderRadius: 5,
         backgroundColor: colors.primary.white,
-        elevation: 2,
-        marginTop: 15,
+        elevation: 2
     },
     row:{
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
         gap: 7,
+        marginVertical: 10
     },
     cardButton:{
         width: '100%',

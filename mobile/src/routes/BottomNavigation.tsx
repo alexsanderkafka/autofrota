@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Vehicles from '../screens/Vehicles';
 import Settings from '../screens/Settings';
-import ReportScreen from '../screens/ReportScreen';
+import ReportScreen from '../screens/Report';
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

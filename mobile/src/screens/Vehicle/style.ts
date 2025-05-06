@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     title:{
       fontSize: 16,
       color: colors.text.primary,
+      marginBottom: 15
     },
     
   
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       backgroundColor: colors.primary.white,
       elevation: 2,
-      marginTop: 15,
       width: '100%',
       height: 'auto',
       padding: 10

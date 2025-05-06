@@ -16,13 +16,13 @@ export default function useStatusCount(): any {
     const [statusCount, setStatusCount] = useState<StatusCount>();
 
     useEffect(() => {
-            async function getInStorage(){
-              const currentStorage: Storage = await Storage.getInstance();
-        
-              setStorage(currentStorage);
-            }
-        
-            getInStorage();
+      async function getInStorage(){
+        const currentStorage: Storage = await Storage.getInstance();
+  
+        setStorage(currentStorage);
+      }
+  
+      getInStorage();
     }, []);
 
     useEffect(() => {

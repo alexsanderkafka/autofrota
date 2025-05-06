@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddNewMaintenance from '../modal/AddNewMaintenance';
 import Checklist from '../modal/CheckList';
 import FuelCard from '../../components/FuelCard';
-import MaintenanceCard from '../../components/DoneMaintenanceCard';
+import MaintenanceCard from '../../components/MaintenanceDoneCard';
 import ScheduledMaintenanceCard from '../../components/ScheduledMaintenanceCard';
 import useLastFuel from '../../hooks/useLastFuel';
 import useLastMaintenance from '../../hooks/useLastMaintenance';
@@ -120,6 +120,7 @@ export default function Vehicle({ navigation, route }: Props) {
                 liters={lastFuel ? lastFuel.volume : '0L'}
                 navigation={navigation}
                 vehicleId={vehicleId}
+                screenVehicles={true}
               />
 
             </View>
@@ -133,6 +134,7 @@ export default function Vehicle({ navigation, route }: Props) {
                 services={lastMaintenance ? lastMaintenance.services : []}
                 navigation={navigation}
                 vehicleId={vehicleId}
+                vehicle={true}
               />
 
             </View>
@@ -145,8 +147,8 @@ export default function Vehicle({ navigation, route }: Props) {
                 observation={nextMaintenance ? nextMaintenance.observation : 'Sem observação'}
                 navigation={navigation}
                 vehicleId={vehicleId}
+                vehicle={true}
               />
-
             </View>
 
             <View style={styles.actionContainer}>

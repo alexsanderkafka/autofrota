@@ -1,7 +1,6 @@
 package kafka.system.br.AutoFrota.repository;
 
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
-import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
 import kafka.system.br.AutoFrota.model.Maintenance;
 
 import java.util.Date;

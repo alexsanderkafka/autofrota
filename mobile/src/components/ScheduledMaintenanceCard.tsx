@@ -17,8 +17,8 @@ interface MaintenanceCardProps {
     date: string;
     observation: string;
     navigation: any;
-    vehicleId: string;
-
+    vehicleId: number;
+    vehicle: boolean;
 }
 
 export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
@@ -35,7 +35,7 @@ export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
                     <Text>{props.date}</Text>
                 </View>
         
-                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>
+                <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
     
         
                 <View style={styles.row}>
@@ -44,13 +44,15 @@ export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
                 </View>
 
                 <Text style={styles.observation}>{ props.observation }</Text>
-        
-                
             </View>
-        
-            <TouchableOpacity style={styles.cardButton} onPress={ goToMaintenance }>
-                <Text style={{ color: colors.text.white, fontSize: 13 }}>Editar</Text>
-            </TouchableOpacity>
+
+            {
+                props.vehicle && (
+                    <TouchableOpacity style={styles.cardButton} onPress={ goToMaintenance }>
+                        <Text style={{ color: colors.text.white, fontSize: 13 }}>Editar</Text>
+                    </TouchableOpacity>
+                )
+            }
         
         </View>
     );
@@ -61,14 +63,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderRadius: 5,
         backgroundColor: colors.primary.white,
-        elevation: 2,
-        marginTop: 15,
+        elevation: 2
     },
     row:{
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
         gap: 7,
+        marginVertical: 10
     },
     cardButton:{
         width: '100%',
@@ -78,11 +80,11 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
     },
     observation:{
         fontSize: 13,
         textAlign: 'justify',
+        marginBottom: 10
     },
 
 });

@@ -2,7 +2,7 @@ package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
-import kafka.system.br.AutoFrota.dto.ScheduledMaintenanceDTO;
+import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
 import kafka.system.br.AutoFrota.exception.MaintenanceNotFoundException;
 import kafka.system.br.AutoFrota.model.Maintenance;
@@ -34,7 +34,7 @@ public class MaintenanceService {
     private PagedResourcesAssembler<MaintenanceDTO> pagedResourcesAssembler;
 
     @Autowired
-    private PagedResourcesAssembler<ScheduledMaintenanceDTO> pagedResourcesAssemblerScheduled;
+    private PagedResourcesAssembler<MaintenanceDoneDTO> pagedResourcesAssemblerDone;
 
     public PagedModel<EntityModel<MaintenanceDTO>> getAllScheduledMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
         //Verificar vehicle id
@@ -45,14 +45,14 @@ public class MaintenanceService {
         return pagedResourcesAssembler.toModel(result);
     }
 
-    public PagedModel<EntityModel<ScheduledMaintenanceDTO>> getAllDoneMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
+    public PagedModel<EntityModel<MaintenanceDoneDTO>> getAllDoneMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
         
         //Verificar vehicle id
         //Verificar retorno null
 
-        Page<ScheduledMaintenanceDTO> result = maintenanceRepository.findAllDoneMaintenanceByVehicleIdAndCompany(vehicleId, companyId, pageable).map(ScheduledMaintenanceDTO::new);
+        Page<MaintenanceDoneDTO> result = maintenanceRepository.findAllDoneMaintenanceByVehicleIdAndCompany(vehicleId, companyId, pageable).map(MaintenanceDoneDTO::new);
 
-        return pagedResourcesAssemblerScheduled.toModel(result);
+        return pagedResourcesAssemblerDone.toModel(result);
     }
 
     public MaintenanceDTO getScheduledMaintenance(String companyId, Long vehicleId) {
@@ -69,7 +69,7 @@ public class MaintenanceService {
         return maintenanceDto;
     }
 
-    public ScheduledMaintenanceDTO getLastMaintenance(String companyId, Long vehicleId) {
+    public MaintenanceDoneDTO getLastMaintenance(String companyId, Long vehicleId) {
         //Verificar se realmenter esse id existe
         //Precisa verificar o null
         //Retorno vazio se não existe
@@ -79,7 +79,7 @@ public class MaintenanceService {
 
         if(maintenance == null) throw new MaintenanceNotFoundException("Maintenance not found for vehicle id: " + vehicleId);
 
-        ScheduledMaintenanceDTO scheduledMaintenanceDto = new ScheduledMaintenanceDTO(maintenance);
+        MaintenanceDoneDTO scheduledMaintenanceDto = new MaintenanceDoneDTO(maintenance);
 
         return scheduledMaintenanceDto;
     }

@@ -20,7 +20,6 @@ public record MaintenanceDTO(
         @Null
         double totalValue,
         @Null
-        @JsonProperty("vehicle_id")
         Long vehicleId
 ) {
     
