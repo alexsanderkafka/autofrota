@@ -1,5 +1,6 @@
 package kafka.system.br.AutoFrota.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Null;
 import kafka.system.br.AutoFrota.model.Vehicle;
@@ -11,6 +12,7 @@ import kafka.system.br.AutoFrota.model.VehicleStatus;
 //import java.util.List;
 //import java.util.stream.Stream;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record VehicleDTO(
         @Null
         Long id,
@@ -29,14 +31,11 @@ public record VehicleDTO(
         @Null
         boolean active,
         @Null
-        @JsonProperty("vehicleImage")
-        VehicleImageDTO vehicleImageId,
+        String vehicleImage,
         @Null
-        @JsonProperty("companyId")
         String companyId,
         @Null
-        @JsonProperty("vehicleStatus")
-        String vehicleStatusId
+        String vehicleStatus
 ) {
 
 
@@ -50,7 +49,7 @@ public record VehicleDTO(
                 vehicle.getKm(),
                 vehicle.getCategory(),
                 vehicle.isActive(),
-                new VehicleImageDTO(vehicle.getVehicleImage()),
+                vehicle.getVehicleImage().getUrl(),
                 vehicle.getCompany().getExternalId(),
                 vehicle.getVehicleStatus().getType()
         );
