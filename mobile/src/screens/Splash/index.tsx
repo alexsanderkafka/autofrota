@@ -1,6 +1,5 @@
 import React from 'react';
 import { 
-  StyleSheet,
   Text,
   View,
   Image,
@@ -10,7 +9,9 @@ import {
 import  {
   colors,
   typography
-} from '../theme';
+} from '../../theme';
+
+import styles from './style';
 
 export default function SplashScreen() {
 
@@ -25,22 +26,3 @@ export default function SplashScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoImage:{
-    width: 169,
-    height: 169,
-  },
-  loadingDescription:{
-    fontSize: 13,
-    color: '#000',
-    fontWeight: 'light',
-    marginTop: 10
-  }  
-});

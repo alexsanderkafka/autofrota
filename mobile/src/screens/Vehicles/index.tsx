@@ -10,68 +10,28 @@ import {
     FlatList,
     ActivityIndicator
 } from "react-native";
-import { colors } from "../theme";
+import { colors } from "../../theme";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import VehicleListTile from "../components/VehicleListTile";
-import api from "../service/api";
+import VehicleListTile from "../../components/VehicleListTile";
+import api from "../../service/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Storage from "../../service/storage";
+import useVehicles from "../../hooks/useVehicles";
 
 interface Props{
   navigation: any;
 }
 
-interface Vehicles {
-  id: number;
-  plate: string;
-  brand: string;
-  model: string;
-  typeFuel: string;
-  km: number;
-  category: string;
-  activate: boolean;
-  vehicle_image_id: number;
-  company_id: number;
-  vehicle_status_id: number;
-}
-
 export default function Vehicles( {navigation}: Props ) {
-
-    const [vehicles, setVehicles] = useState<any[]>([]);
     const [search, setSearch] = useState('');
-    const [latestElement, setLatestElement] = useState(false);
 
-    const [token, setToken] = useState('');
-    const [companyExternalId, setCompanyExternalId] = useState<string>('');
-    const [businessId] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState("todos");
-    const [notFoundVehicles, setNotFoundVehicles] = useState(false);
-    const [message, setMessage] = useState("");
-    const [page, setPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalVehicles, setTotalVehicles] = useState(0);
-    
-      const sizePage = 12;
+    const [selected, setSelected] = useState("active");
 
-    useEffect(() => {
-        async function getInStorage(){
-          try {
-            const tokenJwt: any= await AsyncStorage.getItem('tokenJwt');
-            const value: any = await AsyncStorage.getItem('companyId');
-            
-            setCompanyExternalId(value);
-            setToken(tokenJwt);
-          } catch (error) {
-            console.log("AsyncStorage error todos: " + error);
-          }
-        }
-        getInStorage();
-    }, []);
+    const sizePage = 12;
 
-    useEffect( () => {
-        getStatusVehicles(selected);
-    }, [token, businessId]);
+    const {vehicles, totalPages, loading, notFoundVehicles, totalVehicles, message, loadMoreVehicles, latestElement} = useVehicles(selected);
+
 
     function renderFooterFlatList(){
         if(!latestElement) return null;
@@ -85,61 +45,6 @@ export default function Vehicles( {navigation}: Props ) {
           </View>
         );
     }
-
-    async function loadMoreVehicles(){
-        setLatestElement(true);
-    
-        console.log(totalVehicles);
-    
-        if(page === totalPages || totalVehicles < sizePage){
-          setLatestElement(false);
-          return;
-        }
-    
-        setPage(page + 1);
-    
-        getStatusVehicles(selected);
-    }
-
-    async function getStatusVehicles(status: string){
-      try {
-
-        console.log("Status: ", status);
-    
-        let response = await api.get(`/vehicles/${companyExternalId}/active?page=${page}&direction=desc`, {
-          headers:{
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        console.log(response.data)
-
-        let listVehicles: Vehicles[] = response.data._embedded.vehicleDTOList;
-
-        console.log("Vehicles: ", listVehicles);
-
-  
-        //console.log(response.data.hasOwnProperty("_embedded"));
-        //if(!response.data.hasOwnProperty("_embedded")) setLatestElement(false);
-  
-        setVehicles([...vehicles, ...listVehicles]);
-  
-        setTotalPages(response.data.page.totalPages);
-        setLoading(false);
-        setNotFoundVehicles(false);
-        setTotalVehicles(response.data.page.totalElements);
-
-        console.log(Vehicles);
-  
-      } catch (error) {
-        console.log("Caiu em error");
-        setLoading(false);
-        setNotFoundVehicles(true);
-        setMessage("Nenhum veículo cadastrado.")
-        console.log("Error: " + error);
-      }
-    }
-
 
     return (
         <View style={styles.container}>

@@ -3,6 +3,7 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
+import kafka.system.br.AutoFrota.exception.FuelNotFoundException;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,12 @@ public class FuelService {
     public FuelDTO getLastFuel(String companyId, Long vehicleId) {
 
         //Verificar se realmenter esse id existe
-        //Precisa verificar o null
         //Retorno vazio se não existe
         //Retorno caso o companyId não exista
 
         Fuel result = fuelRepository.findLastFuelByVehicleIdAndCompany(companyId, vehicleId);
+
+        if(result == null) throw new FuelNotFoundException("Fuel not found for vehicle id: " + vehicleId);
 
         FuelDTO fuelDTO = new FuelDTO(result);
 

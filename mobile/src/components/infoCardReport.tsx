@@ -23,7 +23,7 @@ export default function InfoCardReport({ icon, amount, title, color}: Props){
         <View style={styles.card}>
             <Icon name={icon} size={24} color={color}/>
             <Text style={styles.title}>{title}</Text>
-            <Text style={[styles.count]}>{amount}</Text>
+            <Text style={[styles.count]}>{amount.replace('.', ',')}</Text>
         </View>
     );
 }

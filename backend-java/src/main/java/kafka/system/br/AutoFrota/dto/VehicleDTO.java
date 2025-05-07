@@ -3,6 +3,8 @@ package kafka.system.br.AutoFrota.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Null;
 import kafka.system.br.AutoFrota.model.Vehicle;
+import kafka.system.br.AutoFrota.model.VehicleImage;
+import kafka.system.br.AutoFrota.model.VehicleStatus;
 
 //import kafka.system.br.AutoFrota.model.*;
 
@@ -25,16 +27,16 @@ public record VehicleDTO(
         @Null
         String category,
         @Null
-        boolean activate,
+        boolean active,
         @Null
-        @JsonProperty("vehicle_image_id")
-        Long vehicleImageId,
+        @JsonProperty("vehicleImage")
+        VehicleImageDTO vehicleImageId,
         @Null
-        @JsonProperty("company_id")
-        Long companyId,
+        @JsonProperty("companyId")
+        String companyId,
         @Null
-        @JsonProperty("vehicle_status_id")
-        Long vehicleStatusId
+        @JsonProperty("vehicleStatus")
+        String vehicleStatusId
 ) {
 
 
@@ -48,9 +50,9 @@ public record VehicleDTO(
                 vehicle.getKm(),
                 vehicle.getCategory(),
                 vehicle.isActive(),
-                vehicle.getVehicleImage().getId(),
-                vehicle.getCompany().getId(),
-                vehicle.getVehicleStatus().getId()
+                new VehicleImageDTO(vehicle.getVehicleImage()),
+                vehicle.getCompany().getExternalId(),
+                vehicle.getVehicleStatus().getType()
         );
     }
 

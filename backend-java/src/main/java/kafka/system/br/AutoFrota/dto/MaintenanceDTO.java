@@ -18,7 +18,8 @@ public record MaintenanceDTO(
         @Null
         boolean scheduled,
         @Null
-        @JsonProperty("vehicle_id")
+        double totalValue,
+        @Null
         Long vehicleId
 ) {
     
@@ -29,6 +30,7 @@ public record MaintenanceDTO(
                 maintenance.isDone(),
                 maintenance.getObservation(),
                 maintenance.isScheduled(),
+                maintenance.getTotalValue(),
                 maintenance.getVehicle().getId()
         );
     }
@@ -40,6 +42,7 @@ public record MaintenanceDTO(
                 false,
                 null,
                 false,
+                0.0,
                 null
         );
     }

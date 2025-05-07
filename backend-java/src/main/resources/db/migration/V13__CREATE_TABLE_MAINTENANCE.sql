@@ -4,6 +4,7 @@ CREATE TABLE Maintenance (
     done BOOLEAN NOT NULL,
     observation TEXT NOT NULL,
     scheduled BOOLEAN NOT NULL,
+    total_value FLOAT,
     vehicle_id INT NOT NULL,
     FOREIGN KEY (vehicle_id) REFERENCES Vehicle(id)
 );

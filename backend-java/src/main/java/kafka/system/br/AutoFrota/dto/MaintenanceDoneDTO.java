@@ -4,19 +4,19 @@ import java.util.List;
 
 import kafka.system.br.AutoFrota.model.Maintenance;
 
-public record ScheduledMaintenanceDTO(
+public record MaintenanceDoneDTO(
     MaintenanceDTO maintenance,
     List<ServiceDTO> services
 ) {
 
-    public ScheduledMaintenanceDTO(Maintenance maintenance, List<ServiceDTO> services) {
+    public MaintenanceDoneDTO(Maintenance maintenance, List<ServiceDTO> services) {
         this(
             new MaintenanceDTO(maintenance),
             services
         );
     }
 
-    public ScheduledMaintenanceDTO(Maintenance maintenance) {
+    public MaintenanceDoneDTO(Maintenance maintenance) {
         this(
             new MaintenanceDTO(maintenance),
             maintenance.getServices().stream().map(ServiceDTO::new).toList()

@@ -43,5 +43,21 @@ public class CustomizedResponseEntityException {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FuelNotFoundException.class)
+    public final ResponseEntity<ExceptionDTO> handleLastFuelNotFound(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MaintenanceNotFoundException.class)
+    public final ResponseEntity<ExceptionDTO> handleLastMaintenanceNotFound(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
 
 }

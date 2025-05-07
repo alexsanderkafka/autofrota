@@ -7,10 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Table(name = "vehicleimage")
 @Entity(name = "VehicleImage")
@@ -22,14 +18,14 @@ public class VehicleImage {
     private Long id;
 
     @Column(name = "url", nullable = false)
-    private String type;
+    private String url;
 
     public VehicleImage() {
     }
 
-    public VehicleImage(Long id, String type) {
+    public VehicleImage(Long id, String url) {
         this.id = id;
-        this.type = type;
+        this.url = url;
     }
 
     public Long getId() {
@@ -40,11 +36,11 @@ public class VehicleImage {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getUrl() {
+        return url;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
