@@ -79,7 +79,32 @@ const styles = StyleSheet.create({
     },
     latestElement:{
 
-    }    
+    },
+    loadingContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.primary.white,
+    },
+    notFoundContainer:{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: colors.primary.white,
+        paddingTop: 120
+    },
+    notFoundMessage:{
+        fontSize: 16,
+        textAlign: 'center',
+        color: colors.text.primary,
+        marginTop: 10,
+    },
+    notFoundImage:{
+        width: 300,
+        height: 150,
+        resizeMode: 'center',
+    }
 });
 
 export default styles;

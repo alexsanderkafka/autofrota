@@ -4,7 +4,7 @@ import api from '../service/api';
 import Storage from '../service/storage';
 
 
-interface Maintenance{
+export interface ScheduledMaintenance{
     id: number;
     date: string;
     done: boolean;
@@ -17,7 +17,7 @@ interface Maintenance{
 export default function useScheduledMaintenance(vehicleId: number){
 
     const [storage, setStorage] = useState<Storage>();
-    const [scheduledMaintenance, setScheduledMaintenance] = useState<Maintenance[] | null | undefined>([]);
+    const [scheduledMaintenance, setScheduledMaintenance] = useState<ScheduledMaintenance[] | null | undefined>([]);
 
 
     useEffect(() => {
@@ -46,15 +46,27 @@ export default function useScheduledMaintenance(vehicleId: number){
             });
       
             if(response.status === 200){
-                let listVehicles: Maintenance[] = response.data._embedded.maintenanceDoneDTOList;
-                console.log(response.data);
-                setScheduledMaintenance(listVehicles);
+
+                if(response.data.page.totalElements === 0) {
+                    setScheduledMaintenance([]);
+                    return;
+                }
+
+                if(response.data._embedded === undefined || response.data._embedded.maintenanceDTOList.length === 0) {
+                    setScheduledMaintenance([]);
+                    return;
+                }
+
+                let listMaintenance: ScheduledMaintenance[] = response.data._embedded.maintenanceDTOList;
+                setScheduledMaintenance(listMaintenance);
             }
       
           } catch (error: any) {
             console.log(error);
       
-            if(error.response.status === 404) setScheduledMaintenance(null);
+            //if(error.response.status === 404) setScheduledMaintenance(null);
+
+            setScheduledMaintenance(null);
         }
     }
 

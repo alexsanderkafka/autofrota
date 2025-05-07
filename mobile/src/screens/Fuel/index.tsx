@@ -22,48 +22,57 @@ import AddNewFuel from '../modal/AddNewFuel';
 import styles from './style';
 import FuelCard from '../../components/FuelCard';
 
+import useFuel from '../../hooks/useFuel';
+
 const { height } = Dimensions.get('window');
 
 interface Props{
     navigation: any;
+    route: any;
 }
 
-export default function Fuel({ navigation }: Props) {
+export default function Fuel({ navigation, route }: Props) {
 
-    const [latestElement, setLatestElement] = useState(false);
+    const [latestElement, setLatestElement] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [notFound, setNotFound] = useState<boolean>(false);
 
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState<boolean>(false);
     const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
-    const fuel = [
-        {
-            id: 1,
-            date: "2024-01-15T03:00:00.000+00:00",
-            price: 500.00,
-            km: 78.990,
-            fuelType: "Gasolina",
-            liters: 70
-        },
-        {
-            id: 2,
-            date: "2024-01-15T03:00:00.000+00:00",
-            price: 1000.00,
-            km: 90000,
-            fuelType: "Gasolina",
-            liters: 100
-        },
-        {
-            id: 3,
-            date: "2024-01-15T03:00:00.000+00:00",
-            price: 10.00,
-            km: 80,
-            fuelType: "Gasolina",
-            liters: 2
-        },
-    ]
+    const vehicleId: number = route.params;
+
+    const { fuel } = useFuel(vehicleId);
+
+    useEffect( () => {
+
+        if(fuel === null){
+            setLoading(false);
+            return;
+        }
+
+        if(fuel!.length === 0){
+            setLoading(false);
+            setNotFound(true);
+            return;
+        }
+
+        
+
+    }, [fuel]);
+
+    
 
     function sendToAddFuel(){
-
+        if(loading){
+            return(
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                    size="large" color={colors.primary.main} 
+                    />
+                </View>
+            );
+        }
     }
 
     function renderFooterFlatList(){
@@ -108,6 +117,52 @@ export default function Fuel({ navigation }: Props) {
         }).start();
     }
 
+    function renderFuelList(){
+        if(loading){
+            return(
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                    size="large" color={colors.primary.main} 
+                    />
+                </View>
+            );
+        }else if(notFound){
+            const notFoundImage: any = require('../../../assets/logo/not-found-fuel.png');
+
+            return(
+                <View style={styles.notFoundContainer}>
+                    <Image source={notFoundImage} style={styles.notFoundImage}/>
+                    <Text style={styles.notFoundMessage}>Nenhuma abastecimento encontrado para esse veículo.</Text>
+                </View>
+            );
+        }else{
+            return(
+                <FlatList
+                showsVerticalScrollIndicator={false}
+                data={fuel}
+                keyExtractor={ item => String(item.id)}
+                renderItem={ ({ item }) => <FuelCard 
+                                            date={item ? new Date(item.date).toLocaleDateString('pt-BR') : '00/00/0000'}
+                                            price={item ? item.totalValue : 0.00}
+                                            km={item ? item.km : 0}
+                                            fuelType={item ? item.fuelType : 'Gasolina'}
+                                            liters={item ? item.liters : 0}
+                                            navigation={navigation}
+                                            vehicleId={item.id}
+                                            screenVehicles={false}
+                                        />}
+                onEndReached={() => {
+                    loadMoreFuel();
+                }}
+                onEndReachedThreshold={1} 
+                ListFooterComponent={renderFooterFlatList}
+                ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                style={styles.list}
+                />
+            );
+        }
+    }
+
     return(
         <View style={styles.container}>
             
@@ -118,28 +173,9 @@ export default function Fuel({ navigation }: Props) {
                 </TouchableOpacity>
             </View>
 
-            <FlatList
-            showsVerticalScrollIndicator={false}
-            data={fuel}
-            keyExtractor={ item => String(item.id)}
-            renderItem={ ({ item }) => <FuelCard 
-                                        date={item ? new Date(item.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                                        price={item ? item.price : 0.00}
-                                        km={item ? item.km : 0}
-                                        fuelType={item ? item.fuelType : 'Gasolina'}
-                                        liters={item ? item.liters : 0}
-                                        navigation={navigation}
-                                        vehicleId={item.id}
-                                        screenVehicles={false}
-                                    />}
-            onEndReached={() => {
-                loadMoreFuel();
-            }}
-            onEndReachedThreshold={1} 
-            ListFooterComponent={renderFooterFlatList}
-            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-            style={styles.list}
-            />
+            {
+                renderFuelList()
+            }
             
             <TouchableOpacity style={styles.fab} onPress={openModalAddFuel}>
                 <Icon name="plus" size={24} color={colors.primary.white} />

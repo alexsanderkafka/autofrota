@@ -18,7 +18,7 @@ interface Service{
     type: string;
 }
 
-interface MaintenanceDone{
+export interface MaintenanceDone{
     maintenance: Maintenance;
     service: Service[];
 }
@@ -44,10 +44,7 @@ export default function useMaintenanceDone(vehicleId: number){
     }, [storage]);
 
     async function getMaintenanceDone(){
-        try {
-
-            //Resolver o problema de veículos sem manutenções
-    
+        try {    
             const response = await api.get(`/maintenance/${storage!.companyExternalId}/${vehicleId}/all/done`, {
               headers:{
                 Authorization: `Bearer ${storage!.tokenJwt}`
@@ -55,15 +52,22 @@ export default function useMaintenanceDone(vehicleId: number){
             });
       
             if(response.status === 200){
-                let listVehicles: MaintenanceDone[] = response.data._embedded.maintenanceDoneDTOList;
-                console.log(response.data);
-                setMaintenanceDone(listVehicles);
+
+                if(response.data.page.totalElements === 0) {
+                    setMaintenanceDone([]);
+                    return;
+                }
+
+                let listMaintenance: MaintenanceDone[] = response.data._embedded.maintenanceDoneDTOList;
+                setMaintenanceDone(listMaintenance);
             }
       
           } catch (error: any) {
-            console.log(error);
+            console.log("Caiu em error: ", error);
       
-            if(error.response.status === 404) setMaintenanceDone(null);
+            //if(error.response.status === 404) setMaintenanceDone(null);
+
+            setMaintenanceDone(null);
         }
     }
 

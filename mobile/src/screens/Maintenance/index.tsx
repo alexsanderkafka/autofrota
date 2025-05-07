@@ -12,8 +12,10 @@ import {
     TouchableOpacity,
     Animated,
     Dimensions,
-    TextInput
+    TextInput,
+    Image
 } from 'react-native';
+
 import { colors } from '../../theme';
 import FilterButton from '../../components/FilterButton';
 
@@ -23,9 +25,12 @@ import AddNewMaintenance from '../modal/AddNewMaintenance';
 import styles from './style';
 import ScheduledMaintenanceCard from '../../components/ScheduledMaintenanceCard';
 import MaintenanceDoneCard from '../../components/MaintenanceDoneCard';
-import Vehicle from '../Vehicle';
 import useMaintenanceDone from '../../hooks/useMaintenanceDone';
 import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
+
+
+import { ScheduledMaintenance } from '../../hooks/useScheduledMaintenance';
+import { MaintenanceDone } from '../../hooks/useMaintenanceDone';
 
 const { height } = Dimensions.get('window');
 
@@ -50,16 +55,41 @@ export default function Maintenance({ navigation, route }: Props) {
     const vehicleId = route.params;*/
 
     const [latestElement, setLatestElement] = useState(false);
-    const [filter, setFilter] = useState('scheduled'); //scheduled
+    const [filter, setFilter] = useState('made'); //scheduled
     const [visible, setVisible] = useState(false);
     const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
-    const vehicleId: any = route.params;
+    const [loading, setLoading] = useState(true);
+    const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
+    //const [message, setMessage] = useState<string>(''); not found maintenance message
+
+    const vehicleId: number = route.params;
 
     
     const { maintenanceDone } = useMaintenanceDone(vehicleId);
     const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
 
+    useEffect( () => {
+        if(maintenanceDone === null){
+            setLoading(true);
+            return;
+        } 
+
+        if(scheduledMaintenance === null) {
+            setLoading(true);
+            return;
+        }
+
+        if(maintenanceDone!.length === 0 && scheduledMaintenance!.length === 0){
+            setLoading(false);
+            setNotFoundMaintenance(true)
+            return;
+        }
+
+        setLoading(false);
+    }, [maintenanceDone, scheduledMaintenance]);
+
+    console.log("vehicleId: ", vehicleId)
     console.log(maintenanceDone);
     console.log(scheduledMaintenance);
 
@@ -68,10 +98,7 @@ export default function Maintenance({ navigation, route }: Props) {
             
         return(
             <View style={styles.latestElement}>
-                <ActivityIndicator
-                size="large" color={colors.primary.main} 
-                style={{ marginTop: 20, marginBottom: 20 }}
-                />
+                
             </View>
         );
     }
@@ -105,6 +132,81 @@ export default function Maintenance({ navigation, route }: Props) {
         }).start();
     }
 
+    function renderListMaintenance(){
+        if(loading){
+            return(
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                    size="large" color={colors.primary.main} 
+                    />
+                </View>
+            );
+        }else if(notFoundMaintenance){
+
+            const notFoundImage: any = require('../../../assets/logo/not-found-maintenance.png');
+
+            return(
+                <View style={styles.notFoundContainer}>
+                    <Image source={notFoundImage} style={styles.notFoundImage}/>
+                    <Text style={styles.notFoundMessage}>Nenhuma manutenção encontrada para esse veículo.</Text>
+                </View>
+            );
+        }else{
+            return(
+                <FlatList<ScheduledMaintenance | MaintenanceDone>
+                showsVerticalScrollIndicator={false} 
+                data={filter === 'scheduled' ? scheduledMaintenance : maintenanceDone}
+                keyExtractor={ item => {
+                    if(filter === 'scheduled'){
+                        let scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
+                        return scheduled.id.toString();
+                    }else{
+                        let done: MaintenanceDone = item as MaintenanceDone;
+                        return done.maintenance.id.toString();
+                    }
+                }}
+                renderItem={ ({ item }) => {
+                    if(filter === 'scheduled'){
+
+                        const scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
+
+                        return(
+                            <ScheduledMaintenanceCard 
+                            date={scheduled ? new Date(scheduled.date).toLocaleDateString('pt-BR') : '00/00/0000'}
+                            observation={scheduled ? scheduled.observation : 'Sem observação'}
+                            navigation={navigation}
+                            vehicleId={scheduled.vehicleId}
+                            vehicle={false}
+                            />
+                        );
+                    }
+
+                    //Talves colocar um if else
+                    const done: MaintenanceDone = item as MaintenanceDone;
+
+                    return(
+                        <MaintenanceDoneCard
+                        date={done ? new Date(done.maintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
+                        totalValue={done ? done.maintenance.totalValue : 0}
+                        services={done ? done.service : []}
+                        navigation={navigation}
+                        vehicleId={done.maintenance.vehicleId}
+                        vehicle={false}
+                        />
+                    )
+                }}
+                onEndReached={() => {
+                    loadMoreFuel();
+                }}
+                onEndReachedThreshold={1} 
+                ListFooterComponent={renderFooterFlatList}
+                style={styles.list}
+                ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                />
+            );
+        }
+    }
+
     return(
         <View style={styles.container}>
 
@@ -120,42 +222,9 @@ export default function Maintenance({ navigation, route }: Props) {
                 </TouchableOpacity>
             </View>
 
-            <FlatList<any>
-            showsVerticalScrollIndicator={false} 
-            data={filter === 'scheduled' ? scheduledMaintenance : maintenanceDone}
-            keyExtractor={ item => filter === 'scheduled' ? String(item.id) : String(item.maintenance.id)}
-            renderItem={ ({ item }) => {
-                if(filter === 'scheduled'){
-                    return(
-                        <ScheduledMaintenanceCard 
-                        date={item ? new Date(item.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                        observation={item ? item.observation : 'Sem observação'}
-                        navigation={navigation}
-                        vehicleId={item.vehicleId}
-                        vehicle={false}
-                        />
-                    );
-                }
-
-                return(
-                    <MaintenanceDoneCard
-                    date={item ? new Date(item.maintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                    totalValue={item ? item.maintenance.totalValue : 0}
-                    services={item ? item.service : []}
-                    navigation={navigation}
-                    vehicleId={item.maintenance.vehicleId}
-                    vehicle={false}
-                    />
-                )
-            }}
-            onEndReached={() => {
-                loadMoreFuel();
-            }}
-            onEndReachedThreshold={1} 
-            ListFooterComponent={renderFooterFlatList}
-            style={styles.list}
-            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-            />
+            {
+                renderListMaintenance()
+            }
 
             <TouchableOpacity style={styles.fab} onPress={openModalAddMaitenance}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
