@@ -7,11 +7,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.websocket.server.PathParam;
+import kafka.system.br.AutoFrota.dto.DriverDTO;
+import kafka.system.br.AutoFrota.dto.DriverRegisterDTO;
 import kafka.system.br.AutoFrota.service.DriverService;
 
 @RestController
@@ -37,5 +41,16 @@ public class DriverController {
         var drivers = driverService.searchAllDriversByCompanyId(companyId, pageable);
 
         return ResponseEntity.ok(drivers);
+    }
+
+    @PostMapping("/{companyId}")
+    public ResponseEntity<?> saveDriverWithCompany(
+        @PathVariable(value = "companyId") String companyId,
+        @RequestBody(required = true) DriverRegisterDTO dto
+    ) {
+
+        driverService.save(companyId, dto);
+
+        return ResponseEntity.created(null).build();
     }
 }

@@ -50,6 +50,15 @@ public class Maintenance {
         this.vehicle = vehicle;
     }
 
+    public Maintenance(Date date, boolean done, String observation, boolean scheduled, float totalValue, Vehicle vehicle) {
+        this.date = date;
+        this.done = done;
+        this.observation = observation;
+        this.scheduled = scheduled;
+        this.totalValue = totalValue;
+        this.vehicle = vehicle;
+    }
+
     public Long getId() {
         return id;
     }

@@ -5,7 +5,10 @@ import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
 import kafka.system.br.AutoFrota.exception.FuelNotFoundException;
 import kafka.system.br.AutoFrota.model.Fuel;
+import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
+import kafka.system.br.AutoFrota.repository.VehicleRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,9 @@ public class FuelService {
 
     @Autowired
     private FuelRepository fuelRepository;
+
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     @Autowired
     private PagedResourcesAssembler<FuelDTO> pagedResourcesAssembler;
@@ -58,6 +64,24 @@ public class FuelService {
 
         return pagedResourcesAssembler.toModel(result);        
 
+    }
+
+    public void save(Long vehicleId, FuelDTO dto) {
+        Vehicle vehicle = vehicleRepository.getReferenceById(vehicleId);
+
+        //Verificar se vehicle existe, no caso null
+        //Verificar se tem permissão
+
+        Fuel fuel = new Fuel(
+            dto.liters(),
+            dto.totalValue(),
+            dto.km(),
+            dto.date(),
+            dto.fuelType(),
+            vehicle
+        );
+
+        fuelRepository.save(fuel);
     }
 
     

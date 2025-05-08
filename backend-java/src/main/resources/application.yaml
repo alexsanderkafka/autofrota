@@ -3,7 +3,7 @@ server:
 file:
   upload-dir: uploads/
 firebase:
-  url-bucket: storage firebase
+  url-bucket: url firebase storage
 security:
   jwt:
     token:
@@ -13,7 +13,7 @@ spring:
   jpa:
     database: mysql
   datasource:
-    url: jdbc:mysql://testehost:3306/auto_frota
+    url: jdbc:mysql://testhost:3306/auto_frota
     username: username
     password: password
   flyway:

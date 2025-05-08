@@ -49,6 +49,15 @@ public class Fuel {
         this.vehicle = vehicle;
     }
 
+    public Fuel(float liters, float totalValue, Integer km, Date date, String type, Vehicle vehicle) {
+        this.liters = liters;
+        this.totalValue = totalValue;
+        this.km = km;
+        this.date = date;
+        this.type = type;
+        this.vehicle = vehicle;
+    }
+
     public Long getId() {
         return id;
     }

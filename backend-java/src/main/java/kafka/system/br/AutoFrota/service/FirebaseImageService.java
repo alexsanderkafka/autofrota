@@ -25,7 +25,7 @@ public class FirebaseImageService {
         try{
             String fileName = generateFileName(file.getOriginalFilename(), companyId);
             Storage storage = StorageClient.getInstance().bucket().getStorage();
-            BlobId blobId = BlobId.of("", fileName); teste
+            BlobId blobId = BlobId.of("", fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
             storage.create(blobInfo, file.getBytes());
             

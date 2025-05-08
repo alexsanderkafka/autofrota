@@ -51,6 +51,13 @@ public class Driver {
         this.login = login;
     }
 
+    public Driver(String name, Company company, ProfileImage profileImage, Login login) {
+        this.name = name;
+        this.company = company;
+        this.profileImage = profileImage;
+        this.login = login;
+    }
+
     public Long getId() {
         return id;
     }
