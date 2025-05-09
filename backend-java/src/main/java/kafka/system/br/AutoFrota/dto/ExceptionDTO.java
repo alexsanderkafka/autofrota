@@ -1,6 +1,7 @@
 package kafka.system.br.AutoFrota.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public record ExceptionDTO(
         Date timestamp,

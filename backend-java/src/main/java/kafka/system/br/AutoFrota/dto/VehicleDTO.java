@@ -3,6 +3,8 @@ package kafka.system.br.AutoFrota.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.model.VehicleImage;
 import kafka.system.br.AutoFrota.model.VehicleStatus;
@@ -16,19 +18,26 @@ import kafka.system.br.AutoFrota.model.VehicleStatus;
 public record VehicleDTO(
         @Null
         Long id,
-        @Null
+        @NotNull
+        @NotBlank
         String plate,
-        @Null
+        @NotNull
+        @NotBlank
         String brand,
-        @Null
+        @NotNull
+        @NotBlank
         String model,
-        @Null
+        @NotNull
+        @NotBlank
         String typeFuel,
-        @Null
+        @NotNull
+        @NotBlank
         Long km,
-        @Null
+        @NotNull
+        @NotBlank
         String category,
-        @Null
+        @NotNull
+        @NotBlank
         boolean active,
         @Null
         String vehicleImage,

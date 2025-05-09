@@ -6,12 +6,15 @@ import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDoneRegisterDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
 import kafka.system.br.AutoFrota.exception.MaintenanceNotFoundException;
+import kafka.system.br.AutoFrota.exception.VehicleNotFoundException;
 import kafka.system.br.AutoFrota.model.Maintenance;
 import kafka.system.br.AutoFrota.model.Services;
 import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
 import kafka.system.br.AutoFrota.repository.ServiceRepository;
 import kafka.system.br.AutoFrota.repository.VehicleRepository;
+import kafka.system.br.AutoFrota.validator.maintenance.done.MaintenanceDoneValidator;
+import kafka.system.br.AutoFrota.validator.maintenance.scheduled.ScheduledMaintenanceValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +45,12 @@ public class MaintenanceService {
 
     @Autowired
     private PagedResourcesAssembler<MaintenanceDoneDTO> pagedResourcesAssemblerDone;
+
+    @Autowired
+    private List<ScheduledMaintenanceValidator<MaintenanceDTO>> scheduledMaintenanceValidators;
+
+    @Autowired
+    private List<MaintenanceDoneValidator<MaintenanceDoneRegisterDTO>> maintenanceDoneValidators;
 
     public PagedModel<EntityModel<MaintenanceDTO>> getAllScheduledMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
         //Verificar vehicle id
@@ -119,21 +128,18 @@ public class MaintenanceService {
 
     public void saveScheduled(MaintenanceDTO dto) {
 
-        //Se for scheduled verificar se a data é maior que a data atual
-        //Verificar se é scheduled e done, se for scheduled, done FALSE
-        //Se for agendada não pode possuir valor
+        Vehicle vehicle = vehicleRepository.findById(dto.vehicleId()).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
 
-        Vehicle vehicle = vehicleRepository.getReferenceById(dto.vehicleId());
-
-        //Verificar se vehicle existe, no caso null
         //Verificar se tem permissão
 
+        scheduledMaintenanceValidators.forEach(v -> v.validator(dto));
+        
         Maintenance maintenance = new Maintenance(
             dto.date(),
             dto.done(),
             dto.observation(),
             dto.scheduled(),
-            (float) dto.totalValue(),
+            dto.totalValue(),
             vehicle
         );
 
@@ -141,20 +147,18 @@ public class MaintenanceService {
     }
 
     public void saveDone(MaintenanceDoneRegisterDTO dto) {
-        //Verificar se done é true
-        //Verificar se tem valor
+        Vehicle vehicle = vehicleRepository.findById(dto.maintenance().vehicleId()).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
 
-        Vehicle vehicle = vehicleRepository.getReferenceById(dto.maintenance().vehicleId());
-
-        //Verificar se vehicle existe, no caso null
         //Verificar se tem permissão
+
+        maintenanceDoneValidators.forEach(v -> v.validator(dto));
 
         Maintenance maintenance = new Maintenance(
             dto.maintenance().date(),
             dto.maintenance().done(),
             dto.maintenance().observation(),
             dto.maintenance().scheduled(),
-            (float) dto.maintenance().totalValue(),
+            dto.maintenance().totalValue(),
             vehicle
         );
 

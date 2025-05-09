@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.checkerframework.checker.units.qual.s;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,13 +20,15 @@ import java.io.IOException;
 @Service
 public class FirebaseImageService {
 
+    @Value("${firebase.url-bucket}")
+    private String urlBucket;
 
     public String uploadVehicleImage(MultipartFile file, String companyId){
 
         try{
             String fileName = generateFileName(file.getOriginalFilename(), companyId);
             Storage storage = StorageClient.getInstance().bucket().getStorage();
-            BlobId blobId = BlobId.of("", fileName);
+            BlobId blobId = BlobId.of(urlBucket, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
             storage.create(blobInfo, file.getBytes());
             

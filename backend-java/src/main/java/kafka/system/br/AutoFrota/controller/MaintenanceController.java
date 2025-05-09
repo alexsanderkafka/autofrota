@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RequestMapping("/maintenance")
 @RestController
 public class MaintenanceController {
@@ -119,7 +121,7 @@ public class MaintenanceController {
     public ResponseEntity<?> saveScheduledMaintenanceByVehicleId(
             //@PathVariable(value = "vehicleId") Long vehicleId,
             //@PathVariable(value = "companyId") String companyId,
-            @RequestBody MaintenanceDTO dto
+            @Valid() @RequestBody() MaintenanceDTO dto
     ){        
 
         service.saveScheduled(dto);
@@ -131,7 +133,7 @@ public class MaintenanceController {
     public ResponseEntity<?> saveMaintenanceDoneByVehicleId(
             //@PathVariable(value = "vehicleId") Long vehicleId,
             //@PathVariable(value = "companyId") String companyId,
-            @RequestBody MaintenanceDoneRegisterDTO dto
+            @Valid @RequestBody MaintenanceDoneRegisterDTO dto
     ){        
 
         service.saveDone(dto);

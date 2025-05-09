@@ -122,7 +122,7 @@ public class VehicleService {
         return vehicleDto;
     }
 
-    public String save(String image, String companyId, VehicleDTO dto) {
+    public void save(String image, String companyId, VehicleDTO dto) {
 
         VehicleImage vehicleImage = new VehicleImage();
         vehicleImage.setUrl(image);
@@ -155,7 +155,7 @@ public class VehicleService {
 
         //vehicle.setPlate(dto.plate());
 
-        return image;
+        //return image;
     }
 }
 
