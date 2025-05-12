@@ -100,5 +100,29 @@ public class CustomizedResponseEntityException {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FuelTypeException.class)
+    public final ResponseEntity<ExceptionDTO> handleFuelType(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotFoundCompanyException.class)
+    public final ResponseEntity<ExceptionDTO> handleNotFoundCompany(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PasswordIsNotConfirmedException.class)
+    public final ResponseEntity<ExceptionDTO> handlePasswordisNotConfirmed(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
 
 }

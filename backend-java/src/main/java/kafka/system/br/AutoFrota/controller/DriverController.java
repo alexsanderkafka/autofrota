@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.websocket.server.PathParam;
-import kafka.system.br.AutoFrota.dto.DriverDTO;
+import jakarta.validation.Valid;
 import kafka.system.br.AutoFrota.dto.DriverRegisterDTO;
 import kafka.system.br.AutoFrota.service.DriverService;
 
@@ -46,7 +45,7 @@ public class DriverController {
     @PostMapping("/{companyId}")
     public ResponseEntity<?> saveDriverWithCompany(
         @PathVariable(value = "companyId") String companyId,
-        @RequestBody(required = true) DriverRegisterDTO dto
+        @Valid @RequestBody(required = true) DriverRegisterDTO dto
     ) {
 
         driverService.save(companyId, dto);

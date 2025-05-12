@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RequestMapping("/fuel")
 @RestController
 public class FuelController {
@@ -68,7 +70,7 @@ public class FuelController {
     public ResponseEntity<?> saveFuelByVehicleId(
             @PathVariable(value = "vehicleId") Long vehicleId,
             //@PathVariable(value = "companyId") String companyId,
-            @RequestBody FuelDTO dto
+            @Valid @RequestBody FuelDTO dto
 
     ){ 
         

@@ -4,10 +4,14 @@ import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
 import kafka.system.br.AutoFrota.exception.FuelNotFoundException;
+import kafka.system.br.AutoFrota.exception.VehicleNotFoundException;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.FuelRepository;
 import kafka.system.br.AutoFrota.repository.VehicleRepository;
+import kafka.system.br.AutoFrota.validator.fuel.FuelValidator;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,9 @@ public class FuelService {
 
     @Autowired
     private PagedResourcesAssembler<FuelDTO> pagedResourcesAssembler;
+
+    @Autowired
+    private List<FuelValidator<FuelDTO>> fuelValidators;
 
     public PagedModel<EntityModel<FuelDTO>> getAllFuelByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
         
@@ -67,10 +74,11 @@ public class FuelService {
     }
 
     public void save(Long vehicleId, FuelDTO dto) {
-        Vehicle vehicle = vehicleRepository.getReferenceById(vehicleId);
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
 
-        //Verificar se vehicle existe, no caso null
         //Verificar se tem permissão
+
+        fuelValidators.forEach(v -> v.validator(dto));
 
         Fuel fuel = new Fuel(
             dto.liters(),

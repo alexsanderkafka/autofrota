@@ -2,6 +2,9 @@ package kafka.system.br.AutoFrota.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import kafka.system.br.AutoFrota.model.Fuel;
 
 import java.util.Date;
@@ -9,15 +12,16 @@ import java.util.Date;
 public record FuelDTO(
         @Null
         Long id,
-        @Null
-        float liters,
-        @Null
-        float totalValue,
-        @Null
+        @NotNull
+        Double liters,
+        @NotNull
+        Double totalValue,
+        @NotNull
         Integer km,
-        @Null
+        @NotNull
         Date date,
-        @Null
+        @NotNull
+        @NotBlank
         String fuelType
 ) {
 
@@ -30,17 +34,6 @@ public record FuelDTO(
                 fuel.getKm(),
                 fuel.getDate(),
                 fuel.getType()
-        );
-    }
-    
-    public FuelDTO() {
-        this(
-              null,
-              0,
-              0,
-              0,
-              null,
-              null
         );
     }
 }

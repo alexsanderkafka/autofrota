@@ -1,5 +1,6 @@
 package kafka.system.br.AutoFrota.service;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,13 @@ import org.springframework.stereotype.Service;
 
 import kafka.system.br.AutoFrota.dto.PasswordResetDTO;
 import kafka.system.br.AutoFrota.exception.InvalidEmailCode;
+import kafka.system.br.AutoFrota.exception.NotFoundCompanyException;
+import kafka.system.br.AutoFrota.model.Company;
+import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
 import kafka.system.br.AutoFrota.security.PasswordEnconder;
 import kafka.system.br.AutoFrota.utils.VerificationCodeGenerator;
+import kafka.system.br.AutoFrota.validator.password.PasswordValidator;
 
 @Service
 public class PasswordResetService {
@@ -23,9 +28,17 @@ public class PasswordResetService {
     @Autowired
     private LoginRepository loginRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private List<PasswordValidator<PasswordResetDTO>> passwordValidators;
+
     public String generateAndStoreCode(String companyId){
 
-        //Verificar se a company existe no sistema
+        Company company = companyRepository.findByExternalId(companyId);
+
+        if(company == null) throw new NotFoundCompanyException("Company not found");
 
         String code = VerificationCodeGenerator.generateCode();
         String key = buildKey(companyId);
@@ -37,10 +50,11 @@ public class PasswordResetService {
     }
 
     public void updatePassword(String companyId, PasswordResetDTO dto){
+        passwordValidators.forEach(v -> v.validator(dto));
 
-        //Verificar senhas
-        //Verificar usuário
-        //Verificar código de confirmação
+        Company company = companyRepository.findByExternalId(companyId);
+
+        if(company == null) throw new NotFoundCompanyException("Company not found");
 
         validationCode(companyId, dto.code());
 
@@ -53,7 +67,7 @@ public class PasswordResetService {
         String key = buildKey(companyId);
         String storedCode = redisTemplate.opsForValue().get(key);
 
-        if(storedCode == null) throw new InvalidEmailCode("Invalid code"); //voltar uma exception
+        if(storedCode == null) throw new InvalidEmailCode("Invalid code");
 
         boolean validation = storedCode.equals(code);
 
