@@ -1,6 +1,9 @@
 package kafka.system.br.AutoFrota.controller;
 
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
+import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
+import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
+import kafka.system.br.AutoFrota.dto.MaintenanceDoneRegisterDTO;
 import kafka.system.br.AutoFrota.service.MaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @RequestMapping("/maintenance")
 @RestController
@@ -110,6 +115,30 @@ public class MaintenanceController {
         var result = service.getAllFilterScheduledMaintenanceByVehicleId(vehicleId, companyId, filter, pageable);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/scheduled")
+    public ResponseEntity<?> saveScheduledMaintenanceByVehicleId(
+            //@PathVariable(value = "vehicleId") Long vehicleId,
+            //@PathVariable(value = "companyId") String companyId,
+            @Valid() @RequestBody() MaintenanceDTO dto
+    ){        
+
+        service.saveScheduled(dto);
+
+        return ResponseEntity.created(null).build();
+    }
+
+    @PostMapping("/done")
+    public ResponseEntity<?> saveMaintenanceDoneByVehicleId(
+            //@PathVariable(value = "vehicleId") Long vehicleId,
+            //@PathVariable(value = "companyId") String companyId,
+            @Valid @RequestBody MaintenanceDoneRegisterDTO dto
+    ){        
+
+        service.saveDone(dto);
+
+        return ResponseEntity.created(null).build();
     }
 
 }

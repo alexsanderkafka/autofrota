@@ -43,6 +43,12 @@ public class Login implements UserDetails {
         this.active = active;
     }
 
+    public Login(String email, String password, boolean active) {
+        this.email = email;
+        this.password = password;
+        this.active = active;
+    }
+
     public Long getId() {
         return id;
     }

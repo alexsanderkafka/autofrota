@@ -2,6 +2,8 @@ package kafka.system.br.AutoFrota.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import kafka.system.br.AutoFrota.model.Maintenance;
 
 import java.util.Date;
@@ -9,17 +11,18 @@ import java.util.Date;
 public record MaintenanceDTO(
         @Null
         Long id,
-        @Null
+        @NotNull(message = "O campo date é obrigatório")
         Date date,
-        @Null
-        boolean done,
-        @Null
+        @NotNull(message = "O campo done é obrigatório")
+        Boolean done,
+        @NotBlank(message = "O campo observation não deve estar vazio")
+        @NotNull(message = "O campo observation é obrigatório")
         String observation,
-        @Null
-        boolean scheduled,
-        @Null
-        double totalValue,
-        @Null
+        @NotNull(message = "O campo scheduled é obrigatório")
+        Boolean scheduled,
+        @NotNull(message = "O campo total totalValue é obrigatório")
+        Double totalValue,
+        @NotNull(message = "O campo vehicleId é obrigatório")
         Long vehicleId
 ) {
     
@@ -32,18 +35,6 @@ public record MaintenanceDTO(
                 maintenance.isScheduled(),
                 maintenance.getTotalValue(),
                 maintenance.getVehicle().getId()
-        );
-    }
-
-    public MaintenanceDTO() {
-        this(
-                null,
-                null,
-                false,
-                null,
-                false,
-                0.0,
-                null
         );
     }
 }

@@ -1,5 +1,9 @@
 server:
   port: 80
+file:
+  upload-dir: uploads/
+firebase:
+  url-bucket: set url bucket
 security:
   jwt:
     token:
@@ -9,8 +13,22 @@ spring:
   jpa:
     database: mysql
   datasource:
-    url: jdbc:mysql://testehost:3306/auto_frota
+    url: jdbc:mysql://host:3306/auto_frota
     username: username
     password: password
   flyway:
     enabled: true
+  mail:
+    host: smtp.test.com
+    port: port
+    username: username
+    password: password
+    properties:
+      mail: 
+        smtp: 
+          auth: true
+          starttls: 
+            enable: true
+  redis:
+    host: set host
+    port: set port

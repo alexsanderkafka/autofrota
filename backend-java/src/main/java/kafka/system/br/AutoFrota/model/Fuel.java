@@ -18,10 +18,10 @@ public class Fuel {
     private Long id;
 
     @Column(name = "liters", nullable = false)
-    private float liters;
+    private Double liters;
 
     @Column(name = "total_value", nullable = false)
-    private float totalValue;
+    private Double totalValue;
 
     @Column(name = "km", nullable = false)
     private Integer km;
@@ -39,8 +39,17 @@ public class Fuel {
     public Fuel() {
     }
 
-    public Fuel(Long id, float liters, float totalValue, Integer km, Date date, String type, Vehicle vehicle) {
+    public Fuel(Long id, Double liters, Double totalValue, Integer km, Date date, String type, Vehicle vehicle) {
         this.id = id;
+        this.liters = liters;
+        this.totalValue = totalValue;
+        this.km = km;
+        this.date = date;
+        this.type = type;
+        this.vehicle = vehicle;
+    }
+
+    public Fuel(Double liters, Double totalValue, Integer km, Date date, String type, Vehicle vehicle) {
         this.liters = liters;
         this.totalValue = totalValue;
         this.km = km;
@@ -57,19 +66,19 @@ public class Fuel {
         this.id = id;
     }
 
-    public float getLiters() {
+    public Double getLiters() {
         return liters;
     }
 
-    public void setLiters(float liters) {
+    public void setLiters(Double liters) {
         this.liters = liters;
     }
 
-    public float getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(float totalValue) {
+    public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
 

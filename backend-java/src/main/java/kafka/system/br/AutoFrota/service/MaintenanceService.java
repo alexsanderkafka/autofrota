@@ -3,14 +3,21 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
+import kafka.system.br.AutoFrota.dto.MaintenanceDoneRegisterDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
 import kafka.system.br.AutoFrota.exception.MaintenanceNotFoundException;
+import kafka.system.br.AutoFrota.exception.VehicleNotFoundException;
 import kafka.system.br.AutoFrota.model.Maintenance;
 import kafka.system.br.AutoFrota.model.Services;
+import kafka.system.br.AutoFrota.model.Vehicle;
 import kafka.system.br.AutoFrota.repository.MaintenanceRepository;
 import kafka.system.br.AutoFrota.repository.ServiceRepository;
+import kafka.system.br.AutoFrota.repository.VehicleRepository;
+import kafka.system.br.AutoFrota.validator.maintenance.done.MaintenanceDoneValidator;
+import kafka.system.br.AutoFrota.validator.maintenance.scheduled.ScheduledMaintenanceValidator;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,10 +38,19 @@ public class MaintenanceService {
     private ServiceRepository serviceRepository;
 
     @Autowired
+    private VehicleRepository vehicleRepository;
+
+    @Autowired
     private PagedResourcesAssembler<MaintenanceDTO> pagedResourcesAssembler;
 
     @Autowired
     private PagedResourcesAssembler<MaintenanceDoneDTO> pagedResourcesAssemblerDone;
+
+    @Autowired
+    private List<ScheduledMaintenanceValidator<MaintenanceDTO>> scheduledMaintenanceValidators;
+
+    @Autowired
+    private List<MaintenanceDoneValidator<MaintenanceDoneRegisterDTO>> maintenanceDoneValidators;
 
     public PagedModel<EntityModel<MaintenanceDTO>> getAllScheduledMaintenanceByVehicleId(Long vehicleId, String companyId, Pageable pageable) {
         //Verificar vehicle id
@@ -108,5 +124,51 @@ public class MaintenanceService {
         Page<MaintenanceDTO> result = maintenanceRepository.findAllFilterScheduledMaintenanceByVehicleIdAndCompany(vehicleId, companyId, filter.startDate(), filter.endDate(), pageable).map(MaintenanceDTO::new);
         
         return pagedResourcesAssembler.toModel(result);
+    }
+
+    public void saveScheduled(MaintenanceDTO dto) {
+
+        Vehicle vehicle = vehicleRepository.findById(dto.vehicleId()).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
+
+        //Verificar se tem permissão
+
+        scheduledMaintenanceValidators.forEach(v -> v.validator(dto));
+        
+        Maintenance maintenance = new Maintenance(
+            dto.date(),
+            dto.done(),
+            dto.observation(),
+            dto.scheduled(),
+            dto.totalValue(),
+            vehicle
+        );
+
+        maintenanceRepository.save(maintenance);
+    }
+
+    public void saveDone(MaintenanceDoneRegisterDTO dto) {
+        Vehicle vehicle = vehicleRepository.findById(dto.maintenance().vehicleId()).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
+
+        //Verificar se tem permissão
+
+        maintenanceDoneValidators.forEach(v -> v.validator(dto));
+
+        Maintenance maintenance = new Maintenance(
+            dto.maintenance().date(),
+            dto.maintenance().done(),
+            dto.maintenance().observation(),
+            dto.maintenance().scheduled(),
+            dto.maintenance().totalValue(),
+            vehicle
+        );
+
+        Maintenance savedMaintenance = maintenanceRepository.save(maintenance);
+
+        List<Services> services = dto.services().stream().map(t -> new Services(
+            t,
+            savedMaintenance
+        )).collect(Collectors.toList());;
+
+        serviceRepository.saveAll(services);
     }
 }

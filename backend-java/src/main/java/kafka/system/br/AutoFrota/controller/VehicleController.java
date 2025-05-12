@@ -1,12 +1,22 @@
 package kafka.system.br.AutoFrota.controller;
 
+import kafka.system.br.AutoFrota.dto.VehicleDTO;
+import kafka.system.br.AutoFrota.service.FirebaseImageService;
 import kafka.system.br.AutoFrota.service.VehicleService;
+
+import java.io.IOException;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -14,6 +24,12 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private FirebaseImageService firebaseImageService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @GetMapping("/{companyId}/{vehicleStatus}")
     public ResponseEntity<?> getAllVehiclesByCompany(
@@ -68,9 +84,31 @@ public class VehicleController {
 
         return ResponseEntity.ok(vehicle);
     }
+
+    @PostMapping(value = "/{companyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> saveVehicleWithCompany(
+        @PathVariable(value = "companyId") String companyId,
+        @RequestParam(value = "file") MultipartFile file,   
+        @RequestParam(value = "form") String form
+    ){
+
+        System.out.println("Storing file to disk");
+
+        var url = firebaseImageService.uploadVehicleImage(file, companyId);
+
+        try{
+            VehicleDTO dto = objectMapper.readValue(form, VehicleDTO.class);
+            
+            vehicleService.save(url, companyId, dto);
+
+            //System.out.println(dto);
+
+            return ResponseEntity.created(null).build();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Erro ao processar dados.");
+        }
+    }
     
-
-
-    //Falta criar o endpoint POST para salvar um vehicle
 }
 

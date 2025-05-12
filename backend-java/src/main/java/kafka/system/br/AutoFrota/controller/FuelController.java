@@ -1,6 +1,7 @@
 package kafka.system.br.AutoFrota.controller;
 
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
+import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.service.FuelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 @RequestMapping("/fuel")
 @RestController
@@ -61,6 +64,20 @@ public class FuelController {
         var result = service.getAllDateFilterFuelByVehicleId(vehicleId, companyId, filter, pageable);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/{vehicleId}")
+    public ResponseEntity<?> saveFuelByVehicleId(
+            @PathVariable(value = "vehicleId") Long vehicleId,
+            //@PathVariable(value = "companyId") String companyId,
+            @Valid @RequestBody FuelDTO dto
+
+    ){ 
+        
+        service.save(vehicleId, dto);
+        
+
+        return ResponseEntity.created(null).build();
     }
 
     

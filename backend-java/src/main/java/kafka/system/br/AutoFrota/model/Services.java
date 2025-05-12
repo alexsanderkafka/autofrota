@@ -39,6 +39,11 @@ public class Services {
         this.maintenance = maintenance;
     }
 
+    public Services(String type, Maintenance maintenance) {
+        this.type = type;
+        this.maintenance = maintenance;
+    }
+
     public Long getId() {
         return id;
     }

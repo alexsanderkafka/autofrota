@@ -70,6 +70,19 @@ public class Vehicle {
         this.vehicleStatus = vehicleStatus;
     }
 
+    public Vehicle(String plate, String brand, String model, String typeFuel, Long km, String category, boolean activate, VehicleImage vehicleImage, Company company, VehicleStatus vehicleStatus) {
+        this.plate = plate;
+        this.brand = brand;
+        this.model = model;
+        this.typeFuel = typeFuel;
+        this.km = km;
+        this.category = category;
+        this.active = activate;
+        this.vehicleImage = vehicleImage;
+        this.company = company;
+        this.vehicleStatus = vehicleStatus;
+    }
+
     public Long getId() {
         return id;
     }

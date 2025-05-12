@@ -28,7 +28,7 @@ public class Maintenance {
     private boolean scheduled;
 
     @Column(name = "total_value", nullable = false)
-    private float totalValue;
+    private Double totalValue;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
@@ -40,8 +40,17 @@ public class Maintenance {
     public Maintenance() {
     }
 
-    public Maintenance(Long id, Date date, boolean done, String observation, boolean scheduled, float totalValue,Vehicle vehicle) {
+    public Maintenance(Long id, Date date, boolean done, String observation, boolean scheduled, Double totalValue,Vehicle vehicle) {
         this.id = id;
+        this.date = date;
+        this.done = done;
+        this.observation = observation;
+        this.scheduled = scheduled;
+        this.totalValue = totalValue;
+        this.vehicle = vehicle;
+    }
+
+    public Maintenance(Date date, boolean done, String observation, boolean scheduled, Double totalValue, Vehicle vehicle) {
         this.date = date;
         this.done = done;
         this.observation = observation;
@@ -90,11 +99,11 @@ public class Maintenance {
         this.scheduled = scheduled;
     }
 
-    public float getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(float totalValue) {
+    public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
 
