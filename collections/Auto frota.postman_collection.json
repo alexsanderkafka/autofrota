@@ -14,7 +14,14 @@
 					"name": "Signin with email and password",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -53,7 +60,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MzQ2MzQ5LCJpYXQiOjE3NDUzMzU1NDl9.qywfGIjJX3uzbPL3xKkmKsolAuL-f6q8JbIWAhev-Nk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjU4NjkxLCJpYXQiOjE3NDY2NDc4OTF9.qz9CcpeiEdEQ-nPwWxwgDRvEIPpPe2E-A1yRcbOu5OU",
 									"type": "string"
 								}
 							]
@@ -92,7 +99,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1NTMwODE2LCJpYXQiOjE3NDU1MjAwMTZ9.yD0b_qMCoF8KEz9BpVS3OcGnZiw-QslY6VmHQusT1hw",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MDQyMTMxLCJpYXQiOjE3NDYwMzEzMzF9.b8SFA0WQKEXcY8xhvL93wkBhQL4W6gXU28alZcdwgqU",
 									"type": "string"
 								}
 							]
@@ -121,7 +128,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MzQ2MzQ5LCJpYXQiOjE3NDUzMzU1NDl9.qywfGIjJX3uzbPL3xKkmKsolAuL-f6q8JbIWAhev-Nk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
 									"type": "string"
 								}
 							]
@@ -150,7 +157,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MTk3MjcxLCJpYXQiOjE3NDYxODY0NzF9.afeccOOIpVf4NNQs3nFgCyD_2EtFOKqkt7xYwcyGcT8",
 									"type": "string"
 								}
 							]
@@ -171,6 +178,124 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Save vehicle",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1f02b6a8-c7c4-4ed0-84ef-998ceff5b3bd"
+								},
+								{
+									"key": "form",
+									"value": "{\n  \"plate\": \"ABC-1234\",\n  \"brand\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"typeFuel\": \"Gasoline\",\n  \"km\": 45600,\n  \"category\": \"Carro\",\n  \"active\": true\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update vehicle status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"vehicleStatus\": \"alert\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/vehicles",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete vehicle by company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/25",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"vehicles",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"25"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -185,7 +310,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjMwNzMwLCJpYXQiOjE3NDY2MTk5MzB9.MYsuve7vbF7pfAhtVixlAXyoUyjlplv82raBQTEeyGk",
 									"type": "string"
 								}
 							]
@@ -216,7 +341,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NzMzNTM1LCJpYXQiOjE3NDY3MjI3MzV9.IBwd4D2HesOP-BXr8I56bXa5ytjSC9W-pKCjrH0EIR4",
 									"type": "string"
 								}
 							]
@@ -240,14 +365,14 @@
 					"response": []
 				},
 				{
-					"name": "get scheduled maintenance by vehicle id and external id",
+					"name": "get next maintenance by vehicle id and external id",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
 									"type": "string"
 								}
 							]
@@ -277,7 +402,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1ODY0NTgxLCJpYXQiOjE3NDU4NTM3ODF9.tceJvF5Enmklh2MLfSVVpN_yw72hhinUqbxsqkZIDwk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
 									"type": "string"
 								}
 							]
@@ -285,15 +410,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/scheduled",
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/2/last",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"maintenance",
 								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"scheduled"
+								"2",
+								"last"
 							]
 						}
 					},
@@ -386,6 +511,117 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "create new maintenance by vehicleid (scheduled))",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2025-06-01T03:00:00.000+00:00\",\r\n    \"done\": false,\r\n    \"observation\": \"Troca de óleo e filtros, verificação dos freios e inspeção geral dos pneus e suspensão. Será feito também o alinhamento e balanceamento das rodas. Atualização do histórico de manutenção ao final do serviço.\",\r\n    \"scheduled\": true,\r\n    \"totalValue\": 0.0,\r\n    \"vehicleId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/maintenance/scheduled",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"scheduled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create new maintenance by vehicleid (done)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"maintenance\":{\r\n        \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n        \"done\": true,\r\n        \"observation\": \"Troca de óleo e filtros, verificação dos freios e inspeção geral dos pneus e suspensão. Será feito também o alinhamento e balanceamento das rodas. Atualização do histórico de manutenção ao final do serviço.\",\r\n        \"scheduled\": true,\r\n        \"totalValue\": 5000.99,\r\n        \"vehicleId\": 1\r\n    },\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/maintenance/done",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"done"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update scheduled maintenance to done",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n    \"totalValue\": 5000.99,\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/maintenance/scheduled",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"maintenance",
+								"scheduled"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -400,7 +636,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzMyNzQ1Mjg1LCJpYXQiOjE3MzI3MzQ0ODV9.66AFBaioGaID8cwVrxFuJ7-0R4ZLBreVvaI90aPtrTo",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjMxOTIwLCJpYXQiOjE3NDY2MjExMjB9.3hpxpjPbOqtUX_Xmje8-a98yL8i1EiYflIvq_Z4NYXg",
 									"type": "string"
 								}
 							]
@@ -408,15 +644,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/all",
+							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"fuel",
 								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"all"
+								"1"
 							]
 						}
 					},
@@ -425,17 +660,27 @@
 				{
 					"name": "get last fuel by vehicle id and external id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/20/last",
+							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/last",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"fuel",
 								"550e8400-e29b-41d4-a716-446655440000",
-								"20",
+								"1",
 								"last"
 							]
 						}
@@ -462,7 +707,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"startDate\": \"2025-01-15T03:00:00.000+00:00\",\r\n    \"endDate\": \"2025-03-30T03:00:00.000+00:00\"\r\n}",
+							"raw": "{\r\n    \"startDate\": \"2024-01-15T03:00:00.000+00:00\",\r\n    \"endDate\": \"2024-04-20T03:00:00.000+00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -484,6 +729,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "create new fuel by vehicle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDc2NDgwLCJpYXQiOjE3NDcwNjU2ODB9.jwb1nJ5I2YsBK7sIJF4HvbGF9UM42j9RmmMOI5wuzRA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"liters\": 0,\r\n    \"totalValue\": 500.0,\r\n    \"km\": 47500,\r\n    \"date\": \"2024-05-30T03:00:00.000+00:00\",\r\n    \"fuelType\": \"gasolina\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/fuel/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"fuel",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -498,7 +780,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzMyODA5NzAzLCJpYXQiOjE3MzI3OTg5MDN9.8RJtymwSDgCO9mfrje1cyazeY0aw2mGYOh7Sla7r_tE",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
 									"type": "string"
 								}
 							]
@@ -506,13 +788,50 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/business/1",
+							"raw": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
-								"business",
-								"1"
+								"company",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Transporte Rápido LTDA\",\r\n    \"cnpj\": \"12345678000101\",\r\n    \"cpf\": null,\r\n    \"zipCode\": \"88010-400\",\r\n    \"address\": \"Rua das Flores, 123\",\r\n    \"phone\": \"(48) 98765-4321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"company",
+								"550e8400-e29b-41d4-a716-446655440000"
 							]
 						}
 					},
@@ -586,7 +905,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1MTEyOTc1LCJpYXQiOjE3NDUxMDIxNzV9.rkxLr9BY8qMgD7ucKnTctzePK-HTSJvlxaihdPCu2rk",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NDY5NzM2LCJpYXQiOjE3NDY0NTg5MzZ9.ifzS_qUnaKXJQJgPn1R7i-79dZQXedvwDpO-JCh7V_A",
 									"type": "string"
 								}
 							]
@@ -594,12 +913,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/reports/total",
+							"raw": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/total",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"reports",
+								"550e8400-e29b-41d4-a716-446655440000",
 								"total"
 							]
 						}
@@ -614,6 +934,16 @@
 				{
 					"name": "get all drivers by company id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2Mjg0OTU0LCJpYXQiOjE3NDYyNzQxNTR9.1CmjcMUbE3WlfrlHED3kzZjCArlGu8uCJA1DKy_FzTo",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -624,6 +954,225 @@
 							"path": [
 								"drivers",
 								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create new driver",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alex.kafka2@gmail.com\",\r\n    \"name\": \"Alexsander Kafka\",\r\n    \"password\": \"admin123\",\r\n    \"confirmPassword\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"drivers",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete driver by company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000/23",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"drivers",
+								"550e8400-e29b-41d4-a716-446655440000",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Password Reset",
+			"item": [
+				{
+					"name": "Send code to email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODA2MDUxLCJpYXQiOjE3NDY3OTUyNTF9.L8hFdbGuNF8yghwaxqCWLybHm4SDzhLnjEuERWo6TCk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reset",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password and chack code send email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODA2MDUxLCJpYXQiOjE3NDY3OTUyNTF9.L8hFdbGuNF8yghwaxqCWLybHm4SDzhLnjEuERWo6TCk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\": \"admin123\",\r\n    \"confirmNewPassword\": \"admin123\",\r\n    \"code\": \"ZX55H\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reset",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ProfileImage",
+			"item": [
+				{
+					"name": "Update profile image company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1f03014f-b793-4830-aa29-ae47b2794dec"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}/profile/company/550e8400-e29b-41d4-a716-446655440000",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"profile",
+								"company",
+								"550e8400-e29b-41d4-a716-446655440000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update driver image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1f02f8c8-618b-4b20-a8ae-7337920cac75"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}/profile/driver/23",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"profile",
+								"driver",
+								"23"
 							]
 						}
 					},
