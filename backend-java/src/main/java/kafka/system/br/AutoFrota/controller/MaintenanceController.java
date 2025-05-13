@@ -2,8 +2,8 @@ package kafka.system.br.AutoFrota.controller;
 
 import kafka.system.br.AutoFrota.dto.DateFilterDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
-import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDoneRegisterDTO;
+import kafka.system.br.AutoFrota.dto.UpdateMaintenanceDTO;
 import kafka.system.br.AutoFrota.service.MaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -85,8 +85,6 @@ public class MaintenanceController {
             @RequestBody DateFilterDTO filter
     ){
 
-        //Verificar o request body, voltar um error para cada campo
-
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
@@ -105,8 +103,6 @@ public class MaintenanceController {
             @PathVariable(value = "companyId") String companyId,
             @RequestBody DateFilterDTO filter
     ){
-
-        //Verificar o request body, voltar um error para cada campo
         
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -119,8 +115,6 @@ public class MaintenanceController {
 
     @PostMapping("/scheduled")
     public ResponseEntity<?> saveScheduledMaintenanceByVehicleId(
-            //@PathVariable(value = "vehicleId") Long vehicleId,
-            //@PathVariable(value = "companyId") String companyId,
             @Valid() @RequestBody() MaintenanceDTO dto
     ){        
 
@@ -131,14 +125,23 @@ public class MaintenanceController {
 
     @PostMapping("/done")
     public ResponseEntity<?> saveMaintenanceDoneByVehicleId(
-            //@PathVariable(value = "vehicleId") Long vehicleId,
-            //@PathVariable(value = "companyId") String companyId,
             @Valid @RequestBody MaintenanceDoneRegisterDTO dto
     ){        
 
         service.saveDone(dto);
 
         return ResponseEntity.created(null).build();
+    }
+
+    @PutMapping("/scheduled")
+    public ResponseEntity<?> updateScheduledMaintenanceToDone(
+            @Valid @RequestBody UpdateMaintenanceDTO dto
+    ){        
+
+        service.updateScheduledMaintenance(dto);
+
+        //Posso voltar o item que foi atualizado
+        return ResponseEntity.noContent().build();
     }
 
 }

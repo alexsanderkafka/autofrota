@@ -23,10 +23,10 @@ public class FirebaseImageService {
     @Value("${firebase.url-bucket}")
     private String urlBucket;
 
-    public String uploadVehicleImage(MultipartFile file, String companyId){
+    public String uploadImageToStorage(MultipartFile file, String companyId, String path){
 
         try{
-            String fileName = generateFileName(file.getOriginalFilename(), companyId);
+            String fileName = generateFileName(file.getOriginalFilename(), companyId, path);
             Storage storage = StorageClient.getInstance().bucket().getStorage();
             BlobId blobId = BlobId.of(urlBucket, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
@@ -43,7 +43,7 @@ public class FirebaseImageService {
         }
     }
     
-    private String generateFileName(String originalFileName, String companyId) {
-        return "autofrota/vehicles/" + companyId + "/" + UUID.randomUUID().toString() + "-" + originalFileName;
+    private String generateFileName(String originalFileName, String companyId, String path) {
+        return path + companyId + "/" + UUID.randomUUID().toString() + "-" + originalFileName;
     }
 }
