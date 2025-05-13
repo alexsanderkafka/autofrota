@@ -124,6 +124,17 @@ public class VehicleController {
         //Posso voltar o item que foi atualizado
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{companyId}/{vehicleId}")
+    public ResponseEntity<?> deleteVehicleByCompany(
+        @PathVariable(value = "companyId") String companyId,
+        @PathVariable(value = "vehicleId") Long vehicleId
+    ) {
+
+        vehicleService.deleteVehicle(companyId, vehicleId);
+
+        return ResponseEntity.noContent().build();
+    }
     
 }
 

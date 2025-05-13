@@ -2,7 +2,7 @@ package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.CompanyDTO;
 import kafka.system.br.AutoFrota.dto.UpdateCompanyDTO;
-import kafka.system.br.AutoFrota.exception.NotFoundCompanyException;
+import kafka.system.br.AutoFrota.exception.NotFoundEntityException;
 import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
@@ -59,7 +59,7 @@ public class CompanyService implements UserDetailsService {
         
         Company company = companyRepository.findByExternalId(id);
 
-        if(company == null) throw new NotFoundCompanyException("Company not found");
+        if(company == null) throw new NotFoundEntityException("Company not found");
 
         company.setName(dto.name());
         company.setCnpj(dto.cnpj());

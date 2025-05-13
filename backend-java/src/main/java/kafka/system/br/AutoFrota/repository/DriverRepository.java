@@ -16,5 +16,13 @@ public interface DriverRepository extends JpaRepository<Driver, Long>{
             WHERE CAST(d.company.externalId AS String) = :externalId
             """)
     Page<Driver> findAllByCompanyExternalId(@Param("externalId") String externalId, Pageable pageable);
-    
+
+
+    @Query("""
+            SELECT d FROM Driver d
+            WHERE CAST(d.company.externalId AS String) = :externalId
+            AND
+            d.id = :driverId
+        """)
+    Driver findDriverByCompanyExternalIdAndId(@Param("externalId") String companyId, @Param("driverId") Long driverId);
 }

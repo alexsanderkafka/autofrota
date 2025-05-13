@@ -67,6 +67,9 @@ public class VehicleService {
     @Autowired 
     VehicleStatusRepository vehicleStatusRepository;
 
+    @Autowired
+    private FirebaseImageService firebaseImageService;
+
     private final Path fileStorageLocation;
 
     @Autowired
@@ -173,6 +176,16 @@ public class VehicleService {
         vehicle.setVehicleStatus(vehicleStatus);
 
         vehicleRepository.save(vehicle);
+    }
+
+    public void deleteVehicle(String companyId, Long vehicleId) {
+        Vehicle vehicle = vehicleRepository.findInfosByVehicleIdAndCompany(companyId, vehicleId);
+
+        if(vehicle == null) throw new VehicleNotFoundException("Vehicle not found");
+
+        firebaseImageService.deleteImage(vehicle.getVehicleImage().getUrl());
+
+        vehicleRepository.delete(vehicle);
     }
 }
 

@@ -13,7 +13,7 @@ spring:
   jpa:
     database: mysql
   datasource:
-    url: jdbc:mysql://host:3306/auto_frota
+    url: jdbc:mysql://test:3306/auto_frota
     username: set username
     password: set password
   flyway:

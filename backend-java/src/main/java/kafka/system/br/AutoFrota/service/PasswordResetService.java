@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kafka.system.br.AutoFrota.dto.PasswordResetDTO;
 import kafka.system.br.AutoFrota.exception.InvalidEmailCode;
-import kafka.system.br.AutoFrota.exception.NotFoundCompanyException;
+import kafka.system.br.AutoFrota.exception.NotFoundEntityException;
 import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
@@ -38,7 +38,7 @@ public class PasswordResetService {
 
         Company company = companyRepository.findByExternalId(companyId);
 
-        if(company == null) throw new NotFoundCompanyException("Company not found");
+        if(company == null) throw new NotFoundEntityException("Company not found");
 
         String code = VerificationCodeGenerator.generateCode();
         String key = buildKey(companyId);
@@ -54,7 +54,7 @@ public class PasswordResetService {
 
         Company company = companyRepository.findByExternalId(companyId);
 
-        if(company == null) throw new NotFoundCompanyException("Company not found");
+        if(company == null) throw new NotFoundEntityException("Company not found");
 
         validationCode(companyId, dto.code());
 

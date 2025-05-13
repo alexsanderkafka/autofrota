@@ -37,4 +37,19 @@ public class ProfileImageController {
         //Posso voltar o item que foi atualizado
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/driver/{driverId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProfileImageByDriver(
+        @PathVariable(value = "driverId") Long driverId,
+        @RequestParam(value = "file") MultipartFile file 
+    ){
+
+        String path = "autofrota/profileImage/";
+        var url = firebaseImageService.uploadImageToStorage(file, driverId.toString(), path);
+
+        profileImageService.updateProfileImageByDriver(driverId, url);
+
+        //Posso voltar o item que foi atualizado
+        return ResponseEntity.noContent().build();
+    }
 }

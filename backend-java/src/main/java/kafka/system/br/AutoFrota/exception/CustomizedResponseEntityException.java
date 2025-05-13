@@ -108,7 +108,7 @@ public class CustomizedResponseEntityException {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NotFoundCompanyException.class)
+    @ExceptionHandler(NotFoundEntityException.class)
     public final ResponseEntity<ExceptionDTO> handleNotFoundCompany(Exception ex, WebRequest request){
         ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
                 request.getDescription(false));

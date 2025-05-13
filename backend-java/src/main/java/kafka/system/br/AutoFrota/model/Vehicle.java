@@ -45,11 +45,11 @@ public class Vehicle {
     @JoinColumn(name = "image_id")
     private VehicleImage vehicleImage;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehiclestatus_id")
     private VehicleStatus vehicleStatus;
 
