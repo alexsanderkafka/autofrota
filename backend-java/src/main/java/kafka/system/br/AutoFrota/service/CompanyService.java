@@ -1,6 +1,8 @@
 package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.CompanyDTO;
+import kafka.system.br.AutoFrota.dto.UpdateCompanyDTO;
+import kafka.system.br.AutoFrota.exception.NotFoundEntityException;
 import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
@@ -9,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import jakarta.validation.Valid;
 
 @Service
 public class CompanyService implements UserDetailsService {
@@ -45,5 +49,25 @@ public class CompanyService implements UserDetailsService {
         
 
         return dto;
+    }
+
+    public void updateInfosCompany(String id, UpdateCompanyDTO dto) {
+        
+        //Verificar cpf e cnpj
+        //Verificar se tem permissão
+        //Verificar a questão do cpf e cnpj null
+        
+        Company company = companyRepository.findByExternalId(id);
+
+        if(company == null) throw new NotFoundEntityException("Company not found");
+
+        company.setName(dto.name());
+        company.setCnpj(dto.cnpj());
+        company.setCpf(dto.cpf());
+        company.setZipCode(dto.zipCode());
+        company.setAddress(dto.address());
+        company.setPhone(dto.phone());
+
+        companyRepository.save(company);
     }
 }

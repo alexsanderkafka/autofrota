@@ -1,5 +1,6 @@
 package kafka.system.br.AutoFrota.controller;
 
+import kafka.system.br.AutoFrota.dto.UpdateVehicleDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
 import kafka.system.br.AutoFrota.service.FirebaseImageService;
 import kafka.system.br.AutoFrota.service.VehicleService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/vehicles")
@@ -94,7 +97,8 @@ public class VehicleController {
 
         System.out.println("Storing file to disk");
 
-        var url = firebaseImageService.uploadVehicleImage(file, companyId);
+        String path = "/autofrota/vehicles/";
+        var url = firebaseImageService.uploadImageToStorage(file, companyId, path);
 
         try{
             VehicleDTO dto = objectMapper.readValue(form, VehicleDTO.class);
@@ -108,6 +112,28 @@ public class VehicleController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Erro ao processar dados.");
         }
+    }
+
+    @PutMapping()
+    public ResponseEntity<?> updateVehicleStatus(
+            @Valid @RequestBody UpdateVehicleDTO dto
+    ){
+
+        vehicleService.updateVehicleStatus(dto);
+
+        //Posso voltar o item que foi atualizado
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{companyId}/{vehicleId}")
+    public ResponseEntity<?> deleteVehicleByCompany(
+        @PathVariable(value = "companyId") String companyId,
+        @PathVariable(value = "vehicleId") Long vehicleId
+    ) {
+
+        vehicleService.deleteVehicle(companyId, vehicleId);
+
+        return ResponseEntity.noContent().build();
     }
     
 }

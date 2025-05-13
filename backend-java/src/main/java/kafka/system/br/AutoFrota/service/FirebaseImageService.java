@@ -1,6 +1,7 @@
 package kafka.system.br.AutoFrota.service;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.cloud.StorageClient;
 
 import java.io.IOException;
@@ -23,10 +25,10 @@ public class FirebaseImageService {
     @Value("${firebase.url-bucket}")
     private String urlBucket;
 
-    public String uploadVehicleImage(MultipartFile file, String companyId){
+    public String uploadImageToStorage(MultipartFile file, String companyId, String path){
 
         try{
-            String fileName = generateFileName(file.getOriginalFilename(), companyId);
+            String fileName = generateFileName(file.getOriginalFilename(), companyId, path);
             Storage storage = StorageClient.getInstance().bucket().getStorage();
             BlobId blobId = BlobId.of(urlBucket, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
@@ -42,8 +44,31 @@ public class FirebaseImageService {
             throw new RuntimeException("Error uploading file");
         }
     }
+
+    public Boolean deleteImage(String imageUrl){
+        
+        String decodedPath = decodedPath(imageUrl);
+
+        Storage storage = StorageClient.getInstance().bucket().getStorage();
+        BlobId blobId = BlobId.of(urlBucket, decodedPath);
+        Boolean deleted = storage.delete(blobId);
+
+        return deleted;
+    }
     
-    private String generateFileName(String originalFileName, String companyId) {
-        return "autofrota/vehicles/" + companyId + "/" + UUID.randomUUID().toString() + "-" + originalFileName;
+    private String generateFileName(String originalFileName, String companyId, String path) {
+        return path + companyId + "/" + UUID.randomUUID().toString() + "-" + originalFileName;
+    }
+
+    private String decodedPath(String url){
+
+        int startIndex = url.indexOf("/o/") + 3;
+        int endIndex = url.contains("?") ? url.indexOf("?", startIndex) : url.length();
+        String encodedPath = url.substring(startIndex, endIndex);
+
+        // Decodifica o caminho
+        String decodedPath = URLDecoder.decode(encodedPath, StandardCharsets.UTF_8);
+
+        return decodedPath;
     }
 }

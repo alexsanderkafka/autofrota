@@ -5,6 +5,7 @@ import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDoneDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDoneRegisterDTO;
 import kafka.system.br.AutoFrota.dto.ServiceDTO;
+import kafka.system.br.AutoFrota.dto.UpdateMaintenanceDTO;
 import kafka.system.br.AutoFrota.exception.MaintenanceNotFoundException;
 import kafka.system.br.AutoFrota.exception.VehicleNotFoundException;
 import kafka.system.br.AutoFrota.model.Maintenance;
@@ -27,6 +28,8 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import jakarta.validation.Valid;
 
 @Service
 public class MaintenanceService {
@@ -170,5 +173,30 @@ public class MaintenanceService {
         )).collect(Collectors.toList());;
 
         serviceRepository.saveAll(services);
+    }
+
+    public void updateScheduledMaintenance(UpdateMaintenanceDTO dto) {
+
+        //Verificar o date, somente maiores que a data atual ou igual (salva no db)
+        //Verificar se essa maintenance já foi feita antes
+        //Passar um external id???? UUID
+        //Verificar se realmente é scheduled
+
+        Maintenance maintenance = maintenanceRepository.findById(dto.id()).orElseThrow(() -> new MaintenanceNotFoundException("Maintenance not found"));
+
+        maintenance.setDate(dto.date());
+        maintenance.setDone(true);
+        maintenance.setTotalValue(dto.totalValue());
+
+        List<Services> services = dto.services().stream().map(t -> new Services(
+            t,
+            maintenance
+        )).collect(Collectors.toList());;
+
+        List<Services> savedServices = serviceRepository.saveAll(services);
+
+        maintenance.setServices(savedServices);
+
+        maintenanceRepository.save(maintenance);
     }
 }

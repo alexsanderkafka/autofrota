@@ -13,16 +13,16 @@ spring:
   jpa:
     database: mysql
   datasource:
-    url: jdbc:mysql://host:3306/auto_frota
-    username: username
-    password: password
+    url: jdbc:mysql://test:3306/auto_frota
+    username: set username
+    password: set password
   flyway:
     enabled: true
   mail:
     host: smtp.test.com
-    port: port
-    username: username
-    password: password
+    port: set port
+    username: set username
+    password: set password
     properties:
       mail: 
         smtp: 

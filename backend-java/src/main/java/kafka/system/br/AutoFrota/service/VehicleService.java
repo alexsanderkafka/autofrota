@@ -3,8 +3,10 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.config.FileStorageConfiguration;
 import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
+import kafka.system.br.AutoFrota.dto.UpdateVehicleDTO;
 import kafka.system.br.AutoFrota.dto.VehicleDTO;
 import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
+import kafka.system.br.AutoFrota.exception.VehicleNotFoundException;
 import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.model.Fuel;
 import kafka.system.br.AutoFrota.model.Maintenance;
@@ -28,6 +30,8 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.Valid;
 
 import org.springframework.util.StringUtils;
 
@@ -62,6 +66,9 @@ public class VehicleService {
 
     @Autowired 
     VehicleStatusRepository vehicleStatusRepository;
+
+    @Autowired
+    private FirebaseImageService firebaseImageService;
 
     private final Path fileStorageLocation;
 
@@ -156,6 +163,29 @@ public class VehicleService {
         //vehicle.setPlate(dto.plate());
 
         //return image;
+    }
+
+    public void updateVehicleStatus(UpdateVehicleDTO dto) {
+        Vehicle vehicle = vehicleRepository.findById(dto.id()).orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
+
+        //Verifica vehicle status se existe em TypeVehicleStatusEnum
+
+        VehicleStatus vehicleStatus = vehicleStatusRepository.findByVehicleStatusByType(dto.vehicleStatus().toUpperCase());
+
+
+        vehicle.setVehicleStatus(vehicleStatus);
+
+        vehicleRepository.save(vehicle);
+    }
+
+    public void deleteVehicle(String companyId, Long vehicleId) {
+        Vehicle vehicle = vehicleRepository.findInfosByVehicleIdAndCompany(companyId, vehicleId);
+
+        if(vehicle == null) throw new VehicleNotFoundException("Vehicle not found");
+
+        firebaseImageService.deleteImage(vehicle.getVehicleImage().getUrl());
+
+        vehicleRepository.delete(vehicle);
     }
 }
 
