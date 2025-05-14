@@ -92,7 +92,7 @@ export default function Vehicles( {navigation}: Props ) {
             showsVerticalScrollIndicator={false}  
             data={vehicles}
             //keyExtractor={ item => String(item.vehicle_characteristic.id)}
-            renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
+            renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation}/>}
             onEndReached={() => {
                 loadMoreVehicles();
             }}

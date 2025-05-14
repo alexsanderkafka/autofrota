@@ -76,7 +76,7 @@ export default function HomeScreen({ navigation }: Props) {
           <FlatList 
           data={vehicles}
           keyExtractor={ item => String(item.id)}
-          renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
+          renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation}/>}
           onEndReachedThreshold={1} 
           style={styles.list}
           />

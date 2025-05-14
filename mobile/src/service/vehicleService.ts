@@ -2,7 +2,7 @@ import api from "./api";
 import Vehicle from "../types/vehicle";
 import StatusCount from "../types/statusCount";
 
-export async function getAllVehicleByCompanyIdAndStatus(companyId: string, vehicleStatus: string, tokenJwt: string, page: number): Promise<Vehicle[]>{
+export async function getAllVehicleByCompanyIdAndStatus(companyId: string, vehicleStatus: string, tokenJwt: string, page: number): Promise<Vehicle[] | null | undefined>{
 
     let response = await api.get(`/vehicles/${companyId}/${vehicleStatus}?page=${page}&direction=desc`, {
         headers:{
@@ -10,23 +10,32 @@ export async function getAllVehicleByCompanyIdAndStatus(companyId: string, vehic
          }
     });
   
-    
-    let listVehicles: Vehicle[] = response.data._embedded.vehicleDTOList;   
+    if(response.status === 200){
+      let listVehicles: Vehicle[] = response.data._embedded.vehicleDTOList;   
 
-    return listVehicles;
+      return listVehicles;
+    }
+    
+    return null;
 }
 
 
-export async function getRecentVehiclesByCompanyId(companyId: string, tokenJwt: string): Promise<Vehicle[]>{
+export async function getRecentVehiclesByCompanyId(companyId: string, tokenJwt: string): Promise<Vehicle[] | null | undefined>{
     let response = await api.get(`/vehicles/${companyId}/recent`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }
-          });
-    
-    let listVehicles: Vehicle[] = response.data;
+    });
 
-    return listVehicles;
+
+    if(response.status === 200){
+      let listVehicles: Vehicle[] = response.data;
+  
+      return listVehicles;
+    }
+
+
+    return null;
 }
 
 export async function getCountVehicles(companyId: string, tokenJwt: string): Promise<StatusCount>{

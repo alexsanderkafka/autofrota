@@ -1,15 +1,22 @@
-import Login from "../types/login";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import api from "./api";
 
-export async function login(login: Login){
-
-    console.log("Antes do 200 OK");
-
+export async function login(email: string, password: string): Promise<number>{
     let response = await api.post('/auth/signin', {
-          email: login.email,
-          password: login.password
+          email: email,
+          password: password
     });
 
-    return response;
+    if(response.status == 200){
+        console.log("Login realizado com sucesso");
+
+        let tokenJwt = response.data.accessToken;
+        let externalId = response.data.externalId;
+        
+        AsyncStorage.setItem("tokenJwt", tokenJwt);
+        AsyncStorage.setItem('companyExternalId', externalId);
+    }
+
+    return response.status;
 }

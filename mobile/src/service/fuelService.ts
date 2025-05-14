@@ -3,8 +3,8 @@ import Fuel from "../types/fuel";
 import Vehicle from "../types/vehicle";
 import api from "./api";
 
-export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicle: Vehicle): Promise<Fuel[] | null | undefined> {
-    const response = await api.get(`/fuel/${vehicle.companyId}/${vehicle.id}`, {
+export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicleId: number, companyId: string): Promise<Fuel[] | null | undefined> {
+    const response = await api.get(`/fuel/${companyId}/${vehicleId}`, {
                 headers:{
                   Authorization: `Bearer ${tokenJwt}`
                 }
@@ -24,8 +24,8 @@ export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicle:
     return null;
 }
 
-export async function getLastFuelByVehicleIdAndCompany(tokenJwt: string, vehicle: Vehicle): Promise<Fuel | null | undefined>{
-        const response = await api.get(`/fuel/${vehicle.companyId}/${vehicle.id}/last`, {
+export async function getLastFuelByVehicleIdAndCompany(tokenJwt: string, companyId: string, vehicleId: number): Promise<Fuel | null | undefined>{
+        const response = await api.get(`/fuel/${companyId}/${vehicleId}/last`, {
                     headers:{
                     Authorization: `Bearer ${tokenJwt}`
                     }
@@ -66,8 +66,6 @@ export async function saveNewFuelByVehicle(tokenJwt: string, fuel: Fuel, vehicle
             Authorization: `Bearer ${tokenJwt}`
         }
     });
-
-    console.log("Status code: ", response.status);
 
     return response.status;
 }

@@ -21,7 +21,7 @@ spring:
   mail:
     host: smtp.test.com
     port: set port
-    username: set username
+    username: setusername
     password: set password
     properties:
       mail: 

@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import api from '../service/api';
 import Storage from '../service/storage';
+import { getLastMaintenanceDone } from '../service/maintenanceService';
+import MaintenanceDone from '../types/maintenanceDone';
 
-interface LastMaintenance {
-    
-}
-
-export default function useLastMaintenance(vehicleId: string): any {
+export default function useLastMaintenance(vehicleId: number): any {
 
     const [storage, setStorage] = useState<Storage>();
 
@@ -24,31 +22,16 @@ export default function useLastMaintenance(vehicleId: string): any {
     }, [])
 
     useEffect(() => {
-        getLastMaintenance();
+        getMaintenance();
     }, [storage]);
 
-    async function getLastMaintenance(){
-        try {
-    
-          const response = await api.get(`/maintenance/${storage!.companyExternalId}/${vehicleId}/last`, {
-            headers:{
-              Authorization: `Bearer ${storage!.tokenJwt}`
-            }
-          });
-    
-          if(response.status === 200){
-            console.log(response.data);
-            setLastMaintenance(response.data);
-          }
-    
-        } catch (error: any) {
-          console.log(error);
-    
-          if(error.response.status === 404) setLastMaintenance(null);
-        }
-      }
+    async function getMaintenance(){
+      const maintenance: MaintenanceDone | null | undefined = await getLastMaintenanceDone(storage!.tokenJwt!, storage!.companyExternalId!, vehicleId);
 
+      setLastMaintenance(maintenance);
+    }
 
-      return { lastMaintenance };
+    
+    return { lastMaintenance };
 
 }

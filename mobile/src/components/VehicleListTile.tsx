@@ -11,35 +11,36 @@ import {
 import { colors, typography } from '../theme';
 
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import Vehicle from '../types/vehicle';
 
 interface Props{
-    data: any;
+    vehicle: Vehicle;
     navigation: any;
 }
 
-export default function VehicleListTile({ data, navigation}: Props){
+export default function VehicleListTile({ vehicle, navigation}: Props){
 
     //console.log(data);
 
     //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
     var nextDate = new Date("2025-09-12T03:00:00.000+00:00").toLocaleDateString('pt-BR');
 
-    const image = data.vehicleImage.url; // resolver o problema de uma imagem que não carrega
+    const image = vehicle.vehicleImage; // resolver o problema de uma imagem que não carrega
 
     console.log(image);
 
     const imageKm = require("../../assets/icons/km.png");
 
     return(
-        <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', data)}>
+        <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', vehicle)}>
             <Image
             source={{ uri: image }}
             style={styles.img}
             />
 
             <View style={styles.infoVehicle}>
-              <Text style={styles.plate}>{data.plate}</Text>
-              <Text style={styles.vehicleBrand}>{data.brand}</Text>
+              <Text style={styles.plate}>{vehicle.plate}</Text>
+              <Text style={styles.vehicleBrand}>{vehicle.brand}</Text>
               
               <View style={styles.alertContainer}>
                 <View style={styles.alertIcon}></View>
@@ -51,7 +52,7 @@ export default function VehicleListTile({ data, navigation}: Props){
               <View style={styles.kmContainer}>
                 <Image source={imageKm} style={styles.imageKm} />
 
-                <Text style={styles.textIcon}>{data.km}km</Text>
+                <Text style={styles.textIcon}>{vehicle.km}km</Text>
 
               </View>
 

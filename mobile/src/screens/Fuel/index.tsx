@@ -142,13 +142,9 @@ export default function Fuel({ navigation, route }: Props) {
                 data={fuel}
                 keyExtractor={ item => String(item.id)}
                 renderItem={ ({ item }) => <FuelCard 
-                                            date={item ? new Date(item.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                                            price={item ? item.totalValue : 0.00}
-                                            km={item ? item.km : 0}
-                                            fuelType={item ? item.fuelType : 'Gasolina'}
-                                            liters={item ? item.liters : 0}
+                                            fuel={item}
                                             navigation={navigation}
-                                            vehicleId={item.id}
+                                            vehicleId={vehicleId}
                                             screenVehicles={false}
                                         />}
                 onEndReached={() => {

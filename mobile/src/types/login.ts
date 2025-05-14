@@ -1,4 +1,9 @@
 export default interface Login {
+    externalId: string;
     email: string;
-    password: string;
+    authenticated: boolean,
+    created: string,
+    expiration: string;
+    accessToken: string;
+    refreshToken: string;
 }

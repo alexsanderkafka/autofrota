@@ -2,24 +2,12 @@ import { useState, useEffect } from "react";
 
 import api from "../service/api";
 import Storage from "../service/storage";
-
-interface Vehicles {
-  id: number;
-  plate: string;
-  brand: string;
-  model: string;
-  typeFuel: string;
-  km: number;
-  category: string;
-  activate: boolean;
-  vehicle_image_id: number;
-  company_id: number;
-  vehicle_status_id: number;
-}
+import { getAllVehicleByCompanyIdAndStatus } from "../service/vehicleService";
+import Vehicle from "../types/vehicle";
 
 export default function useVehicles(selected: string){
 
-    const [vehicles, setVehicles] = useState<Vehicles[]>([]);
+    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [notFoundVehicles, setNotFoundVehicles] = useState(false);
@@ -52,35 +40,34 @@ export default function useVehicles(selected: string){
     }, [storage])
 
     async function getStatusVehicles(status: string){
-        try {    
 
-            console.log("Get Status Vehicles: " + storage!.companyExternalId);
+      console.log("Get Status Vehicles: " + storage!.companyExternalId);
 
-            let response = await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
-              headers:{
-                Authorization: `Bearer ${storage!.tokenJwt}`
-              }
-            });
-  
-    
-        let listVehicles: Vehicles[] = response.data._embedded.vehicleDTOList;
+      //await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
+        
+      if(storage!.companyExternalId === null || storage!.tokenJwt === null) return;
+          
+      let listVehicles: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(storage!.companyExternalId, status, storage!.tokenJwt, page);
       
+      if(listVehicles != null && listVehicles.length != undefined){
         setVehicles([...vehicles, ...listVehicles]);
-      
-        setTotalPages(response.data.page.totalPages);
         setLoading(false);
         setNotFoundVehicles(false);
-        setTotalVehicles(response.data.page.totalElements);
-    
-        //console.log(Vehicles);
+
+        return;
+      }
+
+      /*
+      console.log("Caiu em error");
+      setLoading(false);
+      setNotFoundVehicles(true);
+      setMessage("Nenhum veículo cadastrado.")
+      console.log("Error: " + error);*/
       
-        } catch (error) {
-            console.log("Caiu em error");
-            setLoading(false);
-            setNotFoundVehicles(true);
-            setMessage("Nenhum veículo cadastrado.")
-            console.log("Error: " + error);
-        }
+      
+      //setTotalPages(response.data.page.totalPages);
+      
+      //setTotalVehicles(response.data.page.totalElements);
     }
 
     async function loadMoreVehicles(){

@@ -3,5 +3,5 @@ import Service from "./service";
 
 export default interface MaintenanceDone{
     maintenance: Maintenance;
-    service: Service[];
+    services: Service[];
 }

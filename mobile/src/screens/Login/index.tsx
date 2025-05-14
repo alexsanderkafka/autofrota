@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef} from 'react';
 import * as Animatable from 'react-native-animatable';
-import api from '../../service/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode";
 
@@ -22,6 +21,8 @@ import {
 import { colors } from '../../theme';
 
 import styles from './style';
+
+import { login as loginService } from '../../service/loginService';
 
 interface Props {
   navigation: any;
@@ -101,8 +102,6 @@ export default function Login({ navigation }: Props) {
   async function login(){
     let resultVerify = verifyFields();
 
-    console.log("Antes do 200 OK");
-
     if(resultVerify){
 
       console.log("Verificado com sucesso");
@@ -111,34 +110,25 @@ export default function Login({ navigation }: Props) {
 
         console.log("Email: " + email);
         console.log("Senha: " + password);
-        
-        let response = await api.post('/auth/signin', {
-          email: email,
-          password: password
-        });
 
-        if(response.status === 200){ 
-          console.log("Login realizado com sucesso");
+        let response = await loginService(email, password);
 
-          let tokenJwt = response.data.accessToken;
-          let externalId = response.data.externalId;
-        
-          AsyncStorage.setItem("tokenJwt", tokenJwt);
-          AsyncStorage.setItem('companyExternalId', externalId)
-
+        if(response === 200){ 
           navigation.navigate('BottomNavigation');
         }
-      }catch(error: any){  
-        console.log(error)
-        let currentStatus = error.response.status;
 
-        if(currentStatus === 401){
+        if(response === 401){
           setShowAlert(true);
           setTextAlert("Email ou senha inválido");
-        }else if(currentStatus === 404){
+        }else if(response === 404){
           setShowAlert(true);
           setTextAlert("Email não encontrado");
         }
+
+      }catch(error: any){  
+        console.log(error)
+        let currentStatus = error.response.status; 
+        console.log(currentStatus);
       }
     }
   }

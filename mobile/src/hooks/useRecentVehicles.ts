@@ -2,25 +2,13 @@ import React, { useState, useEffect, useRef} from 'react';
 
 import api from '../service/api';
 import Storage from '../service/storage';
-
-interface Vehicles {
-  id: number;
-  plate: string;
-  brand: string;
-  model: string;
-  typeFuel: string;
-  km: number;
-  category: string;
-  activate: boolean;
-  vehicle_image_id: number;
-  company_id: number;
-  vehicle_status_id: number;
-}
+import { getRecentVehiclesByCompanyId } from '../service/vehicleService';
+import Vehicle from '../types/vehicle';
 
 export default function useRecentVehicles() {
 
     const [storage, setStorage] = useState<Storage>();
-    const [vehicles, setVehicles] = useState<Vehicles[]>([]);
+    const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>([]);
 
     useEffect(() => {
                 async function getInStorage(){
@@ -37,30 +25,17 @@ export default function useRecentVehicles() {
     }, [storage]);
     
     async function getRecentVehicles(){
-        try {
+
+        if(storage!.companyExternalId === null || storage!.tokenJwt === null) return;
+
+        let listVehicles: Vehicle[] | null | undefined = await getRecentVehiclesByCompanyId(storage!.companyExternalId, storage!.tokenJwt);
     
-          let response = await api.get(`/vehicles/${storage!.companyExternalId}/recent`, {
-            headers:{
-              Authorization: `Bearer ${storage!.tokenJwt}`
-            }
-          });
+        setVehicles(listVehicles);
     
-          let listVehicles: Vehicles[] = response.data;
+        //setLoading(false);
+        //setNotFoundVehicles(false);
     
-          setVehicles(listVehicles);
-    
-          //setLoading(false);
-          //setNotFoundVehicles(false);
-    
-          console.log(vehicles);
-    
-        } catch (error) {
-          console.log("Caiu em error");
-          //setLoading(false);
-          //setNotFoundVehicles(true);
-          //setMessage("Nenhum veículo cadastrado.")
-          console.log("Error: " + error);
-        }
+        console.log(vehicles);
       }
 
       return { vehicles };

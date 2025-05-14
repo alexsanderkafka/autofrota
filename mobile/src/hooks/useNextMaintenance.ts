@@ -2,20 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import api from '../service/api';
 import Storage from '../service/storage';
+import { ScheduledMaintenance } from './useScheduledMaintenance';
+import { getNextMaintenance } from '../service/maintenanceService';
+import Maintenance from '../types/maintenance';
 
-interface NextMaintenance{
-    id: number;
-    date: string;
-    done: boolean;
-    observation: string;
-    scheduled: boolean;
-    totalValue: number;
-    vehicleId: number;
-}
+export default function useNextMaintenance(vehicleId: number): any {
 
-export default function useNextMaintenance(vehicleId: string): any {
-
-    const [nextMaintenance, setNextMaintenance] = useState<any>(null);
+    const [nextMaintenance, setNextMaintenance] = useState<Maintenance | null | undefined>(null);
 
     const [storage, setStorage] = useState<Storage>();
 
@@ -36,24 +29,9 @@ export default function useNextMaintenance(vehicleId: string): any {
 
 
     async function getScheduledMaintenance(){
-        try {
-    
-          const response = await api.get(`/maintenance/${storage!.companyExternalId}/${vehicleId}/scheduled`, {
-            headers:{
-              Authorization: `Bearer ${storage!.tokenJwt}`
-            }
-          });
-    
-          if(response.status === 200){
-            console.log(response.data);
-            setNextMaintenance(response.data);
-          }
-    
-        } catch (error: any) {
-          console.log(error);
-    
-          if(error.response.status === 404) setNextMaintenance(null);
-        }
+      const maintenance: Maintenance | null | undefined = await getNextMaintenance(storage!.tokenJwt!, storage!.companyExternalId!, vehicleId);
+
+      setNextMaintenance(maintenance);
     }
 
     return { nextMaintenance };

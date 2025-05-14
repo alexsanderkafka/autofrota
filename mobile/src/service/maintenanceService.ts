@@ -55,38 +55,34 @@ export async function getAllMaintenanceDone(vehicle: Vehicle, tokenJwt: string):
     return maintenanceDone;
 }
 
-export async function getNextMaintenance(vehicle: Vehicle, tokenJwt: string): Promise<Maintenance | null | undefined>{
-    const [nextMaintenance, setNextMaintenance] = useState<Maintenance | null | undefined>(null);
-
-    const response = await api.get(`/maintenance/${vehicle.companyId}/${vehicle.id}/scheduled`, {
+export async function getNextMaintenance(tokenJwt: string, companyId: string, vehicleId: number): Promise<Maintenance | null | undefined>{
+    const response = await api.get(`/maintenance/${companyId}/${vehicleId}/scheduled`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }
     });
     
     if(response.status === 200){
-        console.log(response.data);
-        setNextMaintenance(response.data);
+        let maintenance: Maintenance = response.data;
+        return maintenance;
     }
 
-    return nextMaintenance;
+    return null;
 }
 
-export async function getLastMaintenanceDone(vehicle: Vehicle, tokenJwt: string): Promise<MaintenanceDone | null | undefined>{
-    const [lastMaintenance, setLastMaintenance] = useState<MaintenanceDone | null | undefined>(null);
-
-    const response = await api.get(`/maintenance/${vehicle.companyId}/${vehicle.id}/last`, {
+export async function getLastMaintenanceDone(tokenJwt: string, companyId: string, vehicleId: number): Promise<MaintenanceDone | null | undefined>{
+    const response = await api.get(`/maintenance/${companyId}/${vehicleId}/last`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }
     });
     
     if(response.status === 200){
-        console.log(response.data);
-        setLastMaintenance(response.data);
+        const maintenance: MaintenanceDone = response.data;
+        return maintenance;
     }
 
-    return lastMaintenance;
+    return null;
 }
 
 export async function getlAllMaintenanceDoneByDateFilter(vehicle: Vehicle, filter: DateFilter, tokenJwt: string): Promise<MaintenanceDone | null | undefined> {

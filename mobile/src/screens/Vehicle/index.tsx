@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddNewMaintenance from '../modal/AddNewMaintenance';
 import Checklist from '../modal/CheckList';
 import FuelCard from '../../components/FuelCard';
-import MaintenanceCard from '../../components/MaintenanceDoneCard';
+import MaintenanceDoneCard from '../../components/MaintenanceDoneCard';
 import ScheduledMaintenanceCard from '../../components/ScheduledMaintenanceCard';
 import useLastFuel from '../../hooks/useLastFuel';
 import useLastMaintenance from '../../hooks/useLastMaintenance';
@@ -40,7 +40,7 @@ export default function Vehicle({ navigation, route }: Props) {
   const data = route.params;
 
   //Infos do veículo
-  const image: string = data.vehicleImage.url;
+  const image: string = data.vehicleImage;
   const vehicleModel: string = data.model;
   const vehicleBrand: string = data.brand;
   const vehiclePlate: string = data.plate;
@@ -112,43 +112,49 @@ export default function Vehicle({ navigation, route }: Props) {
             <View style={styles.fuelContainer}>
               <Text style={styles.title}>Último abastecimento</Text>
 
-              <FuelCard
-                date={lastFuel ? new Date(lastFuel.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                price={lastFuel ? lastFuel.totalValue : 'R$ 0,00'}
-                km={lastFuel ? lastFuel.km : '0'}
-                fuelType={lastFuel ? lastFuel.fuelType : 'Gasolina'}
-                liters={lastFuel ? lastFuel.volume : '0L'}
-                navigation={navigation}
-                vehicleId={vehicleId}
-                screenVehicles={true}
-              />
+              {
+                lastFuel !== null && ( 
+                  <FuelCard
+                  fuel={lastFuel}
+                  navigation={navigation}
+                  vehicleId={vehicleId}
+                  screenVehicles={true}
+                  />
+                )
+              }
+              
 
             </View>
 
             <View style={styles.doneMaintenanceContainer}>
               <Text style={styles.title}>Última manutenção</Text>
 
-              <MaintenanceCard
-                date={lastMaintenance ? new Date(lastMaintenance.maintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                totalValue={lastMaintenance ? lastMaintenance.maintenance.totalValue : 0}
-                services={lastMaintenance ? lastMaintenance.services : []}
-                navigation={navigation}
-                vehicleId={vehicleId}
-                vehicle={true}
-              />
-
+              {
+                lastMaintenance !== null && (
+                  <MaintenanceDoneCard
+                  maintenance={lastMaintenance}
+                  navigation={navigation}
+                  vehicle={true}
+                  />
+                )
+              }
             </View>
 
             <View style={styles.doneMaintenanceContainer}>
               <Text style={styles.title}>Manutenção agendada</Text>
 
-              <ScheduledMaintenanceCard
-                date={nextMaintenance ? new Date(nextMaintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                observation={nextMaintenance ? nextMaintenance.observation : 'Sem observação'}
-                navigation={navigation}
-                vehicleId={vehicleId}
-                vehicle={true}
-              />
+              {
+                nextMaintenance !== null && (
+                  <ScheduledMaintenanceCard
+                  date={nextMaintenance ? new Date(nextMaintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
+                  observation={nextMaintenance ? nextMaintenance.observation : 'Sem observação'}
+                  navigation={navigation}
+                  vehicleId={vehicleId}
+                  vehicle={true}
+                  />
+                )
+              }
+              
             </View>
 
             <View style={styles.actionContainer}>
