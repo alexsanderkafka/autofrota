@@ -1,4 +1,4 @@
-package com.autofrota
+package kafka.system.com
 
 import android.os.Build
 import android.os.Bundle

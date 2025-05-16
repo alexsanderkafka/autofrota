@@ -34,7 +34,7 @@ interface Props{
 export default function Fuel({ navigation, route }: Props) {
 
     const [latestElement, setLatestElement] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [notFound, setNotFound] = useState<boolean>(false);
 
     const [visible, setVisible] = useState<boolean>(false);
@@ -43,6 +43,8 @@ export default function Fuel({ navigation, route }: Props) {
     const vehicleId: number = route.params;
 
     const { fuel } = useFuel(vehicleId);
+
+    console.log(fuel);
 
     useEffect( () => {
 
@@ -57,8 +59,8 @@ export default function Fuel({ navigation, route }: Props) {
             return;
         }
 
-        
-
+        setLoading(false);
+        setNotFound(false);
     }, [fuel]);
 
     
@@ -127,6 +129,7 @@ export default function Fuel({ navigation, route }: Props) {
                 </View>
             );
         }else if(notFound){
+            console.log("Bateu no else");
             const notFoundImage: any = require('../../../assets/logo/not-found-fuel.png');
 
             return(
@@ -136,6 +139,7 @@ export default function Fuel({ navigation, route }: Props) {
                 </View>
             );
         }else{
+
             return(
                 <FlatList
                 showsVerticalScrollIndicator={false}

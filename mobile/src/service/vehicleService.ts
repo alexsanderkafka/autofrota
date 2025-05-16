@@ -4,6 +4,7 @@ import StatusCount from "../types/statusCount";
 
 export async function getAllVehicleByCompanyIdAndStatus(companyId: string, vehicleStatus: string, tokenJwt: string, page: number): Promise<Vehicle[] | null | undefined>{
 
+    
     let response = await api.get(`/vehicles/${companyId}/${vehicleStatus}?page=${page}&direction=desc`, {
         headers:{
             Authorization: `Bearer ${tokenJwt}`

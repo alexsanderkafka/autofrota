@@ -12,27 +12,28 @@ import {
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ScheduledMaintenance from '../types/scheduledMaintenance';
 
 interface MaintenanceCardProps {
-    date: string;
-    observation: string;
+    maintenance: ScheduledMaintenance
     navigation: any;
-    vehicleId: number;
     vehicle: boolean;
 }
 
 export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
 
     function goToMaintenance(){
-        props.navigation.navigate('Maintenance', props.vehicleId);
+        props.navigation.navigate('Maintenance', props.maintenance.vehicleId);
     }
+
+    const formatDate = new Date(props.maintenance.date).toLocaleDateString('pt-BR');
 
     return(
         <View style={styles.maintenanceCard}>
             <View style={{ paddingHorizontal: 10, paddingTop: 10 }}>
                 <View style={styles.row}>
                     <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
-                    <Text>{props.date}</Text>
+                    <Text>{formatDate}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
@@ -43,7 +44,7 @@ export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
                     <Text>Observações:</Text>
                 </View>
 
-                <Text style={styles.observation}>{ props.observation }</Text>
+                <Text style={styles.observation}>{ props.maintenance.observation }</Text>
             </View>
 
             {

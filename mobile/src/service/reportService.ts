@@ -1,7 +1,7 @@
 import Report from "../types/report";
 import api from "./api";
 
-export async function getCountTotal(tokenJwt: string, companyId: string): Promise<Report | null> {
+export async function getCountTotal(tokenJwt: string, companyId: string): Promise<Report | null | undefined> {
 
     let response = await api.get(`/reports/${companyId}/total`, {
             headers:{

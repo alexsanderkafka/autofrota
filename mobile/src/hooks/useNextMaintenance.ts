@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import api from '../service/api';
 import Storage from '../service/storage';
-import { ScheduledMaintenance } from './useScheduledMaintenance';
 import { getNextMaintenance } from '../service/maintenanceService';
-import Maintenance from '../types/maintenance';
+import ScheduledMaintenance from '../types/scheduledMaintenance';
 
 export default function useNextMaintenance(vehicleId: number): any {
 
-    const [nextMaintenance, setNextMaintenance] = useState<Maintenance | null | undefined>(null);
+    const [nextMaintenance, setNextMaintenance] = useState<ScheduledMaintenance | null | undefined>(null);
 
     const [storage, setStorage] = useState<Storage>();
 
@@ -29,7 +28,7 @@ export default function useNextMaintenance(vehicleId: number): any {
 
 
     async function getScheduledMaintenance(){
-      const maintenance: Maintenance | null | undefined = await getNextMaintenance(storage!.tokenJwt!, storage!.companyExternalId!, vehicleId);
+      const maintenance: ScheduledMaintenance | null | undefined = await getNextMaintenance(storage!.tokenJwt!, storage!.companyExternalId!, vehicleId);
 
       setNextMaintenance(maintenance);
     }

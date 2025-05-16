@@ -4,6 +4,7 @@ import Vehicle from "../types/vehicle";
 import api from "./api";
 
 export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicleId: number, companyId: string): Promise<Fuel[] | null | undefined> {
+    
     const response = await api.get(`/fuel/${companyId}/${vehicleId}`, {
                 headers:{
                   Authorization: `Bearer ${tokenJwt}`

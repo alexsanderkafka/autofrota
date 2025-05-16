@@ -4,13 +4,12 @@ import ScheduledMaintenance from "../types/scheduledMaintenance";
 import Vehicle from "../types/vehicle";
 import api from "./api";
 import MaintenanceDone from "../types/maintenanceDone";
-import Maintenance from "../types/maintenance";
 import DateFilter from "../types/dateFilter";
 import UpdateMaintenance from "../types/updateMaintenance";
 
-export async function getAllScheduledMaintenance(vehicle: Vehicle, tokenJwt: string): Promise<ScheduledMaintenance[] | null | undefined> {
+export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<ScheduledMaintenance[] | null | undefined> {
 
-    const response = await api.get(`/maintenance/${vehicle.companyId}/${vehicle.id}/all/scheduled`, {
+    const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/scheduled?page=${page}`, {
               headers:{
                 Authorization: `Bearer ${tokenJwt}`
               }
@@ -30,13 +29,16 @@ export async function getAllScheduledMaintenance(vehicle: Vehicle, tokenJwt: str
 
         return listMaintenance;
     }
+
+    return null;
 }
 
-export async function getAllMaintenanceDone(vehicle: Vehicle, tokenJwt: string): Promise<MaintenanceDone[] | null | undefined>{
+export async function getAllMaintenanceDone(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<MaintenanceDone[] | null | undefined>{
 
-    const [maintenanceDone, setMaintenanceDone] = useState<MaintenanceDone[] | null | undefined>([]);
+    ////?page=0&size=2&direction=desc
 
-    const response = await api.get(`/maintenance/${vehicle.companyId}/${vehicle.id}/all/done`, {
+    console.log(companyId!);
+    const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/done?page=${page}`, {
               headers:{
                 Authorization: `Bearer ${tokenJwt}`
               }
@@ -49,13 +51,14 @@ export async function getAllMaintenanceDone(vehicle: Vehicle, tokenJwt: string):
         }
 
         let listMaintenance: MaintenanceDone[] = response.data._embedded.maintenanceDoneDTOList;
-        setMaintenanceDone(listMaintenance);
+        
+        return listMaintenance;
     }
 
-    return maintenanceDone;
+    return null;
 }
 
-export async function getNextMaintenance(tokenJwt: string, companyId: string, vehicleId: number): Promise<Maintenance | null | undefined>{
+export async function getNextMaintenance(tokenJwt: string, companyId: string, vehicleId: number): Promise<ScheduledMaintenance | null | undefined>{
     const response = await api.get(`/maintenance/${companyId}/${vehicleId}/scheduled`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
@@ -63,7 +66,7 @@ export async function getNextMaintenance(tokenJwt: string, companyId: string, ve
     });
     
     if(response.status === 200){
-        let maintenance: Maintenance = response.data;
+        let maintenance: ScheduledMaintenance = response.data;
         return maintenance;
     }
 

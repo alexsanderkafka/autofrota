@@ -27,9 +27,9 @@ export default function useFuel(vehicleId: number){
 
     async function getFuel(){
 
-        if(storage!.tokenJwt === null || storage!.companyExternalId === null) return;
+        //if(storage!.tokenJwt === null || storage!.companyExternalId === null) return;
 
-        let fuel: Fuel[] | null | undefined = await getAllFuelByVehicleIdAndCompany(storage!.companyExternalId, vehicleId, storage!.tokenJwt);
+        let fuel: Fuel[] | null | undefined = await getAllFuelByVehicleIdAndCompany(storage!.tokenJwt!, vehicleId, storage!.companyExternalId!);
 
         if(fuel === null) return;
 

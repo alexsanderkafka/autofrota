@@ -28,11 +28,14 @@ const styles = StyleSheet.create({
     },
     chartContainer:{
         width: '100%',
-        height: 255,
+        height: 270,
         marginTop: 26,
         elevation: 2,
         backgroundColor: colors.primary.white,
-        borderRadius: 5
+        borderRadius: 5,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     reportContainer:{
         width: '100%',
@@ -55,6 +58,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         justifyContent: 'space-between'
+    },
+    valueChart:{
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    dataChart:{
+        fontSize: 16
+    },
+    chart:{
+        height: 200,
+        width: '100%'
     }
     
 });

@@ -146,10 +146,8 @@ export default function Vehicle({ navigation, route }: Props) {
               {
                 nextMaintenance !== null && (
                   <ScheduledMaintenanceCard
-                  date={nextMaintenance ? new Date(nextMaintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                  observation={nextMaintenance ? nextMaintenance.observation : 'Sem observação'}
+                  maintenance={nextMaintenance}
                   navigation={navigation}
-                  vehicleId={vehicleId}
                   vehicle={true}
                   />
                 )

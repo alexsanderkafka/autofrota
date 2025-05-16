@@ -29,8 +29,8 @@ import useMaintenanceDone from '../../hooks/useMaintenanceDone';
 import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
 
 
-import { ScheduledMaintenance } from '../../hooks/useScheduledMaintenance';
-import { MaintenanceDone } from '../../hooks/useMaintenanceDone';
+import ScheduledMaintenance from '../../types/scheduledMaintenance';
+import MaintenanceDone from '../../types/maintenanceDone';
 
 const { height } = Dimensions.get('window');
 
@@ -40,19 +40,6 @@ interface Props{
 }
 
 export default function Maintenance({ navigation, route }: Props) {
-
-    /*
-    const [token, setToken] = useState('');
-    const [maintenances, setMaintenances] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [latestElement, setLatestElement] = useState(false);
-    const [page, setPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalMaintenance, setTotalMaintenance] = useState(0);
-    const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
-
-    const sizePage = 12;
-    const vehicleId = route.params;*/
 
     const [latestElement, setLatestElement] = useState(false);
     const [filter, setFilter] = useState('made'); //scheduled
@@ -87,11 +74,8 @@ export default function Maintenance({ navigation, route }: Props) {
         }
 
         setLoading(false);
+        setNotFoundMaintenance(false);
     }, [maintenanceDone, scheduledMaintenance]);
-
-    console.log("vehicleId: ", vehicleId)
-    console.log(maintenanceDone);
-    console.log(scheduledMaintenance);
 
     function renderFooterFlatList(){
         if(!latestElement) return null;
@@ -172,10 +156,8 @@ export default function Maintenance({ navigation, route }: Props) {
 
                         return(
                             <ScheduledMaintenanceCard 
-                            date={scheduled ? new Date(scheduled.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                            observation={scheduled ? scheduled.observation : 'Sem observação'}
+                            maintenance={scheduled}
                             navigation={navigation}
-                            vehicleId={scheduled.vehicleId}
                             vehicle={false}
                             />
                         );
@@ -186,11 +168,8 @@ export default function Maintenance({ navigation, route }: Props) {
 
                     return(
                         <MaintenanceDoneCard
-                        date={done ? new Date(done.maintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                        totalValue={done ? done.maintenance.totalValue : 0}
-                        services={done ? done.service : []}
+                        maintenance={done}
                         navigation={navigation}
-                        vehicleId={done.maintenance.vehicleId}
                         vehicle={false}
                         />
                     )
