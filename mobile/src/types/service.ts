@@ -1,4 +1,4 @@
 export default interface Service{
-    id: number;
+    id: number | null;
     type: string;
 }

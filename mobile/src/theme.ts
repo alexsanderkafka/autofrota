@@ -21,6 +21,7 @@ export const colors: any = {
         dark: '#1e40ab',
         black: '#000',
         other: '#343440',
+        error: '#FF0000'
         
     },
     shadow:{

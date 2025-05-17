@@ -1,5 +1,5 @@
-export default interface ScheduledMaintenance{
-    id: number;
+export default interface Maintenance{
+    id: number | null;
     date: string;
     done: boolean;
     observation: string;

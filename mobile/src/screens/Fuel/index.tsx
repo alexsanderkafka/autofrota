@@ -183,7 +183,7 @@ export default function Fuel({ navigation, route }: Props) {
 
             {
                 visible && (
-                    <AddNewFuel visible={setVisible} slideAnim={slideAnim}/>
+                    <AddNewFuel visible={setVisible} slideAnim={slideAnim} vehicleId={vehicleId}/>
                 )
             }
         

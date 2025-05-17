@@ -16,10 +16,23 @@ import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Select(){
-    const typeFuel = ['Gasolina', 'Diesel', 'Álcool'];
 
-    const [selectedFuel, setSelectedFuel] = useState(typeFuel[0]);
+enum FuelType {
+    GASOLINA = 'Gasolina',
+    DIESEL = 'Diesel',
+    GNV = 'Gnv',
+    ETANOL = 'Etanol',
+    ARLA = 'Arla'
+}
+
+interface Props{
+    selectedFuel: string;
+    setSelectedFuel: (fuel: string) => void;
+}
+
+export default function Select({ selectedFuel, setSelectedFuel }: Props){
+    const typeFuel = ['Gasolina', 'Diesel', 'Gnv', 'Etanol', 'Arla'];
+
     const [visible, setVisible] = useState(false)
 
     function updateItem(item: any){

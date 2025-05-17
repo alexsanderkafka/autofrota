@@ -61,8 +61,8 @@ export async function getlAllFuelByVEhicleAndCompanyWithFilter(tokenJwt: string,
     return null;
 }
 
-export async function saveNewFuelByVehicle(tokenJwt: string, fuel: Fuel, vehicle: Vehicle): Promise<number>{
-    const response = await api.post(`/fuel/${vehicle.id}`, fuel, {
+export async function saveNewFuelByVehicle(tokenJwt: string, fuel: Fuel, vehicleId: number): Promise<number>{
+    const response = await api.post(`/fuel/${vehicleId}`, fuel, {
          headers:{
             Authorization: `Bearer ${tokenJwt}`
         }

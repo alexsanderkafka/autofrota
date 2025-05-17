@@ -29,7 +29,7 @@ import useMaintenanceDone from '../../hooks/useMaintenanceDone';
 import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
 
 
-import ScheduledMaintenance from '../../types/scheduledMaintenance';
+import Maintenance from '../../types/scheduledMaintenance';
 import MaintenanceDone from '../../types/maintenanceDone';
 
 const { height } = Dimensions.get('window');
@@ -39,7 +39,7 @@ interface Props{
     route: any;
 }
 
-export default function Maintenance({ navigation, route }: Props) {
+export default function MaintenanceScreen({ navigation, route }: Props) {
 
     const [latestElement, setLatestElement] = useState(false);
     const [filter, setFilter] = useState('made'); //scheduled
@@ -55,6 +55,15 @@ export default function Maintenance({ navigation, route }: Props) {
     
     const { maintenanceDone } = useMaintenanceDone(vehicleId);
     const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
+
+
+    //Filter buttons
+    const filters: string[] = ['Feitas', 'Agendadas'];
+    const [selectedFilter, setSelectedFilter] = useState<string>(filters[0]);
+
+    useEffect(() => {
+        console.log(selectedFilter);
+    }, [selectedFilter]);
 
     useEffect( () => {
         if(maintenanceDone === null){
@@ -137,22 +146,22 @@ export default function Maintenance({ navigation, route }: Props) {
             );
         }else{
             return(
-                <FlatList<ScheduledMaintenance | MaintenanceDone>
+                <FlatList<Maintenance | MaintenanceDone>
                 showsVerticalScrollIndicator={false} 
                 data={filter === 'scheduled' ? scheduledMaintenance : maintenanceDone}
                 keyExtractor={ item => {
                     if(filter === 'scheduled'){
-                        let scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
-                        return scheduled.id.toString();
+                        let scheduled: Maintenance = item as Maintenance;
+                        return scheduled.id!.toString();
                     }else{
                         let done: MaintenanceDone = item as MaintenanceDone;
-                        return done.maintenance.id.toString();
+                        return done.maintenance.id!.toString();
                     }
                 }}
                 renderItem={ ({ item }) => {
                     if(filter === 'scheduled'){
 
-                        const scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
+                        const scheduled: Maintenance = item as Maintenance;
 
                         return(
                             <ScheduledMaintenanceCard 
@@ -190,8 +199,21 @@ export default function Maintenance({ navigation, route }: Props) {
         <View style={styles.container}>
 
             <View style={styles.containerFilterButton}>
-                <FilterButton text="feitas"/>
-                <FilterButton text="Agendadas"/>
+                {
+                    filters.map((filter: string) => (
+                        <FilterButton
+                        key={filter}
+                        text={filter}
+                        selected={filter == selectedFilter}
+                        onPress={() => {
+                            if(filter === filters[0]) setFilter('made');
+                            else setFilter('scheduled');
+                            
+                            setSelectedFilter(filter);
+                        }}
+                        />
+                    ))
+                }
             </View>
 
             <View style={styles.fieldSelectDate}>
@@ -211,7 +233,7 @@ export default function Maintenance({ navigation, route }: Props) {
 
             {
             visible && (
-                    <AddNewMaintenance visible={setVisible} slideAnim={slideAnim}/>
+                    <AddNewMaintenance visible={setVisible} slideAnim={slideAnim} vehicleId={vehicleId}/>
                 )
             }
         
