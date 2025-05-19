@@ -4,10 +4,11 @@ import api from "../service/api";
 import Storage from "../service/storage";
 import { getAllVehicleByCompanyIdAndStatus } from "../service/vehicleService";
 import Vehicle from "../types/vehicle";
+import { VehicleStatus } from "../types/vehicleStatus";
 
 export default function useVehicles(selected: string){
 
-    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+    const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>([]);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
     const [notFoundVehicles, setNotFoundVehicles] = useState(false);
@@ -39,20 +40,22 @@ export default function useVehicles(selected: string){
         getStatusVehicles(selected);
     }, [storage])
 
-    async function getStatusVehicles(status: string){
+    useEffect(() => {
+        getStatusVehicles(selected);
+    }, [selected])
 
-      console.log("Get Status Vehicles: " + storage!.companyExternalId);
+    async function getStatusVehicles(status: string){
 
       //await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
         
       if(storage!.companyExternalId === null || storage!.tokenJwt === null) return;
-          
+      
+      console.log("Vehicle status: ", status);
+
       let listVehicles: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(storage!.companyExternalId, status, storage!.tokenJwt, page);
       
       if(listVehicles != null && listVehicles.length != undefined){
-        setVehicles([...vehicles, ...listVehicles]);
-        setLoading(false);
-        setNotFoundVehicles(false);
+        setVehicles([...vehicles!, ...listVehicles]);
 
         return;
       }
@@ -85,6 +88,6 @@ export default function useVehicles(selected: string){
         getStatusVehicles(selected);
     }
 
-    return { vehicles, totalPages, loading, notFoundVehicles, totalVehicles, message, loadMoreVehicles, latestElement };
+    return { vehicles, loading, totalVehicles, loadMoreVehicles, latestElement };
 
 }

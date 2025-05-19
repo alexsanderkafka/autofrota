@@ -3,7 +3,7 @@ server:
 file:
   upload-dir: uploads/
 firebase:
-  url-bucket: set url bucket
+  url-bucket: set url-bucket
 security:
   jwt:
     token:
@@ -22,7 +22,7 @@ spring:
     host: smtp.test.com
     port: 587
     username: set username
-    password: set password
+    password: set pasword
     properties:
       mail: 
         smtp: 

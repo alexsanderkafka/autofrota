@@ -18,6 +18,9 @@ import api from "../../service/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Storage from "../../service/storage";
 import useVehicles from "../../hooks/useVehicles";
+import styles from "./style";
+import VehicleFilter from "../../components/VehicleFilter";
+import { VehicleStatus } from "../../types/vehicleStatus";
 
 interface Props{
   navigation: any;
@@ -30,8 +33,20 @@ export default function Vehicles( {navigation}: Props ) {
 
     const sizePage = 12;
 
-    const {vehicles, totalPages, loading, notFoundVehicles, totalVehicles, message, loadMoreVehicles, latestElement} = useVehicles(selected);
+    const {vehicles, loading, totalVehicles, loadMoreVehicles, latestElement} = useVehicles(selected);
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    //Filter buttons
+    //const filters: string[] = ['Ativos', 'Manutenção', 'Aviso', 'Em uso'];
+    const filters: any[] = [
+        {label: 'Ativos', value: "active"},
+        {label: 'Manutenção', value: "maintenance"},
+        {label: 'Aviso', value: "alert"},
+        {label: 'Em uso', value: "usage"}
+    ]
+    
+    const [selectedFilter, setSelectedFilter] = useState<string>(filters[0].label);
 
     function renderFooterFlatList(){
         if(!latestElement) return null;
@@ -50,21 +65,23 @@ export default function Vehicles( {navigation}: Props ) {
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 18 }}>
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Ativos</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Manutenção</Text>
-                    </TouchableOpacity>
+                    {
+                        filters.map((filter: any) => (
+                            <VehicleFilter
+                            key={filter.label}
+                            text={filter.label}
+                            selected={filter.label == selectedFilter}
+                            onPress={() => {
+                                setSelectedFilter(filter.label);
+                                console.log(filter.value);
+                                setSelected(filter.value);
+                                setRefreshing(true);
+                            }}
+                            />
+                        ))
+                    }
 
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Avisos</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Em uso</Text>
-                    </TouchableOpacity>
                 </ScrollView>
             </View>
 
@@ -91,7 +108,7 @@ export default function Vehicles( {navigation}: Props ) {
             <FlatList 
             showsVerticalScrollIndicator={false}  
             data={vehicles}
-            //keyExtractor={ item => String(item.vehicle_characteristic.id)}
+            keyExtractor={ item => String(item.id)}
             renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation}/>}
             onEndReached={() => {
                 loadMoreVehicles();
@@ -99,6 +116,7 @@ export default function Vehicles( {navigation}: Props ) {
             onEndReachedThreshold={1} 
             ListFooterComponent={renderFooterFlatList}
             style={styles.list}
+            refreshing={refreshing}
             />
 
 
@@ -107,61 +125,3 @@ export default function Vehicles( {navigation}: Props ) {
 
 }
 
-const styles = StyleSheet.create({
-    container:{
-        width: '100%',
-        height: '100%',
-        backgroundColor: colors.primary.white,
-        
-    },
-    buttonContainer:{
-        width: '100%',
-        height: 'auto',
-        marginTop: 30,
-        paddingHorizontal: 15,
-    },
-    filter:{
-        width: 'auto',
-        height: 'auto',
-        paddingVertical: 9,
-        paddingHorizontal: 37,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        backgroundColor: colors.primary.main,
-        elevation: 2
-    },
-    textButton:{
-        fontSize: 13,
-        color: colors.text.white
-    },
-    searchField:{
-        width: '100%',
-        maxHeight: 38,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        elevation: 2,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        marginTop: 35,
-    },
-    searchButton:{
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        backgroundColor: colors.primary.main,
-        borderRadius: 5,
-        justifyContent: 'center',
-        height: '100%',
-        elevation: 2,
-    },
-    list:{
-        marginTop: 16,
-        paddingHorizontal: 15,
-        paddingTop: 10
-    },
-    latestElement:{
-
-    }
-});

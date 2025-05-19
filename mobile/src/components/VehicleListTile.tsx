@@ -20,18 +20,37 @@ interface Props{
 
 export default function VehicleListTile({ vehicle, navigation}: Props){
 
-    //console.log(data);
+  const [statusIconColor, setIconColor] = useState<string>(colors.icon.green);
+  const [textStatus, setTextStatus] = useState<string>("Ativo");
 
-    //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
-    var nextDate = new Date("2025-09-12T03:00:00.000+00:00").toLocaleDateString('pt-BR');
+  //console.log(data);
 
-    const image = vehicle.vehicleImage; // resolver o problema de uma imagem que não carrega
+  //var latestDate = new Date(data.maintenance.latest_maintenance).toLocaleDateString('pt-BR');
+  var nextDate = new Date("2025-09-12T03:00:00.000+00:00").toLocaleDateString('pt-BR');
 
-    console.log(image);
+  const image = vehicle.vehicleImage; // resolver o problema de uma imagem que não carrega
 
-    const imageKm = require("../../assets/icons/km.png");
+  //console.log(image);
 
-    return(
+  const imageKm = require("../../assets/icons/km.png");
+
+  const iconColor = [
+      {status: "active", color: colors.icon.green, text: "Ativo"},
+      {status: "maintenance", color: colors.icon.yellow, text: "Em manutenção"},
+      {status: "alert", color: colors.icon.red, text: "Aviso"},
+      {status: "usage", color: colors.icon.mainBlue, text: "Em uso"}
+  ]
+
+  useEffect(() => {
+    iconColor.forEach((item) => {
+      if(item.status.toUpperCase() === vehicle.vehicleStatus){
+        setIconColor(item.color);
+        setTextStatus(item.text);
+      }
+    });
+  }, [vehicle.vehicleStatus]);
+
+  return(
         <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', vehicle)}>
             <Image
             source={{ uri: image }}
@@ -43,9 +62,9 @@ export default function VehicleListTile({ vehicle, navigation}: Props){
               <Text style={styles.vehicleBrand}>{vehicle.brand}</Text>
               
               <View style={styles.alertContainer}>
-                <View style={styles.alertIcon}></View>
+                <View style={[styles.alertIcon, {backgroundColor: statusIconColor}]}></View>
                 
-                <Text style={styles.textIcon}>Ativo</Text>
+                <Text style={styles.textIcon}>{textStatus}</Text>
 
               </View>
 

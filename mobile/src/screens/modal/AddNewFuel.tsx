@@ -30,10 +30,11 @@ interface Props{
     visible: any;
     slideAnim: any;
     vehicleId: number;
+    isCheckList: boolean;
 }
 
 
-export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
+export default function AddNewFuel({visible, slideAnim, vehicleId, isCheckList}: Props){
 
     const [tokenJwt, setTokenJwt] = useState<string>("");
 
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     },
     rangeDateSelect:{
         fontSize: 10,
-        color: colors.text.gray,
+        color: colors.text.secondaray,
         marginLeft: 10,
         textAlign: 'center',
     },

@@ -60,7 +60,7 @@ export default function AddNewMaintenance({visible, slideAnim, vehicleId}: Props
     const [errorsForm, setErrorsForm] = useState<any>({})
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [filter, setFilter] = useState<string>('made'); //scheduled
+    const [filter, setFilter] = useState<string>("made"); //scheduled
 
     //Date picker
     const [datePicker, setDatePicker] = useState<Date>(new Date());
@@ -278,7 +278,7 @@ export default function AddNewMaintenance({visible, slideAnim, vehicleId}: Props
                                 else setFilter('scheduled');
                                                 
                                 setSelectedFilter(filter);
-                                 clearFields();
+                                clearFields();
                             }}/>
                         ))
                     }
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     },
     rangeDateSelect:{
         fontSize: 10,
-        color: colors.text.gray,
+        color: colors.text.secondaray,
         marginLeft: 10,
         textAlign: 'center',
     },

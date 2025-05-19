@@ -48,6 +48,7 @@ export default function Vehicle({ navigation, route }: Props) {
   const km: string = data.km;
   const status: string = data.vehicleStatus;
   const vehicleId = data.id;
+  const category: string = data.category;
 
   //Get last fuel, last maintenance and next maintenance using api
   const { lastFuel } = useLastFuel(vehicleId);
@@ -195,13 +196,13 @@ export default function Vehicle({ navigation, route }: Props) {
 
         {
           visibleChecklist && (
-            <Checklist visible={setVisibleChecklist} slideAnim={slideAnimCheckList}/>
+            <Checklist visible={setVisibleChecklist} slideAnim={slideAnimCheckList} vehicleId={vehicleId} />
           )
         }
 
         {
           visible && (
-            <AddNewMaintenance visible={setVisible} slideAnim={slideAnim}/>
+            <AddNewMaintenance visible={setVisible} slideAnim={slideAnim} vehicleId={vehicleId}/>
           )
         }
     </View>

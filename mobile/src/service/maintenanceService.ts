@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ScheduledMaintenance from "../types/scheduledMaintenance";
+import Maintenance from "../types/scheduledMaintenance";
 
 import Vehicle from "../types/vehicle";
 import api from "./api";
@@ -7,7 +7,7 @@ import MaintenanceDone from "../types/maintenanceDone";
 import DateFilter from "../types/dateFilter";
 import UpdateMaintenance from "../types/updateMaintenance";
 
-export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<ScheduledMaintenance[] | null | undefined> {
+export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<Maintenance[] | null | undefined> {
 
     const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/scheduled?page=${page}`, {
               headers:{
@@ -25,7 +25,7 @@ export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: nu
             return [];
         }
 
-        let listMaintenance: ScheduledMaintenance[] = response.data._embedded.maintenanceDTOList;
+        let listMaintenance: Maintenance[] = response.data._embedded.maintenanceDTOList;
 
         return listMaintenance;
     }
@@ -58,7 +58,7 @@ export async function getAllMaintenanceDone(tokenJwt: string, vehicleId: number,
     return null;
 }
 
-export async function getNextMaintenance(tokenJwt: string, companyId: string, vehicleId: number): Promise<ScheduledMaintenance | null | undefined>{
+export async function getNextMaintenance(tokenJwt: string, companyId: string, vehicleId: number): Promise<Maintenance | null | undefined>{
     const response = await api.get(`/maintenance/${companyId}/${vehicleId}/scheduled`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
@@ -66,7 +66,7 @@ export async function getNextMaintenance(tokenJwt: string, companyId: string, ve
     });
     
     if(response.status === 200){
-        let maintenance: ScheduledMaintenance = response.data;
+        let maintenance: Maintenance = response.data;
         return maintenance;
     }
 
@@ -106,7 +106,7 @@ export async function getlAllMaintenanceDoneByDateFilter(vehicle: Vehicle, filte
     return null;
 }
 
-export async function getlAllScheduledMaintenanceByDateFilter(vehicle: Vehicle, filter: DateFilter, tokenJwt: string): Promise<ScheduledMaintenance | null | undefined> {
+export async function getlAllScheduledMaintenanceByDateFilter(vehicle: Vehicle, filter: DateFilter, tokenJwt: string): Promise<Maintenance | null | undefined> {
 
     const response = await api.get(`/maintenance/${vehicle.companyId}/${vehicle.id}/all/done/filter`, filter, {
             headers:{
@@ -116,7 +116,7 @@ export async function getlAllScheduledMaintenanceByDateFilter(vehicle: Vehicle, 
 
     if(response.status === 200){
         console.log(response.data);
-        const maintenances: ScheduledMaintenance = response.data._embedded.maintenanceDoneDTOList;
+        const maintenances: Maintenance = response.data._embedded.maintenanceDoneDTOList;
 
         return maintenances;
     }
@@ -124,8 +124,9 @@ export async function getlAllScheduledMaintenanceByDateFilter(vehicle: Vehicle, 
     return null;
 }
 
-export async function saveScheduledMaintenanceByVehicleId(tokenJwt: string, scheduledMaintenance: ScheduledMaintenance): Promise<number> {
-    const response = await api.post(`/maintenance/scheduled`, scheduledMaintenance, {
+export async function saveScheduledMaintenanceByVehicleId(tokenJwt: string, scheduledMaintenance: Maintenance): Promise<number> {
+
+  const response = await api.post(`/maintenance/scheduled`, scheduledMaintenance, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }
