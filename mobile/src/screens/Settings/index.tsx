@@ -33,7 +33,7 @@ export default function Settings({ navigation }: Props) {
         navigation.navigate('Profile', company);
     }
 
-    function goToChangePassword(){
+    function goToResetPassowrd(){
         navigation.navigate('ChangePassword');
     }
 
@@ -86,7 +86,7 @@ export default function Settings({ navigation }: Props) {
                <View style={styles.securityContainer}>
                     <Text style={styles.titles}>Segurança</Text>
 
-                    <TouchableOpacity style={styles.actionBox} onPress={goToChangePassword}>
+                    <TouchableOpacity style={styles.actionBox} onPress={goToResetPassowrd}>
                         <View style={styles.securityAction}>
                             <View style={styles.iconGroup}>
                                 <Icon name="lock" size={24} color={colors.icon.mainBlue}/>

@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import Profile from '../screens/Profile';
 import ChangePassword from '../screens/ChangePassword';
+import SendCode from '../screens/SendCode';
 
 const Stack = createNativeStackNavigator();
 
@@ -97,6 +98,18 @@ export default function MyStack(){
                 component={Profile}
                 options={{
                     title: "Perfil",
+                    headerStyle:{
+                        backgroundColor: colors.primary.white,
+                    },
+                    headerTintColor: colors.text.other,
+                }}
+            />
+
+            <Stack.Screen 
+                name="SendCode" 
+                component={SendCode}
+                options={{
+                    title: "",
                     headerStyle:{
                         backgroundColor: colors.primary.white,
                     },
