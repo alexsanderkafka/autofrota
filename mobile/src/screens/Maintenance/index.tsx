@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useRef }from 'react';
-import api from '../../service/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
     StyleSheet,

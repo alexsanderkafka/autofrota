@@ -131,6 +131,8 @@ public class VehicleService {
 
     public void save(String image, String companyId, VehicleDTO dto) {
 
+        //Verificar se a placa é válida
+
         VehicleImage vehicleImage = new VehicleImage();
         vehicleImage.setUrl(image);
 
@@ -140,10 +142,7 @@ public class VehicleService {
 
         VehicleStatus vehicleStatus = vehicleStatusRepository.findByVehicleStatusByType(TypeVehicleStatusEnum.ACTIVE.toString());
 
-        //Verificar o status do vehicle, se realmente existe são 4 tipos
-
         System.out.println("Vehicle status id: " + vehicleStatus.getId());
-
 
         Vehicle vehicle = new Vehicle(
             dto.plate(),

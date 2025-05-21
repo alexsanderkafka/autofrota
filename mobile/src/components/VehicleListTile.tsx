@@ -13,12 +13,20 @@ import { colors, typography } from '../theme';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 import Vehicle from '../types/vehicle';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+
 interface Props{
     vehicle: Vehicle;
     navigation: any;
+    isVehicles: boolean;
 }
 
-export default function VehicleListTile({ vehicle, navigation}: Props){
+export default function VehicleListTile({ vehicle, navigation, isVehicles = false}: Props){
 
   const [statusIconColor, setIconColor] = useState<string>(colors.icon.green);
   const [textStatus, setTextStatus] = useState<string>("Ativo");
@@ -51,33 +59,33 @@ export default function VehicleListTile({ vehicle, navigation}: Props){
   }, [vehicle.vehicleStatus]);
 
   return(
-        <TouchableOpacity style={styles.containerListTile} onPress={() => navigation.navigate('Vehicle', vehicle)}>
-            <Image
-            source={{ uri: image }}
-            style={styles.img}
-            />
+        <TouchableOpacity style={[styles.containerListTile, {elevation: isVehicles ? 0 : 2}]} onPress={() => navigation.navigate('Vehicle', vehicle)}>
+              <Image
+              source={{ uri: image }}
+              style={styles.img}
+              />
 
-            <View style={styles.infoVehicle}>
-              <Text style={styles.plate}>{vehicle.plate}</Text>
-              <Text style={styles.vehicleBrand}>{vehicle.brand}</Text>
-              
-              <View style={styles.alertContainer}>
-                <View style={[styles.alertIcon, {backgroundColor: statusIconColor}]}></View>
+              <View style={styles.infoVehicle}>
+                <Text style={styles.plate}>{vehicle.plate}</Text>
+                <Text style={styles.vehicleBrand}>{vehicle.brand}</Text>
                 
-                <Text style={styles.textIcon}>{textStatus}</Text>
+                <View style={styles.alertContainer}>
+                  <View style={[styles.alertIcon, {backgroundColor: statusIconColor}]}></View>
+                  
+                  <Text style={styles.textIcon}>{textStatus}</Text>
 
+                </View>
+
+                <View style={styles.kmContainer}>
+                  <Image source={imageKm} style={styles.imageKm} />
+
+                  <Text style={styles.textIcon}>{vehicle.km}km</Text>
+
+                </View>
+
+                <Text style={styles.nextMaintenance}>Próxima manutenção: {nextDate}</Text>
               </View>
-
-              <View style={styles.kmContainer}>
-                <Image source={imageKm} style={styles.imageKm} />
-
-                <Text style={styles.textIcon}>{vehicle.km}km</Text>
-
-              </View>
-
-              <Text style={styles.nextMaintenance}>Próxima manutenção: {nextDate}</Text>
-            </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
     );
 }
 
@@ -87,12 +95,11 @@ const styles = StyleSheet.create({
       height: 'auto',
       flexDirection: 'row',
       display: 'flex',
-      borderColor: '#000',
       elevation: 2,
-      backgroundColor: '#FFF',
+      borderColor: '#000',
+      backgroundColor: colors.primary.white,
       borderRadius: 5,
       padding: 5,
-      marginBottom: 20,
     },
     img:{
       width: 126,

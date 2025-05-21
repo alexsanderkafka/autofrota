@@ -35,54 +35,38 @@ export default function HomeScreen({ navigation }: Props) {
   const { vehicles } = useRecentVehicles();
 
   return(
-    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-      
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
-          <View style={styles.infosContainer} >
-              <InfoCard icon="car" amount={statusCount?.active ?? 50} title="Veículos Ativos" color={colors.icon.green}/>
-              <InfoCard icon="wrench" amount={statusCount?.maintenance ?? 50} title="Em Manutenção" color={colors.icon.yellow}/>
-              <InfoCard icon="alert" amount={statusCount?.alert ?? 50} title="Em Alerta" color={colors.icon.red}/>
-              <InfoCard icon="alert" amount={statusCount?.maintenance ?? 50} title="Em uso" color={colors.icon.red}/>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
+            <View style={styles.infosContainer} >
+                <InfoCard icon="car" amount={statusCount?.active ?? 50} title="Veículos Ativos" color={colors.icon.green}/>
+                <InfoCard icon="wrench" amount={statusCount?.maintenance ?? 50} title="Em Manutenção" color={colors.icon.yellow}/>
+                <InfoCard icon="alert" amount={statusCount?.alert ?? 50} title="Em Alerta" color={colors.icon.red}/>
+            </View>
+          </ScrollView>
+
+          <View style={styles.actionContainer}>
+            <Text style={styles.titles}>Ações rápidas</Text>
+
+            <View style={styles.buttonContainer}>
+                <ActionButton icon={'plus'} text={'Novo Veículo'}/>
+                <ActionButton icon={'chart-bar'} text={'Relatórios'}/>
+            </View>
           </View>
-        </ScrollView>
-  
-        <View style={styles.mapContainer}>
-          <Text style={styles.titles}>Localizações</Text>
-          <View style={styles.mapBox}>
-            <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
+
+          <View style={styles.recentVehiclesContainer}>
+            <Text style={[styles.titles, {paddingHorizontal:15}]}>Veículos recentes</Text>
+            <FlatList 
+            data={vehicles}
+            keyExtractor={ item => String(item.id)}
+            renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation} isVehicles={false}/>}
+            onEndReachedThreshold={1} 
+            style={styles.list}
+            ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
             />
           </View>
-        </View>
-
-        <View style={styles.actionContainer}>
-          <Text style={styles.titles}>Ações rápidas</Text>
-
-          <View style={styles.buttonContainer}>
-              <ActionButton icon={'plus'} text={'Novo Veículo'}/>
-              <ActionButton icon={'chart-bar'} text={'Relatórios'}/>
-          </View>
-        </View>
-
-        <View style={styles.recentVehiclesContainer}>
-          <Text style={[styles.titles, {paddingHorizontal:15}]}>Veículos recentes</Text>
-          <FlatList 
-          data={vehicles}
-          keyExtractor={ item => String(item.id)}
-          renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation}/>}
-          onEndReachedThreshold={1} 
-          style={styles.list}
-          />
-        </View>
+        </ScrollView>
       </View>
-    </ScrollView>
   );
   
 }

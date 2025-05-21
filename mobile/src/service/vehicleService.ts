@@ -10,11 +10,15 @@ export async function getAllVehicleByCompanyIdAndStatus(companyId: string, vehic
             Authorization: `Bearer ${tokenJwt}`
          }
     });
-  
-    if(response.status === 200){
-      let listVehicles: Vehicle[] = response.data._embedded.vehicleDTOList;   
 
-      return listVehicles;
+    if(response.status === 200 && response.data._embedded != null){
+      try {
+        let listVehicles: Vehicle[] = response.data._embedded.vehicleDTOList;
+
+        return listVehicles; 
+      } catch (error: any) {
+        return null;      
+      }
     }
     
     return null;
@@ -51,15 +55,19 @@ export async function getCountVehicles(companyId: string, tokenJwt: string): Pro
     return status;
 }
 
-export async function saveVehicle(companyId: string, tokenJwt: string, form: FormData): Promise<any>{
-    let response = await api.post(`/vehicles/${companyId}`, form, {
+export async function saveVehicle(companyId: string, tokenJwt: string, form: FormData): Promise<number>{
+
+  console.log("antes do post")
+    let response = await api.post(`/vehicles/${companyId}`, form,{
             headers:{
               Authorization: `Bearer ${tokenJwt}`,
-              'Content-Type': 'multipart/form-data',
+              'Content-Type': 'multipart/form-data'
             },
     });
 
-    return response;
+    console.log("Depois do post")
+
+    return response.status;
 }
 
 export async function updateVehicleStatus(vehicle: Vehicle, tokenJwt: string): Promise<any>{
@@ -79,12 +87,12 @@ export async function updateVehicleStatus(vehicle: Vehicle, tokenJwt: string): P
 
 }
 
-export async function deleteVehicleByCompanyAndVehicleId(vehicle: Vehicle, tokenJwt: string): Promise<any>{
+export async function deleteVehicleByCompanyAndVehicleId(vehicle: Vehicle, tokenJwt: string): Promise<number>{
     let response = await api.delete(`/vehicles/${vehicle.companyId}/${vehicle.id}`, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             },
     });
 
-    return response;
+    return response.status;
 }

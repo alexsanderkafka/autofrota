@@ -30,11 +30,10 @@ interface Props{
     visible: any;
     slideAnim: any;
     vehicleId: number;
-    isCheckList: boolean;
 }
 
 
-export default function AddNewFuel({visible, slideAnim, vehicleId, isCheckList}: Props){
+export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
 
     const [tokenJwt, setTokenJwt] = useState<string>("");
 
@@ -165,7 +164,7 @@ export default function AddNewFuel({visible, slideAnim, vehicleId, isCheckList}:
                                 <Icon name="calendar-range" size={24} color={colors.primary.white} />
                             </TouchableOpacity>
                         </View>
-                        <Select selectedFuel={selectedFuel} setSelectedFuel={setSelectedFuel}/>
+                        <Select selectedFuel={selectedFuel} setSelectedFuel={setSelectedFuel} isAddVehicle={false}/>
                     </View>
 
                     {showPicker && (

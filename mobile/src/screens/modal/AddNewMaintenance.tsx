@@ -191,18 +191,18 @@ export default function AddNewMaintenance({visible, slideAnim, vehicleId}: Props
         if(filter === 'made'){
             return(
                 <>
-                <View style={ styles.field}>
-                        <Text style={[styles.label, {color: errorsForm.total ? colors.text.red : colors.text.primary}]}>{errorsForm.total ? errorsForm.total : 'Total'}</Text>
-                        <TextInput
-                        style={[styles.inputs, {borderColor: errorsForm.total ? colors.border.error : colors.primary.main}]}
-                        placeholder='R$ 00,00'
-                        keyboardType='numeric'
-                        value={total}
-                        onChangeText={ (text) => {
-                            const number: number = parseFloat(text) || 0;
-                            setTotal(number);
-                        }}
-                        />
+                    <View style={ styles.field}>
+                            <Text style={[styles.label, {color: errorsForm.total ? colors.text.red : colors.text.primary}]}>{errorsForm.total ? errorsForm.total : 'Total'}</Text>
+                            <TextInput
+                            style={[styles.inputs, {borderColor: errorsForm.total ? colors.border.error : colors.primary.main}]}
+                            placeholder='R$ 00,00'
+                            keyboardType='numeric'
+                            value={total}
+                            onChangeText={ (text) => {
+                                const number: number = parseFloat(text) || 0;
+                                setTotal(number);
+                            }}
+                            />
                     </View>
 
                     <View style={ styles.fieldAddService}>

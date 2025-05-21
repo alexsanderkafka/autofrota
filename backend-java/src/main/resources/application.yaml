@@ -20,8 +20,8 @@ spring:
     enabled: true
   mail:
     host: smtp.test.com
-    port: 587
-    username: set email
+    port: set port
+    username: set username
     password: set password
     properties:
       mail: 

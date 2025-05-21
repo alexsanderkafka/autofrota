@@ -6,6 +6,14 @@
     "newArchEnabled": true,
     "android": {
       "package": "kafka.system.com"
-    }
+    },
+    "plugins":[
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app accesses your photos to let you choose images for your profile and other features."
+        }
+      ]
+    ]
   }
 }

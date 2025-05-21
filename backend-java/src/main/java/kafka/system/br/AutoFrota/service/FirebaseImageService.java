@@ -29,16 +29,24 @@ public class FirebaseImageService {
 
         try{
             String fileName = generateFileName(file.getOriginalFilename(), companyId, path);
+
+            System.out.println("File name: " + fileName);
+            System.out.println("File content type: " + file.getContentType());
+            System.out.println("File size: " + file.getSize());
+            System.out.println("File bytes: " + file.getBytes());
+            System.out.println("File original name: " + file.getOriginalFilename());
+            System.out.println("File name: " + file.getName());
+            System.out.println("File path: " + file);
+
             Storage storage = StorageClient.getInstance().bucket().getStorage();
             BlobId blobId = BlobId.of(urlBucket, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
-            storage.create(blobInfo, file.getBytes());
+            storage.create(blobInfo, file.getBytes());  
             
             String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/" + storage.get(blobId).getBucket() + "/o/%s?alt=media";
 
             return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
 
-            
             //return fileName;
         }catch(Exception e){
             throw new RuntimeException("Error uploading file");

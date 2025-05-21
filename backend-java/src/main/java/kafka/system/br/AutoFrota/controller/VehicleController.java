@@ -50,6 +50,8 @@ public class VehicleController {
 
         var result = vehicleService.searchAllVehiclesByCompany(pageable, companyId, vehicleStatus);
 
+        System.out.println("Batendo no all vehicles by company");
+
         return ResponseEntity.ok(result);
     }
 
@@ -97,7 +99,7 @@ public class VehicleController {
 
         System.out.println("Storing file to disk");
 
-        String path = "/autofrota/vehicles/";
+        String path = "autofrota/vehicles/";
         var url = firebaseImageService.uploadImageToStorage(file, companyId, path);
 
         try{

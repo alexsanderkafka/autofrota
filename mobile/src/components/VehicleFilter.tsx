@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         backgroundColor: colors.primary.white,
-        elevation: 2
+        elevation: 2,
     },
     buttonSelected:{
         width: 'auto',

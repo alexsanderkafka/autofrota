@@ -28,9 +28,10 @@ enum FuelType {
 interface Props{
     selectedFuel: string;
     setSelectedFuel: (fuel: string) => void;
+    isAddVehicle: boolean;
 }
 
-export default function Select({ selectedFuel, setSelectedFuel }: Props){
+export default function Select({ selectedFuel, setSelectedFuel, isAddVehicle }: Props){
     const typeFuel = ['Gasolina', 'Diesel', 'Gnv', 'Etanol', 'Arla'];
 
     const [visible, setVisible] = useState(false)
@@ -43,7 +44,7 @@ export default function Select({ selectedFuel, setSelectedFuel }: Props){
 
     return(
         <View style={{
-            flex: 1,
+            flex: isAddVehicle ? 0 : 1,
             height: 'auto',
             position: 'relative'
         }} >
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     iconContainer:{
         backgroundColor: colors.primary.main,

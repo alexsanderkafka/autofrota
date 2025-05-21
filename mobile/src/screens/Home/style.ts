@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
       flex: 1,
       color: '#000',
       backgroundColor: colors.primary.white,
-  
+      width: '100%',
     },
     infosContainer:{
       width: '100%',
@@ -67,20 +67,14 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       gap: 18,
       //flexWrap: 'wrap',
-      
     },
     recentVehiclesContainer:{
       marginTop: 26,
     },
     list:{
       paddingHorizontal: 15,
+      paddingBottom: 10,
     },
-  
-  
-  
-  
-  
-  
     img:{
       width: 131,
       height: 102.16,
