@@ -4,6 +4,7 @@ import kafka.system.br.AutoFrota.dto.FuelDTO;
 import kafka.system.br.AutoFrota.model.Fuel;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,4 +61,18 @@ public interface FuelRepository extends JpaRepository<Fuel, Long> {
             f.date <= :endDate
             """)
     Page<Fuel> findAllDateFilterFuelByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
+
+
+    @Query("""
+            SELECT
+                DATE_FORMAT(f.date, '%b') AS month,
+                COALESCE(SUM(f.totalValue), 0) AS totalExpenseFuel
+            FROM Fuel f
+            WHERE CAST(f.vehicle.company.externalId AS STRING) = :externalId
+                AND 
+            YEAR(f.date) = :year
+            GROUP BY f.date
+            ORDER BY f.date
+    """)
+    List<Object[]> findHistoryByCompanyAndYear(@Param("externalId") String externalId, @Param("year") Integer year);
 }

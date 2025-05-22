@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef} from 'react';
 
-import api from '../service/api';
 import Storage from '../service/storage';
 import Report from '../types/report';
 import { getCountTotal } from '../service/reportService';

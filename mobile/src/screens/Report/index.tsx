@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef, use} from 'react';
 import {
     StyleSheet,
     Text,
@@ -18,12 +18,21 @@ import InfoCardReport from '../../components/infoCardReport';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './style';
 import useReport from '../../hooks/useReport';
+import useReportHistory from '../../hooks/useReportHistory';
 
 //Gráfico
 import { CartesianChart, Line, Bar, useChartPressState, BarGroup, useBarGroupPaths, type PointsArray, type ChartBounds, useChartTransformState, } from 'victory-native';
 import Animated, { useAnimatedProps, SharedValue} from 'react-native-reanimated';
 import { Circle, useFont, vec, LinearGradient, Path} from '@shopify/react-native-skia';
 import { Roboto_100Thin, Roboto_400Regular } from '@expo-google-fonts/roboto';
+import ChartSelect from '../../components/ChartSelect';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
+import ReportHistory from '../../types/reportHistory';
+import Storage from '../../service/storage';
+import { getHistoryByYear } from '../../service/reportService';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -46,6 +55,8 @@ type ChartTransformStateConfig = {
 
 export default function ReportScreen(){
 
+    const [tokenJwt, setTokenJwt] = useState<string>();
+    const [companyId, setCompanyId] = useState<string>();
 
     const { state, isActive} = useChartPressState<any>({x: "Jan", y: {fuel: 40000, maintenance: 2000}})
     const font = useFont(Roboto_400Regular, 12);
@@ -53,7 +64,6 @@ export default function ReportScreen(){
         scaleX: 1.5, // Initial X-axis scale
         scaleY: 1.0, // Initial Y-axis scale
     });
-
     
     const { report } = useReport();
     console.log(report);
@@ -61,6 +71,33 @@ export default function ReportScreen(){
     const totalKm: number = report ? report!.totalKm : 0;
     const totalExpenseFuel: number = report ? report!.totalExpenseFuel : 0;
     const totalExpenseMaintenance: number = report ? report!.totalExpenseMaintenance : 0;
+
+    const [reportHistory, setReportHistory] = useState<ReportHistory[] | null | undefined >(null);
+
+    //Select data
+    const [selectedData, setSelectedData] = useState<number>(new Date().getFullYear());
+
+    useEffect( () => {
+            async function getInStorage(){
+                const currentStorage: Storage = await Storage.getInstance();
+                
+                setTokenJwt(currentStorage.tokenJwt!);
+                setCompanyId(currentStorage.companyExternalId!);
+            }
+             
+            getInStorage();
+    }, []);
+
+    useEffect(() => {        
+        getReport();
+    }, [tokenJwt, companyId]);
+
+    async function getReport() {
+        console.log("Bateu em getReport");
+        const report: ReportHistory[] | null | undefined = await getHistoryByYear(tokenJwt!, companyId!, 2025);
+        
+        setReportHistory(report);
+    }
 
     const animatedPriceText: any = useAnimatedProps(() => {
         return {
@@ -75,89 +112,56 @@ export default function ReportScreen(){
         }
     });
 
-    type ReportData = {
-        month: string;
-        fuel: number;
-        maintenance: number;
+    //filter
+    const [selectedFilter, setSelectedFilter] = useState('Frota');
+    const filters = ['Frota', 'Manutenção', 'Combustível'];
+
+    const [datePicker, setDatePicker] = useState<Date>(new Date());
+    const [showPicker, setShowPicker] = useState<boolean>(false);
+    
+    const onChange = (event: any, selectedDate: any) => {
+        const currentDate = selectedDate || datePicker;
+        //const year = currentDate.getFullYear();
+        //setSelectedData(year);
+        setShowPicker(Platform.OS === 'ios'); // no iOS ele fica aberto, no Android fecha
+        setDatePicker(currentDate);
     };
 
-    const data: ReportData[] = [
-    { 
-        month: 'Jan',
-        fuel: 5000,
-        maintenance: 15000
-    },
-    { 
-        month: 'Fev',
-        fuel: 23000,
-        maintenance: 5000
-    },
-    { 
-        month: 'Mar',
-        fuel: 900,
-        maintenance: 5000
-        
-    },
-    { 
-        month: 'Abr',
-        fuel: 8000,
-        maintenance: 5000
-    },
-    {   month: 'Mai',
-        fuel: 6000,
-        maintenance: 400
-    },
-    { 
-        month: 'Jun',
-        fuel: 3000,
-        maintenance: 0
-    },
-    { 
-        month: 'Jul',
-        fuel: 13000,
-        maintenance: 100
-    },
-    { 
-        month: 'Ago',
-        fuel: 19000,
-        maintenance: 1000
-    },
-    {   
-        month: 'Set',
-        fuel: 4000 ,
-        maintenance: 1000
-    },
-    { 
-        month: 'Out',
-        fuel: 5000 ,
-        maintenance: 0
-    },
-    { 
-        month: 'Nov',
-        fuel: 5500 ,
-        maintenance: 0
-    },
-    { 
-        month: 'Dez',
-        fuel: 7000 ,
-        maintenance: 2000
-    }    
-    ];
 
+    type ChartSelectProps = {
+        month: string;
+        totalExpenseFuel: number;
+        totalExpenseMaintenance: number;
+    }   
+
+    function renderTotalExpense(){
+        if(selectedFilter === 'Manutenção') return totalExpenseMaintenance.toFixed(2);
+
+        if(selectedFilter === 'Combustível') return totalExpenseFuel.toFixed(2);
+
+        return (totalExpenseFuel + totalExpenseMaintenance).toFixed(2);
+    }
 
     return(
         <ScrollView>
             <View style={styles.container}>
                 <View style={styles.filterButtonContainer}>
-                    <FilterButton text="Frota"/>
-                    <FilterButton text="Manutenção"/>
-                    <FilterButton text="Combustível"/>
+                    {
+                        filters.map((filter) => (
+                            <FilterButton
+                                key={filter}
+                                text={filter}
+                                selected={selectedFilter === filter}
+                                onPress={() => setSelectedFilter(filter)}
+                            />
+                        ))
+                    }
                 </View>
 
                 <View style={styles.containerVehiclesInfos}>
                     <InfoCardReport icon="car" color={colors.icon.mainBlue} amount={totalVehicles.toString()} title="Veículos"/>
                     <InfoCardReport icon="car" color={colors.icon.secondaray} amount={`${totalKm} Km`} title="Km rodados"/>
-                    <InfoCardReport icon="currency-usd" color={colors.icon.money} amount={`R$ ${totalExpenseFuel.toFixed(2)}`} title="Gastos"/>
+                    <InfoCardReport icon="currency-usd" color={colors.icon.money} amount={`R$ ${renderTotalExpense()}`} title="Gastos"/>
                 </View>
 
                 <View style={styles.chartContainer}>
@@ -181,67 +185,94 @@ export default function ReportScreen(){
                         )
                     }
 
+                    <View style={styles.chartHeader}>
+                        {
+                            isActive && reportHistory ? (
+                                <View>
+                                    <Text style={styles.valueChart}>R$ {reportHistory[reportHistory.length - 1].totalExpenseFuel}</Text>
+                                    <Text style={styles.dataChart}>{reportHistory[reportHistory.length - 1].month}</Text>
+                                </View>
+                            ) : (
+                                <Text style={styles.titleChart}>Desempenho</Text>
+                            )
+                        }
+
+                        <ChartSelect
+                            selectedData={selectedData}
+                            onPress={() => setShowPicker(true)}
+                        />
+
+                    </View>
+                    
+
+                   <View style={styles.chart}>
                     {
-                        !isActive && (
-                            <View>
-                                <Text style={styles.valueChart}>R$ {data[data.length - 1].fuel}</Text>
-                                <Text style={styles.dataChart}>{data[data.length - 1].month}</Text>
+                        reportHistory ? ( 
+                            <CartesianChart<ChartSelectProps, 'month', 'totalExpenseFuel' | 'totalExpenseMaintenance'>
+                            data={reportHistory}
+                            xKey="month"
+                            yKeys={["totalExpenseFuel", "totalExpenseMaintenance"]}
+                            transformConfig={{
+                                pan: {
+                                    activateAfterLongPress: 100, // Delay in ms before pan gesture activates
+                                },
+                            }}
+                            axisOptions={{
+                                tickCount: 10,
+                                font: font,
+                                labelOffset: { x: 1, y: 10},
+                                labelPosition: 'outset',
+                            }}
+                            >
+                            {({ points, chartBounds }: any) => {
+
+                                const maxValue: PointsArray = points.totalExpenseFuel > points.totalExpenseMaintenance ? points.totalExpenseMaintenance : points.totalExpenseFuel;
+                            
+                                return (
+                                    <>
+                                        <Line
+                                        points={maxValue}
+                                        color="#7B7C67"
+                                        strokeWidth={3}
+                                        animate={{ type: "timing", duration: 300 }}
+                                        />
+
+                                        <BarGroup
+                                            chartBounds={chartBounds}
+                                            betweenGroupPadding={0.3}
+                                            withinGroupPadding={0.2}
+                                        >
+                                            <BarGroup.Bar points={points.totalExpenseFuel} color="#2563EB" />
+                                            <BarGroup.Bar points={points.totalExpenseMaintenance} color="#FFA500" />
+                                        </BarGroup>
+                                        {
+                                            isActive && (
+                                                <ToolTip x={state.x.position} y={state.y.totalExpenseFuel.position}/>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }}
+                            </CartesianChart>
+                        ) : (
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <ActivityIndicator size="large" color={colors.primary.main}/>
                             </View>
                         )
                     }
-
-                   <View style={styles.chart}>
-                    <CartesianChart<ReportData, 'month', 'fuel' | 'maintenance'>
-                        data={data}
-                        xKey="month"
-                        yKeys={["fuel", "maintenance"]}
-                        transformConfig={{
-                            pan: {
-                                activateAfterLongPress: 100, // Delay in ms before pan gesture activates
-                            },
-                        }}
-                        axisOptions={{
-                            tickCount: data.length / 2,
-                            font: font,
-                            labelOffset: { x: 3, y: 2},
-                            labelPosition: 'outset',
-                        }}
-                    >
-                         {({ points, chartBounds }: any) => {
-
-                            const maxValue: PointsArray = points.fuel > points.maintenance ? points.maintenance : points.fuel;
-                            
-                            return (
-                            <ScrollView
-                            horizontal={true}
-                            >
-                                <Line
-                                points={maxValue}
-                                color="#7B7C67"
-                                strokeWidth={3}
-                                animate={{ type: "timing", duration: 300 }}
-                                />
-
-                                <BarGroup
-                                    chartBounds={chartBounds}
-                                    betweenGroupPadding={0.3}
-                                    withinGroupPadding={0.2}
-                                >
-                                    <BarGroup.Bar points={points.fuel} color="#2563EB" />
-                                    <BarGroup.Bar points={points.maintenance} color="#FFA500" />
-                                </BarGroup>
-                                {
-                                    isActive && (
-                                        <ToolTip x={state.x.position} y={state.y.fuel.position}/>
-                                    )
-                                }
-                            </ScrollView>)
-                            
-                         }}
-                    </CartesianChart>
                    </View> 
                     
                 </View>
+
+                {showPicker && (
+                    <DateTimePicker
+                    value={datePicker}
+                    mode="datetime"
+                    display="default"
+                    style={{ backgroundColor: colors.primary.main }}
+                    onChange={onChange}
+                    />
+                )}
 
                 <View style={styles.reportContainer}>
                     <Text style={styles.title}>Geração de relatório</Text>

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import kafka.system.br.AutoFrota.dto.ReportDTO;
+import kafka.system.br.AutoFrota.dto.ReportHistoryYearDTO;
 import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Vehicle;
 

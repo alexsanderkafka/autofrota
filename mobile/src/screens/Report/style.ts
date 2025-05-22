@@ -69,6 +69,18 @@ const styles = StyleSheet.create({
     chart:{
         height: 200,
         width: '100%'
+    },
+    titleChart:{
+        fontSize: 16,
+        fontWeight: '500'
+    },
+    chartHeader:{
+        marginBottom: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
     }
     
 });
