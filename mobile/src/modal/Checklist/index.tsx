@@ -2,39 +2,35 @@ import React, { useState, useRef, useEffect} from 'react';
 
 import {
     View,
-    StyleSheet,
     Animated,
-    Dimensions,
     TouchableOpacity,
     Text,
-    TextInput,
     Pressable,
-    ScrollView,
     FlatList,
-    Platform
+    Platform,
+    Modal
 } from 'react-native'
 
-import { Portal, Provider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../theme';
 
-const { height } = Dimensions.get('window');
-
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Maintenance from '../../types/scheduledMaintenance';
+import Maintenance from '../../types/maintenance';
 import Storage from '../../service/storage';
 import { saveScheduledMaintenanceByVehicleId } from '../../service/maintenanceService';
+import styles from './styles';
 
 interface Props{
-    visible: any;
-    slideAnim: any;
-    vehicleId: number;
+    navigation: any;
+    route: any;
 }
 
 
-export default function Checklist({visible, slideAnim, vehicleId}: Props){
+export default function Checklist({navigation, route}: Props){
 
     const [tokenJwt, setTokenJwt] = useState<string>("");
+
+    const vehicleId: number = route.params;
         
     useEffect(() => {
         async function getInStorage(){
@@ -84,16 +80,6 @@ export default function Checklist({visible, slideAnim, vehicleId}: Props){
 
     const [lastStep, setLastStep] = useState(false);
 
-    function closeModal(){
-        Animated.timing(slideAnim, {
-            toValue: height,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => {
-            visible(false);
-        });
-    }
-
     function toggleItem(key: any){
         setChecklist((prev: any) => ({
           ...prev,
@@ -123,7 +109,7 @@ export default function Checklist({visible, slideAnim, vehicleId}: Props){
 
         const response: number = await saveScheduledMaintenanceByVehicleId(tokenJwt, maintenance)
 
-        if(response == 201) closeModal();
+        if(response == 201) navigation.goBack();
     }
 
     function onChange (event: any, selectedDate: any){
@@ -222,12 +208,10 @@ export default function Checklist({visible, slideAnim, vehicleId}: Props){
         )
     }
 
-
     return(
-        <Portal>
-            <Animated.View style={[styles.modal, { transform: [{ translateY: slideAnim }] }]}>
+            <Modal animationType='fade' style={styles.modal}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={closeModal} style={styles.closeModal}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeModal}>
                         <Icon name="close" size={24} color={colors.icon.mainBlue} />
                     </TouchableOpacity>
                 
@@ -247,137 +231,6 @@ export default function Checklist({visible, slideAnim, vehicleId}: Props){
                         onChange={onChange}
                         />
                 )}
-
-            </Animated.View>
-        </Portal>
+            </Modal>
     );
 }
-
-const styles = StyleSheet.create({
-    modal: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: '100%',
-        width: '100%',
-        backgroundColor: colors.primary.white,
-    },
-    header:{
-        width: '100%',
-        height: 'auto',
-        backgroundColor: colors.primary.white,
-        flexDirection: 'row',
-        paddingHorizontal: 15,
-        paddingVertical: 15,
-        alignItems: 'center'
-    },
-    closeModal:{
-        marginRight: 20
-    },
-    headerTitle:{
-        fontSize: 20,
-        fontWeight: '600',
-        color: colors.text.other,
-    },
-    checkListCard:{
-        width: '100%',
-        padding: 10,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        elevation: 2,
-        marginTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: 14
-    },
-    checkBox:{
-        width: 24,
-        height: 24,
-        borderWidth: 1,
-        borderColor: colors.border.main,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 8,
-        borderRadius: 50,
-    },
-    titleItem:{
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: colors.text.primary
-    },
-    descriptionItem:{
-        fontSize: 13,
-        color: colors.text.primary
-    },
-    finalButton:{
-        flex: 1,
-        backgroundColor: colors.primary.main,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 12,
-        paddingVertical: 12,
-        marginBottom: 30
-    },
-    btnText:{
-        fontSize: 16,
-        color: colors.text.white,
-    },
-    disapprovedItemsCard:{
-        width: '100%',
-        padding: 10,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        elevation: 2,
-        marginTop: 20,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-    },
-    disapprovedTitle:{
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: colors.text.red
-    },
-    buttonContainer:{
-        width: '100%',
-        height: 'auto',
-        flexDirection: 'row',
-        marginBottom: 30,
-        gap: 18
-    },
-    backButton:{
-        flex: 1,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        borderColor: colors.border.main,
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 12,
-        paddingVertical: 12,
-    },
-    backBtnText:{
-        fontSize: 13,
-        color: colors.text.primary,
-    },
-    scheduledMaintenanceButton:{
-        flex: 1,
-        backgroundColor: colors.primary.main,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 12,
-        paddingVertical: 12,
-        
-    },
-    scheduledMaintenanceTextButton:{
-        fontSize: 13,
-        color: colors.text.white,
-    },
-    list:{
-        marginTop: 16,
-        paddingHorizontal: 15,
-        paddingTop: 10
-    }
-});

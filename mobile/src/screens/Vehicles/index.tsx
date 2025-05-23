@@ -16,29 +16,18 @@ import { colors } from "../../theme";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VehicleListTile from "../../components/VehicleListTile";
-import api from "../../service/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Storage from "../../service/storage";
-import useVehicles from "../../hooks/useVehicles";
 import styles from "./style";
 import VehicleFilter from "../../components/VehicleFilter";
-import { VehicleStatus } from "../../types/vehicleStatus";
-import AddNewVehicle from "../modal/AddNewVehicle";
 import Vehicle from "../../types/vehicle";
 import { deleteVehicleByCompanyAndVehicleId, getAllVehicleByCompanyIdAndStatus } from "../../service/vehicleService";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
-import Reanimated, {
-  SharedValue,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
 
 interface Props{
   navigation: any;
 }
-
-const { height } = Dimensions.get('window');
 
 export default function Vehicles( {navigation}: Props ) {
 
@@ -47,10 +36,6 @@ export default function Vehicles( {navigation}: Props ) {
 
     const [search, setSearch] = useState('');
     const [selected, setSelected] = useState("active");
-
-    //Modal add vehicle
-    const [visible, setVisible] = useState(false);
-    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
     //Filter buttons
     //const filters: string[] = ['Ativos', 'Manutenção', 'Aviso', 'Em uso'];
@@ -133,12 +118,7 @@ export default function Vehicles( {navigation}: Props ) {
 
     
     function openModalAddVehicle(){
-        setVisible(true);
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        navigation.navigate("AddVehicle");
     }
 
     function renderFooterFlatList(){
@@ -251,13 +231,6 @@ export default function Vehicles( {navigation}: Props ) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddVehicle}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
-
-            {
-                visible && (
-                    <AddNewVehicle visible={setVisible} slideAnim={slideAnim}/>
-                )
-            }
-
         </View>
     );
 

@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useRef }from 'react';
 
 import {
-    StyleSheet,
     View, 
-    SafeAreaView,
     FlatList,
     ActivityIndicator,
     Text,
     TouchableOpacity,
-    Animated,
-    Dimensions,
-    TextInput,
     Image
 } from 'react-native';
 
@@ -18,7 +13,6 @@ import { colors } from '../../theme';
 import FilterButton from '../../components/FilterButton';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddNewMaintenance from '../modal/AddNewMaintenance';
 
 import styles from './style';
 import ScheduledMaintenanceCard from '../../components/ScheduledMaintenanceCard';
@@ -27,10 +21,8 @@ import useMaintenanceDone from '../../hooks/useMaintenanceDone';
 import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
 
 
-import Maintenance from '../../types/scheduledMaintenance';
+import Maintenance from '../../types/maintenance';
 import MaintenanceDone from '../../types/maintenanceDone';
-
-const { height } = Dimensions.get('window');
 
 interface Props{
     navigation: any;
@@ -41,8 +33,6 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
 
     const [latestElement, setLatestElement] = useState(false);
     const [filter, setFilter] = useState('made'); //scheduled
-    const [visible, setVisible] = useState(false);
-    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
     const [loading, setLoading] = useState(true);
     const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
@@ -115,12 +105,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
     }
 
     function openModalAddMaitenance(){
-        setVisible(true);
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        navigation.navigate('AddNewMaintenance', vehicleId);
     }
 
     function renderListMaintenance(){
@@ -165,7 +150,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                             <ScheduledMaintenanceCard 
                             maintenance={scheduled}
                             navigation={navigation}
-                            vehicle={false}
+                            vehicle={true}
                             />
                         );
                     }
@@ -228,12 +213,6 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddMaitenance}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
-
-            {
-            visible && (
-                    <AddNewMaintenance visible={setVisible} slideAnim={slideAnim} vehicleId={vehicleId}/>
-                )
-            }
         
         </View>
     );

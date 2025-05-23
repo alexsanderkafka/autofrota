@@ -12,10 +12,10 @@ import {
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ScheduledMaintenance from '../types/scheduledMaintenance';
+import Maintenance from '../types/maintenance';
 
 interface MaintenanceCardProps {
-    maintenance: ScheduledMaintenance
+    maintenance: Maintenance
     navigation: any;
     vehicle: boolean;
 }
@@ -23,7 +23,7 @@ interface MaintenanceCardProps {
 export default function ScheduledMaintenanceCard(props: MaintenanceCardProps) {
 
     function goToMaintenance(){
-        props.navigation.navigate('Maintenance', props.maintenance.vehicleId);
+        props.navigation.navigate('UpdateScheduledMaintenance', props.maintenance);
     }
 
     const formatDate = new Date(props.maintenance.date).toLocaleDateString('pt-BR');

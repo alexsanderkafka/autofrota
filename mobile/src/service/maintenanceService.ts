@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Maintenance from "../types/scheduledMaintenance";
+import Maintenance from "../types/maintenance";
 
 import Vehicle from "../types/vehicle";
 import api from "./api";
@@ -147,7 +147,8 @@ export async function saveMaintenanceDoneByVehicleId(tokenJwt: string, maintenan
 }
 
 export default async function updateScheduledMaintenanceToDone(tokenJwt: string, updateMaintenance: UpdateMaintenance) {
-    const response = await api.post(`/maintenance/scheduled`, updateMaintenance, {
+
+    const response = await api.put(`/maintenance/scheduled`, updateMaintenance, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }

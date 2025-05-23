@@ -49,8 +49,8 @@ export default function HomeScreen({ navigation }: Props) {
             <Text style={styles.titles}>Ações rápidas</Text>
 
             <View style={styles.buttonContainer}>
-                <ActionButton icon={'plus'} text={'Novo Veículo'}/>
-                <ActionButton icon={'chart-bar'} text={'Relatórios'}/>
+                <ActionButton icon={'plus'} text={'Novo Veículo'} onPress={() => navigation.navigate('AddVehicle')}/>
+                <ActionButton icon={'chart-bar'} text={'Relatórios'} onPress={() => navigation.navigate('AddVehicle')}/>
             </View>
           </View>
 

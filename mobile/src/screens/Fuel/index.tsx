@@ -17,14 +17,11 @@ import {
 import { colors } from '../../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddNewFuel from '../modal/AddNewFuel';
 
 import styles from './style';
 import FuelCard from '../../components/FuelCard';
 
 import useFuel from '../../hooks/useFuel';
-
-const { height } = Dimensions.get('window');
 
 interface Props{
     navigation: any;
@@ -37,8 +34,6 @@ export default function Fuel({ navigation, route }: Props) {
     const [loading, setLoading] = useState<boolean>(false);
     const [notFound, setNotFound] = useState<boolean>(false);
 
-    const [visible, setVisible] = useState<boolean>(false);
-    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
     const vehicleId: number = route.params;
 
@@ -111,12 +106,7 @@ export default function Fuel({ navigation, route }: Props) {
     }
 
     function openModalAddFuel(){
-        setVisible(true);
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        navigation.navigate('AddNewFuel', vehicleId);
     }
 
     function renderFuelList(){
@@ -180,13 +170,6 @@ export default function Fuel({ navigation, route }: Props) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddFuel}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
-
-            {
-                visible && (
-                    <AddNewFuel visible={setVisible} slideAnim={slideAnim} vehicleId={vehicleId}/>
-                )
-            }
-        
         </View>
     )
 }

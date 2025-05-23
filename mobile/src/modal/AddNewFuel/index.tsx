@@ -2,14 +2,11 @@ import { useState, useRef, useEffect} from 'react';
 
 import {
     View,
-    StyleSheet,
-    Animated,
     Dimensions,
     TouchableOpacity,
     TextInput,
     Text,
     Modal,
-    FlatList,
     ActivityIndicator
 } from 'react-native'
 
@@ -24,18 +21,18 @@ import { saveNewFuelByVehicle } from '../../service/fuelService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 
-const { height } = Dimensions.get('window');
+import styles from './styles';
 
 interface Props{
-    visible: any;
-    slideAnim: any;
-    vehicleId: number;
+    navigation: any;
+    route: any;
 }
 
-
-export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
+export default function AddNewFuel({navigation, route}: Props){
 
     const [tokenJwt, setTokenJwt] = useState<string>("");
+
+    const vehicleId: number = route.params;
 
     useEffect(() => {
         async function getInStorage(){
@@ -64,16 +61,6 @@ export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
     const [loading, setLoading] = useState<boolean>(false);
     const [datePicker, setDatePicker] = useState<Date>(new Date());
     const [showPicker, setShowPicker] = useState<boolean>(false);
-
-    function closeModalAddMaitenance(){
-        Animated.timing(slideAnim, {
-            toValue: height,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => {
-            visible(false);
-        });
-    }
 
     function handleChange(key: string, value: string){
         const number: number = parseFloat(value) || 0;
@@ -116,7 +103,7 @@ export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
         //Aqui tem a response
 
         setLoading(false)
-        if(response === 201) closeModalAddMaitenance();
+        if(response === 201) navigation.goBack();
 
         //voltar algum error para o user
         
@@ -142,10 +129,9 @@ export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
     };
 
     return(
-        <Portal>
-            <Animated.View style={[styles.modal, { transform: [{ translateY: slideAnim }] }]}>
+            <Modal animationType='fade' style={styles.modal}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={closeModalAddMaitenance} style={styles.closeModal}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeModal}>
                         <Icon name="close" size={24} color={colors.icon.mainBlue} />
                     </TouchableOpacity>
 
@@ -218,94 +204,7 @@ export default function AddNewFuel({visible, slideAnim, vehicleId}: Props){
                         }
                     </TouchableOpacity>
                 </View>
-
-            </Animated.View>
-        </Portal>
+            </Modal>
     );
 
 }
-
-const styles = StyleSheet.create({
-    modal: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: '100%',
-        width: '100%',
-        backgroundColor: colors.primary.white,
-    },
-    modalText: {
-        fontSize: 18,
-        marginBottom: 20,
-    },
-    /*
-    closeText: {
-        color: '#e74c3c',
-        fontSize: 16,
-    },*/
-    header:{
-        width: '100%',
-        height: 'auto',
-        backgroundColor: colors.primary.white,
-        flexDirection: 'row',
-        paddingHorizontal: 15,
-        paddingVertical: 15,
-        alignItems: 'center'
-    },
-    closeModal:{
-        marginRight: 20
-    },
-    headerTitle:{
-        fontSize: 20,
-        fontWeight: '600',
-        color: colors.text.other,
-    },
-    fieldSelectDate:{
-        marginTop: 30,
-        flex: 1,
-        height: 38,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        elevation: 2,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 6,
-    },
-    rangeDateSelect:{
-        fontSize: 10,
-        color: colors.text.secondaray,
-        marginLeft: 10,
-        textAlign: 'center',
-    },
-    dateButton:{
-        backgroundColor: colors.primary.main,
-        width: 38,
-        height: '100%',
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    field:{
-        marginTop:  15
-    },
-    label:{
-        fontSize: 13
-    },
-    inputs:{
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: colors.primary.main,
-        paddingHorizontal: 10
-    },
-    saveButton:{
-        marginTop: 40,
-        backgroundColor: colors.primary.main,
-        width: '100%',
-        height: 'auto',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 5,
-        paddingVertical: 12
-    },
-});

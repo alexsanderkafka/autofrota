@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import api from '../service/api';
 import Storage from '../service/storage';
 import { getNextMaintenance } from '../service/maintenanceService';
-import ScheduledMaintenance from '../types/scheduledMaintenance';
+import ScheduledMaintenance from '../types/maintenance';
 
 export default function useNextMaintenance(vehicleId: number): any {
 

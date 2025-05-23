@@ -1,5 +1,5 @@
 export default interface UpdateMaintenance{
-    id: number;
+    id: number | null;
     date: string;
     totalValue: number;
     services: string[];

@@ -1,4 +1,4 @@
-import Maintenance from "./scheduledMaintenance";
+import Maintenance from "./maintenance";
 import Service from "./service";
 
 export default interface MaintenanceDone{
