@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import api from '../service/api';
-import Storage from '../service/storage';
+import api from '../utils/api';
+import Storage from '../utils/storage';
 import { getLastMaintenanceDone } from '../service/maintenanceService';
 import MaintenanceDone from '../types/maintenanceDone';
 

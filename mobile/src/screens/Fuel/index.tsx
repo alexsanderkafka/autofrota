@@ -21,7 +21,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './style';
 import FuelCard from '../../components/FuelCard';
 
-import useFuel from '../../hooks/useFuel';
+import Storage from '../../utils/storage';
+import FuelType from '../../types/fuel';
+import { getAllFuelByVehicleIdAndCompany } from '../../service/fuelService';
 
 interface Props{
     navigation: any;
@@ -30,17 +32,64 @@ interface Props{
 
 export default function Fuel({ navigation, route }: Props) {
 
-    const [latestElement, setLatestElement] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [notFound, setNotFound] = useState<boolean>(false);
+    const [companyId, setCompanyId] = useState<string>('');
+    const [tokenJwt, setTokenJwt] = useState<string>('');
 
+    const [notFound, setNotFound] = useState<boolean>(false);
 
     const vehicleId: number = route.params;
 
-    const { fuel } = useFuel(vehicleId);
+    //Flat list
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(0);
+    const [fuel, setFuel] = useState<FuelType[] | null | undefined>();
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+    
+    useEffect(() => {
+            async function getInStorage(){
+                try {
+                    const currentStorage: Storage = await Storage.getInstance();
+                    setCompanyId(currentStorage!.companyExternalId!);
+                    setTokenJwt(currentStorage!.tokenJwt!);
+                } catch (error) {
+                    console.log("Error to get in storage: ", error);
+                }
+            }
+    
+            getInStorage();
+    }, [])
 
-    console.log(fuel);
+    useEffect(() => {
+        loadFuel(0);
+    }, [companyId, tokenJwt]);
 
+    async function loadFuel(pageToLoad = 0){
+            try {
+                if (loadingMore) return;
+                setLoadingMore(true);
+    
+                const result: FuelType[] | null | undefined = await getAllFuelByVehicleIdAndCompany(tokenJwt, vehicleId, companyId, pageToLoad);
+    
+                if(result !== null && result !== undefined){
+
+                    console.log("Result: ", result);
+                    if (pageToLoad === 0) {
+                        setFuel(result!);
+                    } else {
+                        setFuel(prev => [...prev!, ...result!]);
+                    }
+
+                    setPage(pageToLoad);
+                }
+            } catch (error) {
+                setLoadingMore(false);
+                console.error("Erro ao carregar fuels", error);
+            } finally {
+                setLoadingMore(false);
+            }
+    };
+
+    /*
     useEffect( () => {
 
         if(fuel === null){
@@ -56,10 +105,11 @@ export default function Fuel({ navigation, route }: Props) {
 
         setLoading(false);
         setNotFound(false);
-    }, [fuel]);
+    }, [fuel]);*/
 
     
 
+    /*
     function sendToAddFuel(){
         if(loading){
             return(
@@ -70,47 +120,41 @@ export default function Fuel({ navigation, route }: Props) {
                 </View>
             );
         }
-    }
+    }*/
 
     function renderFooterFlatList(){
-        if(!latestElement) return null;
-        
+        if(!loadingMore) return null;
+
+        if(refreshing) return null;
+    
         return(
-            <View style={styles.latestElement}>
-                <ActivityIndicator
-                size="large" color={colors.primary.main} 
-                style={{ marginTop: 20, marginBottom: 20 }}
-                />
-            </View>
+          <View style={styles.latestElement}>
+            <ActivityIndicator
+            size="large" color={colors.primary.main} 
+            style={{ marginTop: 20, marginBottom: 20 }}
+            />
+          </View>
         );
     }
 
-    async function loadMoreFuel(){
-        setLatestElement(true);
-    
-        /*
-        console.log(totalVehicles);
-    
-        if(page === totalPages || totalVehicles < sizePage){
-          setLatestElement(false);
-          return;
-        }
-    
-        setPage(page + 1);
-    
-        if(selected === 'todos'){
-          await getAllVehicles();
-        }else{
-          await getStatusVehicles();
-        }*/
-    }
+    function loadMoreFuel(){
+        loadFuel(page + 1);
+        setLoadingMore(false);
+    };
 
     function openModalAddFuel(){
         navigation.navigate('AddNewFuel', vehicleId);
     }
 
+    function onRefresh(){
+        setRefreshing(true);
+        setFuel([]);
+        setPage(0);
+        loadFuel(0).then(() => setRefreshing(false));
+    };
+
     function renderFuelList(){
-        if(loading){
+        if(loadingMore){
             return(
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
@@ -148,6 +192,9 @@ export default function Fuel({ navigation, route }: Props) {
                 ListFooterComponent={renderFooterFlatList}
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
                 style={styles.list}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                contentContainerStyle={{ paddingBottom: 30 }}
                 />
             );
         }

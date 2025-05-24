@@ -1,5 +1,5 @@
 import Company from "../types/company";
-import api from "./api";
+import api from "../utils/api";
 
 export async function getCompany(tokenJwt: string, companyId: string): Promise<Company | null | undefined>{
     const response = await api.get(`/company/${companyId}`, {

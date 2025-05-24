@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#FFF',
       alignItems: 'center',
-      padding: 30
+      paddingVertical: 30,
+      paddingHorizontal: 15,
     },
     logoImage:{
       width: 169,

@@ -16,7 +16,7 @@ import { colors } from '../../theme';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Maintenance from '../../types/maintenance';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import { saveScheduledMaintenanceByVehicleId } from '../../service/maintenanceService';
 import styles from './styles';
 

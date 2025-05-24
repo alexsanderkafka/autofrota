@@ -199,22 +199,9 @@ export default function Login({ navigation }: Props) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.containerActions}>
-            <Pressable
-            onPress={() => setRemember(!remember)}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-            >
-              <View style={[styles.checkBox, { backgroundColor: remember ? colors.primary.green : colors.primary.white, borderColor: remember ? colors.primary.green : colors.border.main }]}>
-                {remember && <Icon name="check" size={20} color="#FFF" />}
-              </View>
-              <Text>Lembrar-me</Text>
-            </Pressable>
-            
-            <Text style={{color: colors.text.other}} onPress={forgetPassword}>Esqueceu a senha?</Text>
-        </View>
+        <TouchableOpacity onPress={forgetPassword}>
+          <Text style={{color: colors.text.other}}>Esqueceu a senha?</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.btn} onPress={login}>
           <Text style={styles.btnText}>Entrar</Text>

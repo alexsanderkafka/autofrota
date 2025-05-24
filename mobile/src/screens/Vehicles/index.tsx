@@ -16,7 +16,7 @@ import { colors } from "../../theme";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VehicleListTile from "../../components/VehicleListTile";
-import Storage from "../../service/storage";
+import Storage from "../../utils/storage";
 import styles from "./style";
 import VehicleFilter from "../../components/VehicleFilter";
 import Vehicle from "../../types/vehicle";

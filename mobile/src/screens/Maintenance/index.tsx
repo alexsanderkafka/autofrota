@@ -23,6 +23,8 @@ import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
 
 import Maintenance from '../../types/maintenance';
 import MaintenanceDone from '../../types/maintenanceDone';
+import { getAllMaintenanceDone, getAllScheduledMaintenance } from '../../service/maintenanceService';
+import Storage from '../../utils/storage';
 
 interface Props{
     navigation: any;
@@ -31,85 +33,166 @@ interface Props{
 
 export default function MaintenanceScreen({ navigation, route }: Props) {
 
-    const [latestElement, setLatestElement] = useState(false);
+    const [companyId, setCompanyId] = useState<string>('');
+    const [tokenJwt, setTokenJwt] = useState<string>('');
+
     const [filter, setFilter] = useState('made'); //scheduled
 
-    const [loading, setLoading] = useState(true);
     const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
     //const [message, setMessage] = useState<string>(''); not found maintenance message
 
     const vehicleId: number = route.params;
 
     
-    const { maintenanceDone } = useMaintenanceDone(vehicleId);
-    const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
+    //const { maintenanceDone } = useMaintenanceDone(vehicleId);
+    //const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
 
 
     //Filter buttons
     const filters: string[] = ['Feitas', 'Agendadas'];
     const [selectedFilter, setSelectedFilter] = useState<string>(filters[0]);
 
+    //Flatlist
+    const [scheduledMaintenance, setScheduledMaintenance] = useState<Maintenance[] | null | undefined>();
+    const [maintenanceDone, setMaintenanceDone] = useState<MaintenanceDone[] | null | undefined>();
+    const [page, setPage] = useState<number>(0);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+
     useEffect(() => {
-        console.log(selectedFilter);
+            async function getInStorage(){
+                try {
+                    const currentStorage: Storage = await Storage.getInstance();
+                    setCompanyId(currentStorage!.companyExternalId!);
+                    setTokenJwt(currentStorage!.tokenJwt!);
+                } catch (error) {
+                    console.log("Error to get in storage: ", error);
+                }
+            }
+    
+            getInStorage();
+    }, [])
+
+    useEffect(() => {
+        onRefresh();
+        setScheduledMaintenance([]);
+        setMaintenanceDone([]);
+        setPage(0);
+        loadMaintenance(0).then(() => setRefreshing(false));
     }, [selectedFilter]);
+
+    useEffect(() => {
+        loadMaintenance(0);
+    }, [companyId, tokenJwt]);
+
+    useEffect(() => {
+        console.log("Maintenance Done:", maintenanceDone)
+    }, [maintenanceDone]);
+
+
+    async function loadMaintenance(pageToLoad = 0){
+            try {
+                if (loadingMore) return;
+                setLoadingMore(true);
+
+                if(filter === 'scheduled'){
+                    const result: Maintenance[] | null | undefined = await getAllScheduledMaintenance(tokenJwt, vehicleId, companyId, pageToLoad);
+    
+                    if(result !== null && result !== undefined){
+                        console.log("Result: ", result);
+                        if (pageToLoad === 0) {
+                            setScheduledMaintenance(result!);
+                        } else {
+                            setScheduledMaintenance(prev => [...prev!, ...result!]);
+                        }
+        
+        
+                        setPage(pageToLoad);
+                    }
+                }else if(filter === 'made'){
+                    const result: MaintenanceDone[] | null | undefined = await getAllMaintenanceDone(tokenJwt, vehicleId, companyId, pageToLoad);
+
+                    console.log("Bateu aqui")
+    
+                    if(result !== null && result !== undefined){
+                        console.log("Result: ", result);
+                        if (pageToLoad === 0) {
+                            setMaintenanceDone(result!);
+                        } else {
+                            setMaintenanceDone(prev => [...prev!, ...result!]);
+                        }
+        
+        
+                        setPage(pageToLoad);
+                    }
+                }
+
+            } catch (error) {
+                setLoadingMore(false);
+                console.error("Erro ao carregar veículos", error);
+            } finally {
+                setLoadingMore(false);
+            }
+    };
+
+    function loadMoreMaintenance(){
+        loadMaintenance(page + 1);
+        setLoadingMore(false);
+    };
+
+    function onRefresh(){
+        setRefreshing(true);
+        setMaintenanceDone([]);
+        setScheduledMaintenance([]);
+        setPage(0);
+        loadMaintenance(0).then(() => setRefreshing(false));
+    };
+
+    function renderFooterFlatList(){
+        if(!loadingMore) return null;
+
+        if(refreshing) return null;
+    
+        return(
+          <View style={styles.latestElement}>
+            <ActivityIndicator
+            size="large" color={colors.primary.main} 
+            style={{ marginTop: 20, marginBottom: 20 }}
+            />
+          </View>
+        );
+    }
+
+    /*
 
     useEffect( () => {
         if(maintenanceDone === null){
-            setLoading(true);
+            setLoadingMore(true);
             return;
         } 
 
         if(scheduledMaintenance === null) {
-            setLoading(true);
+            setLoadingMore(true);
             return;
         }
 
         if(maintenanceDone!.length === 0 && scheduledMaintenance!.length === 0){
-            setLoading(false);
+            setLoadingMore(false);
             setNotFoundMaintenance(true)
             return;
         }
 
-        setLoading(false);
+        setLoadingMore(false);
         setNotFoundMaintenance(false);
-    }, [maintenanceDone, scheduledMaintenance]);
+    }, [maintenanceDone, scheduledMaintenance]);*/
 
-    function renderFooterFlatList(){
-        if(!latestElement) return null;
-            
-        return(
-            <View style={styles.latestElement}>
-                
-            </View>
-        );
-    }
-
-    async function loadMoreFuel(){
-        setLatestElement(true);
-    
-        /*
-        console.log(totalVehicles);
-    
-        if(page === totalPages || totalVehicles < sizePage){
-          setLatestElement(false);
-          return;
-        }
-    
-        setPage(page + 1);
-    
-        if(selected === 'todos'){
-          await getAllVehicles();
-        }else{
-          await getStatusVehicles();
-        }*/
-    }
 
     function openModalAddMaitenance(){
         navigation.navigate('AddNewMaintenance', vehicleId);
     }
 
     function renderListMaintenance(){
-        if(loading){
+        if(loadingMore){
             return(
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
@@ -167,12 +250,15 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                     )
                 }}
                 onEndReached={() => {
-                    loadMoreFuel();
+                    loadMoreMaintenance();
                 }}
                 onEndReachedThreshold={1} 
                 ListFooterComponent={renderFooterFlatList}
                 style={styles.list}
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                contentContainerStyle={{ paddingBottom: 30 }}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
                 />
             );
         }

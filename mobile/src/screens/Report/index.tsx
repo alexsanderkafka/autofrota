@@ -30,7 +30,7 @@ import ChartSelect from '../../components/ChartSelect';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import ReportHistory from '../../types/reportHistory';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import { getHistoryByYear } from '../../service/reportService';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
@@ -143,8 +143,8 @@ export default function ReportScreen(){
     }
 
     return(
-        <ScrollView>
             <View style={styles.container}>
+                <ScrollView>
                 <View style={styles.filterButtonContainer}>
                     {
                         filters.map((filter) => (
@@ -284,16 +284,8 @@ export default function ReportScreen(){
                         </View>
                         <Icon name="cloud-download" size={24} color={colors.icon.main}/>
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.reportButton}>
-                        <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-                            <Image source={require('../../../assets/icons/docx.png')} style={{width: 38, height: 38}}/>
-                            <Text>Relatório em pdf</Text>
-                        </View>
-                        <Icon name="cloud-download" size={24} color={colors.icon.main}/>
-                    </TouchableOpacity>
                 </View>
+                </ScrollView>
             </View>
-        </ScrollView>
     );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Maintenance from "../types/maintenance";
 
 import Vehicle from "../types/vehicle";
-import api from "./api";
+import api from "../utils/api";
 import MaintenanceDone from "../types/maintenanceDone";
 import DateFilter from "../types/dateFilter";
 import UpdateMaintenance from "../types/updateMaintenance";
@@ -44,15 +44,20 @@ export async function getAllMaintenanceDone(tokenJwt: string, vehicleId: number,
               }
     });
       
-    if(response.status === 200){
+    if(response.status === 200 && response.data._embedded != null){
 
+      try {
         if(response.data.page.totalElements === 0) {
             return null;
         }
 
         let listMaintenance: MaintenanceDone[] = response.data._embedded.maintenanceDoneDTOList;
         
-        return listMaintenance;
+        return listMaintenance; 
+      } catch (error: any) {
+        console.log("Error request all maintenance: ", error);
+        return null;
+      }
     }
 
     return null;

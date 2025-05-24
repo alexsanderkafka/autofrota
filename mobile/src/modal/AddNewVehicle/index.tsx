@@ -15,7 +15,7 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../theme';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import { ActivityIndicator } from 'react-native';
 import Select from '../../components/Select';
 

@@ -7,23 +7,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.primary.white,
         paddingHorizontal: 15,
-        paddingBottom: 30,
-    },
-    identificationContainer:{
-        marginTop: 30,
-        width: '100%',
-        height: 200,
-        elevation: 2,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingVertical: 30
     },
     profileImage:{
-        width: 89,
-        height: 89,
+        width: '100%',
+        height: '100%',
         resizeMode: 'cover',
-        borderRadius: 50,
     },
     businessName:{
         fontSize: 13,   
@@ -40,10 +29,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 'auto',
         flexDirection: 'column',
-    },
-    rowTitle:{
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
     },
     titles:{
         fontSize: 16,
@@ -76,7 +61,7 @@ const styles = StyleSheet.create({
     },
     driverEmail:{
         fontSize: 10,
-        color: colors.text.gray
+        color: colors.text.secondaray
     },
     driversCard:{
         flexDirection: 'column',
@@ -87,6 +72,25 @@ const styles = StyleSheet.create({
         height: 'auto',
         padding: 10,
         marginTop: 15,
+    },
+    exitButton:{
+        width: "100%",
+        backgroundColor: "#FF4444",
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 38,
+        marginTop: 40,
+        marginBottom: 30,
+    },
+    imageArea:{
+        width: '100%',
+        height: 188,
+        borderRadius: 5,
+        backgroundColor: colors.primary.white,
+        borderColor: colors.primary.main,
+        borderWidth: 1
     }
 });
 

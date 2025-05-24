@@ -1,25 +1,27 @@
 import DateFilter from "../types/dateFilter";
 import Fuel from "../types/fuel";
 import Vehicle from "../types/vehicle";
-import api from "./api";
+import api from "../utils/api";
 
-export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicleId: number, companyId: string): Promise<Fuel[] | null | undefined> {
+export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<Fuel[] | null | undefined> {
     
-    const response = await api.get(`/fuel/${companyId}/${vehicleId}`, {
+    const response = await api.get(`/fuel/${companyId}/${vehicleId}?page=${page}&direction=desc`, {
                 headers:{
                   Authorization: `Bearer ${tokenJwt}`
                 }
     });
         
-    if(response.status === 200){
-  
-        if(response.data.page.totalElements === 0) {
-            return [];
+    if(response.status === 200 && response.data._embedded != null){
+        try{
+            let fuelList: Fuel[] = response.data._embedded.fuelDTOList;
+        
+            return fuelList;
+        }catch(error: any){
+            console.log("Request error fuel: ", error);
+            return null;
         }
   
-        let fuelList: Fuel[] = response.data._embedded.fuelDTOList;
         
-        return fuelList;
     }
 
     return null;

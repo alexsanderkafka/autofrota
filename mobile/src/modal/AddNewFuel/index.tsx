@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../theme';
 import Select from '../../components/Select';
 import Fuel from '../../types/fuel';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import { saveNewFuelByVehicle } from '../../service/fuelService';
 
 import DateTimePicker from '@react-native-community/datetimepicker';

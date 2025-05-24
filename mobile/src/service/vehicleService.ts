@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "../utils/api"
 import Vehicle from "../types/vehicle";
 import StatusCount from "../types/statusCount";
 

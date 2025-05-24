@@ -1,6 +1,6 @@
 import Report from "../types/report";
 import ReportHistory from "../types/reportHistory";
-import api from "./api";
+import api from "../utils/api";
 
 export async function getCountTotal(tokenJwt: string, companyId: string): Promise<Report | null | undefined> {
 

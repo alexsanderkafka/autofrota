@@ -1,6 +1,6 @@
 import Driver from "../types/driver";
 import RegisterDriver from "../types/registerDriver";
-import api from "./api";
+import api from "../utils/api";
 
 export async function getAllDriver(tokenJwt: string, companyId: string, page: number): Promise<Driver[] | null | undefined>{
     let response = await api.get(`/drivers/${companyId}?page=${page}&direction=desc`, {

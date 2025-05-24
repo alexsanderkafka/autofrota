@@ -18,7 +18,7 @@ import { Platform } from 'react-native';
 import MaintenanceDone from '../../types/maintenanceDone';
 import Maintenance from '../../types/maintenance';
 import Service from '../../types/service';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import { saveMaintenanceDoneByVehicleId, saveScheduledMaintenanceByVehicleId } from '../../service/maintenanceService';
 import { ActivityIndicator } from 'react-native';
 import styles from './style';

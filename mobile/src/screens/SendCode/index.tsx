@@ -9,7 +9,7 @@ import {
 import styles from './style';
 import ActionButton from '../../components/ActionButton';
 import sendCode, { confirmCode } from '../../service/resetPassword';
-import Storage from '../../service/storage';
+import Storage from '../../utils/storage';
 import ResetPassword from '../../types/resetPassword';
 
 interface Props{
@@ -22,6 +22,7 @@ export default function SendCode({navigation, route}:Props){
     //company
     const [companyId, setCompany] = useState<string>("");
     const [tokenJwt, setTokenJwt] = useState<string>("");
+    const [storage, setStorage] = useState<Storage>();
 
     const [fisrtCode, setFisrtCode] = useState<string>('');
     const [secondCode, setSecondCode] = useState<string>('');
@@ -42,6 +43,7 @@ export default function SendCode({navigation, route}:Props){
         async function getInStorage(){
             const currentStorage: Storage = await Storage.getInstance();
 
+            setStorage(currentStorage);
             setCompany(currentStorage!.companyExternalId!);
             setTokenJwt(currentStorage!.tokenJwt!);
         }
@@ -69,7 +71,7 @@ export default function SendCode({navigation, route}:Props){
     }
 
     function goToLogin(){
-        //Fazer o logout
+        storage?.clear();
         navigation.navigate('Login');
     }
 

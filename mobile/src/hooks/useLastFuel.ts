@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import Storage from '../service/storage';
+import Storage from '../utils/storage';
 import { getLastFuelByVehicleIdAndCompany } from '../service/fuelService';
 import Fuel from '../types/fuel';
 

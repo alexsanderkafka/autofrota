@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Storage from '../service/storage';
+import Storage from '../utils/storage';
 import Company from '../types/company';
 import { getCompany } from '../service/companyService';
 

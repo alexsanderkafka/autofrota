@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef} from 'react';
 
-import Storage from '../service/storage';
+import Storage from '../utils/storage';
 
 import { ReportHistory } from "../types/reportHistory";
 import { getHistoryByYear } from '../service/reportService';

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-import api from "../service/api";
-import Storage from "../service/storage";
+import api from "../utils/api";
+import Storage from "../utils/storage";
 import { getAllVehicleByCompanyIdAndStatus } from "../service/vehicleService";
 import Vehicle from "../types/vehicle";
 import { VehicleStatus } from "../types/vehicleStatus";

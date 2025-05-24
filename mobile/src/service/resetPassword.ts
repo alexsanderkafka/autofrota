@@ -1,5 +1,5 @@
 import ResetPassword from "../types/resetPassword";
-import api from "./api";
+import api from "../utils/api";
 
 export default async function sendCode(companyId: string, tokenJwt: string): Promise<number>{
     let response = await api.get(`/reset/${companyId}`, {
