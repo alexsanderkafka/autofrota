@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
+    Dimensions
   } from 'react-native';
   
 import { colors } from '../../theme';
@@ -31,8 +32,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import ReportHistory from '../../types/reportHistory';
 import Storage from '../../utils/storage';
-import { getHistoryByYear } from '../../service/reportService';
+import { getHistoryByYear, getHistoryCompanyPdf } from '../../service/reportService';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+
+import * as Sharing from 'expo-sharing';
 
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -77,6 +80,9 @@ export default function ReportScreen(){
     //Select data
     const [selectedData, setSelectedData] = useState<number>(new Date().getFullYear());
 
+    //url pdf
+    const [urlPdf, setUrlPdf] = useState<string | null>();
+
     useEffect( () => {
             async function getInStorage(){
                 const currentStorage: Storage = await Storage.getInstance();
@@ -94,7 +100,7 @@ export default function ReportScreen(){
 
     async function getReport() {
         console.log("Bateu em getReport");
-        const report: ReportHistory[] | null | undefined = await getHistoryByYear(tokenJwt!, companyId!, 2025);
+        const report: ReportHistory[] | null | undefined = await getHistoryByYear(2025);
         
         setReportHistory(report);
     }
@@ -142,9 +148,27 @@ export default function ReportScreen(){
         return (totalExpenseFuel + totalExpenseMaintenance).toFixed(2);
     }
 
+    async function getPdf(){
+        const response = getHistoryCompanyPdf().then(async (res) => {
+            setUrlPdf(res)
+            await openPdf(res!);
+        });
+    }
+
+    async function openPdf(path: string){
+        console.log(path);
+        if (await Sharing.isAvailableAsync()) {
+            await Sharing.shareAsync(path);
+        } else {
+            console.log("ERror ao abrir o pdf")
+        }
+
+        return;
+    }
+
     return(
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView style={styles.scrollView}>
                 <View style={styles.filterButtonContainer}>
                     {
                         filters.map((filter) => (
@@ -201,7 +225,6 @@ export default function ReportScreen(){
                             selectedData={selectedData}
                             onPress={() => setShowPicker(true)}
                         />
-
                     </View>
                     
 
@@ -277,7 +300,9 @@ export default function ReportScreen(){
                 <View style={styles.reportContainer}>
                     <Text style={styles.title}>Geração de relatório</Text>
 
-                    <TouchableOpacity style={styles.reportButton}>
+                    <TouchableOpacity style={styles.reportButton}
+                    onPress={getPdf}
+                    >
                         <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
                             <Image source={require('../../../assets/icons/pdf.png')} style={{width: 38, height: 38}}/>
                             <Text>Relatório em pdf</Text>

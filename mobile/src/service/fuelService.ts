@@ -2,8 +2,14 @@ import DateFilter from "../types/dateFilter";
 import Fuel from "../types/fuel";
 import Vehicle from "../types/vehicle";
 import api from "../utils/api";
+import Storage from "../utils/storage";
 
-export async function getAllFuelByVehicleIdAndCompany(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<Fuel[] | null | undefined> {
+export async function getAllFuelByVehicleIdAndCompany(vehicleId: number, page: number): Promise<Fuel[] | null | undefined> {
+
+    const storage: Storage = await Storage.getInstance();
+    
+    const tokenJwt: string = storage!.tokenJwt!;
+    const companyId: string = storage!.companyExternalId!;
     
     const response = await api.get(`/fuel/${companyId}/${vehicleId}?page=${page}&direction=desc`, {
                 headers:{

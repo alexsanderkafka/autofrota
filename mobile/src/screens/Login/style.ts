@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFF',
       alignItems: 'center',
       paddingVertical: 30,
-      paddingHorizontal: 15,
     },
     logoImage:{
       width: 169,
@@ -111,6 +110,11 @@ const styles = StyleSheet.create({
     },
     textCreateAccount:{
   
+    },
+    containerFields:{
+      paddingHorizontal: 15,
+      alignItems: 'center',
+      width: '100%',
     }
   
 });

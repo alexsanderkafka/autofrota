@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderColor: colors.primary.dark,
         borderRadius: 5,
-    }
+    },
 });
 
 export default styles;

@@ -20,10 +20,11 @@ import Storage from "../../utils/storage";
 import styles from "./style";
 import VehicleFilter from "../../components/VehicleFilter";
 import Vehicle from "../../types/vehicle";
-import { deleteVehicleByCompanyAndVehicleId, getAllVehicleByCompanyIdAndStatus } from "../../service/vehicleService";
+import { deleteVehicleByCompanyAndVehicleId, getAllVehicleByCompanyIdAndStatus, getVehicleByPlate } from "../../service/vehicleService";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Notify from "../../components/Notify";
 
 interface Props{
   navigation: any;
@@ -52,13 +53,20 @@ export default function Vehicles( {navigation}: Props ) {
     const [page, setPage] = useState<number>(0);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [refreshing, setRefreshing] = useState<boolean>(false);
+    
+
+    //field error
+    const [error, setError] = useState<any>({});
 
     useEffect(() => {
         async function getInStorage(){
             try {
-                const currentStorage: Storage = await Storage.getInstance();
-                setCompanyId(currentStorage!.companyExternalId!);
-                setTokenJwt(currentStorage!.tokenJwt!);
+                const currentStorage: Storage = await Storage.getInstance().then((storage: Storage) => {
+                    setCompanyId(storage!.companyExternalId!);
+                    setTokenJwt(storage!.tokenJwt!);
+                    return storage;
+                });
+                
             } catch (error) {
                 console.log("Error to get in storage: ", error);
             }
@@ -78,12 +86,21 @@ export default function Vehicles( {navigation}: Props ) {
         loadVehicles(0);
     }, [companyId, tokenJwt]);
 
+    useEffect(() => {
+        console.log("Error: ", error);
+        if (error.search) {
+            setTimeout(() => {
+                setError({});
+            }, 2000);
+        }
+    }, [error])
+
     async function loadVehicles(pageToLoad = 0){
         try {
             if (loadingMore) return;
             setLoadingMore(true);
 
-            const result: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(companyId, selected, tokenJwt, pageToLoad);
+            const result: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(selected, pageToLoad);
 
             if(result !== null && result !== undefined){
                 console.log("Result: ", result);
@@ -92,8 +109,6 @@ export default function Vehicles( {navigation}: Props ) {
                 } else {
                     setVehicles(prev => [...prev!, ...result!]);
                 }
-
-
                 setPage(pageToLoad);
             }
         } catch (error) {
@@ -159,6 +174,24 @@ export default function Vehicles( {navigation}: Props ) {
         );
     };
 
+    async function searchVehicleByPlate(){
+        const vehicleFound: Vehicle | null | undefined = await getVehicleByPlate(search);
+
+        console.log("Vehicle found: ", vehicleFound);
+
+        if(vehicleFound !== null && vehicleFound !== undefined){
+            navigation.navigate("Vehicle", vehicleFound);
+            return;
+        }
+
+        console.log("Nenhum veículo encontrado com a placa informada.");
+        setError({ search: "Nenhum veículo encontrado com a placa informada."});
+    }
+
+    async function onPressErrorNotify(){
+        setError({});
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
@@ -193,6 +226,7 @@ export default function Vehicles( {navigation}: Props ) {
 
                   <TouchableOpacity
                   style={ styles.searchButton }
+                  onPress={searchVehicleByPlate}
                   >
                       <Icon name="magnify" size={24} color={colors.icon.white}/>
 
@@ -231,6 +265,13 @@ export default function Vehicles( {navigation}: Props ) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddVehicle}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
+
+            {error.search && (
+                <Notify
+                isError={true}
+                text={error.search}
+                />
+            )}
         </View>
     );
 

@@ -6,7 +6,8 @@ import {
     ActivityIndicator,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    SafeAreaView
 } from 'react-native';
 
 import { colors } from '../../theme';
@@ -33,9 +34,6 @@ interface Props{
 
 export default function MaintenanceScreen({ navigation, route }: Props) {
 
-    const [companyId, setCompanyId] = useState<string>('');
-    const [tokenJwt, setTokenJwt] = useState<string>('');
-
     const [filter, setFilter] = useState('made'); //scheduled
 
     const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
@@ -60,17 +58,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
     useEffect(() => {
-            async function getInStorage(){
-                try {
-                    const currentStorage: Storage = await Storage.getInstance();
-                    setCompanyId(currentStorage!.companyExternalId!);
-                    setTokenJwt(currentStorage!.tokenJwt!);
-                } catch (error) {
-                    console.log("Error to get in storage: ", error);
-                }
-            }
-    
-            getInStorage();
+        loadMaintenance(0);
     }, [])
 
     useEffect(() => {
@@ -81,9 +69,6 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
         loadMaintenance(0).then(() => setRefreshing(false));
     }, [selectedFilter]);
 
-    useEffect(() => {
-        loadMaintenance(0);
-    }, [companyId, tokenJwt]);
 
     useEffect(() => {
         console.log("Maintenance Done:", maintenanceDone)
@@ -96,7 +81,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                 setLoadingMore(true);
 
                 if(filter === 'scheduled'){
-                    const result: Maintenance[] | null | undefined = await getAllScheduledMaintenance(tokenJwt, vehicleId, companyId, pageToLoad);
+                    const result: Maintenance[] | null | undefined = await getAllScheduledMaintenance(vehicleId, pageToLoad);
     
                     if(result !== null && result !== undefined){
                         console.log("Result: ", result);
@@ -110,7 +95,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                         setPage(pageToLoad);
                     }
                 }else if(filter === 'made'){
-                    const result: MaintenanceDone[] | null | undefined = await getAllMaintenanceDone(tokenJwt, vehicleId, companyId, pageToLoad);
+                    const result: MaintenanceDone[] | null | undefined = await getAllMaintenanceDone(vehicleId, pageToLoad);
 
                     console.log("Bateu aqui")
     
@@ -121,8 +106,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                         } else {
                             setMaintenanceDone(prev => [...prev!, ...result!]);
                         }
-        
-        
+                        
                         setPage(pageToLoad);
                     }
                 }
@@ -162,29 +146,6 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
           </View>
         );
     }
-
-    /*
-
-    useEffect( () => {
-        if(maintenanceDone === null){
-            setLoadingMore(true);
-            return;
-        } 
-
-        if(scheduledMaintenance === null) {
-            setLoadingMore(true);
-            return;
-        }
-
-        if(maintenanceDone!.length === 0 && scheduledMaintenance!.length === 0){
-            setLoadingMore(false);
-            setNotFoundMaintenance(true)
-            return;
-        }
-
-        setLoadingMore(false);
-        setNotFoundMaintenance(false);
-    }, [maintenanceDone, scheduledMaintenance]);*/
 
 
     function openModalAddMaitenance(){
@@ -265,8 +226,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
     }
 
     return(
-        <View style={styles.container}>
-
+        <SafeAreaView style={styles.container}>
             <View style={styles.containerFilterButton}>
                 {
                     filters.map((filter: string) => (
@@ -285,13 +245,6 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                 }
             </View>
 
-            <View style={styles.fieldSelectDate}>
-                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
-                <TouchableOpacity style={styles.dateButton}>
-                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
-                </TouchableOpacity>
-            </View>
-
             {
                 renderListMaintenance()
             }
@@ -300,6 +253,16 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
         
-        </View>
+        </SafeAreaView>
     );
 }
+
+
+/*
+<View style={styles.fieldSelectDate}>
+                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
+                <TouchableOpacity style={styles.dateButton}>
+                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
+                </TouchableOpacity>
+            </View>
+ */

@@ -21,7 +21,8 @@ import VehicleListTile from '../../components/VehicleListTile';
 
 import styles from './style';
 import useStatusCount from '../../hooks/useStatusCount';
-import useRecentVehicles from '../../hooks/useRecentVehicles';
+import Vehicle from '../../types/vehicle';
+import { getRecentVehiclesByCompanyId } from '../../service/vehicleService';
 
 interface Props{
   navigation: any;
@@ -31,12 +32,23 @@ export default function HomeScreen({ navigation }: Props) {
   // Status Count
   const { statusCount } = useStatusCount();
 
-  //Recent Vehicles
-  const { vehicles } = useRecentVehicles();
+  const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>();
+
+  useEffect(() => {
+    loadVehicles();
+  }, []);
+
+  async function loadVehicles(){
+    
+    const response: Vehicle[] | null | undefined = await getRecentVehiclesByCompanyId();
+
+    if(response){
+      setVehicles(response);
+    }
+  }
 
   return(
       <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
             <View style={styles.infosContainer} >
                 <InfoCard icon="car" amount={statusCount?.active ?? 50} title="Veículos Ativos" color={colors.icon.green}/>
@@ -65,7 +77,6 @@ export default function HomeScreen({ navigation }: Props) {
             ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
             />
           </View>
-        </ScrollView>
       </View>
   );
   

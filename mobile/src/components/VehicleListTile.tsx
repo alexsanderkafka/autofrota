@@ -83,7 +83,7 @@ export default function VehicleListTile({ vehicle, navigation, isVehicles = fals
 
                 </View>
 
-                <Text style={styles.nextMaintenance}>Próxima manutenção: {nextDate}</Text>
+                <Text style={styles.nextMaintenance}>Moodelo: {vehicle.model}</Text>
               </View>
           </TouchableOpacity>
     );

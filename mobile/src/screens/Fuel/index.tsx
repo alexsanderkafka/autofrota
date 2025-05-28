@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef }from 'react';
+import React, { useEffect, useState, useRef, use }from 'react';
 
 import {
     StyleSheet,
@@ -32,9 +32,6 @@ interface Props{
 
 export default function Fuel({ navigation, route }: Props) {
 
-    const [companyId, setCompanyId] = useState<string>('');
-    const [tokenJwt, setTokenJwt] = useState<string>('');
-
     const [notFound, setNotFound] = useState<boolean>(false);
 
     const vehicleId: number = route.params;
@@ -44,31 +41,17 @@ export default function Fuel({ navigation, route }: Props) {
     const [page, setPage] = useState<number>(0);
     const [fuel, setFuel] = useState<FuelType[] | null | undefined>();
     const [refreshing, setRefreshing] = useState<boolean>(false);
-    
-    useEffect(() => {
-            async function getInStorage(){
-                try {
-                    const currentStorage: Storage = await Storage.getInstance();
-                    setCompanyId(currentStorage!.companyExternalId!);
-                    setTokenJwt(currentStorage!.tokenJwt!);
-                } catch (error) {
-                    console.log("Error to get in storage: ", error);
-                }
-            }
-    
-            getInStorage();
-    }, [])
 
     useEffect(() => {
         loadFuel(0);
-    }, [companyId, tokenJwt]);
+    }, [])
 
     async function loadFuel(pageToLoad = 0){
             try {
                 if (loadingMore) return;
                 setLoadingMore(true);
     
-                const result: FuelType[] | null | undefined = await getAllFuelByVehicleIdAndCompany(tokenJwt, vehicleId, companyId, pageToLoad);
+                const result: FuelType[] | null | undefined = await getAllFuelByVehicleIdAndCompany(vehicleId, pageToLoad);
     
                 if(result !== null && result !== undefined){
 
@@ -88,39 +71,6 @@ export default function Fuel({ navigation, route }: Props) {
                 setLoadingMore(false);
             }
     };
-
-    /*
-    useEffect( () => {
-
-        if(fuel === null){
-            setLoading(false);
-            return;
-        }
-
-        if(fuel!.length === 0){
-            setLoading(false);
-            setNotFound(true);
-            return;
-        }
-
-        setLoading(false);
-        setNotFound(false);
-    }, [fuel]);*/
-
-    
-
-    /*
-    function sendToAddFuel(){
-        if(loading){
-            return(
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                    size="large" color={colors.primary.main} 
-                    />
-                </View>
-            );
-        }
-    }*/
 
     function renderFooterFlatList(){
         if(!loadingMore) return null;
@@ -202,14 +152,6 @@ export default function Fuel({ navigation, route }: Props) {
 
     return(
         <View style={styles.container}>
-            
-            <View style={styles.fieldSelectDate}>
-                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
-                <TouchableOpacity style={styles.dateButton}>
-                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
-                </TouchableOpacity>
-            </View>
-
             {
                 renderFuelList()
             }
@@ -220,3 +162,10 @@ export default function Fuel({ navigation, route }: Props) {
         </View>
     )
 }
+
+/*<View style={styles.fieldSelectDate}>
+                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
+                <TouchableOpacity style={styles.dateButton}>
+                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
+                </TouchableOpacity>
+            </View>*/

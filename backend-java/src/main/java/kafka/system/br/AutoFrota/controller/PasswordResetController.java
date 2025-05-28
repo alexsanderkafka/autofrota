@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import kafka.system.br.AutoFrota.dto.CompanyDTO;
 import kafka.system.br.AutoFrota.dto.PasswordResetDTO;
+import kafka.system.br.AutoFrota.model.Company;
+import kafka.system.br.AutoFrota.service.CompanyService;
 import kafka.system.br.AutoFrota.service.EmailService;
 import kafka.system.br.AutoFrota.service.PasswordResetService;
 
@@ -19,12 +22,18 @@ public class PasswordResetController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private CompanyService companyService;
+
     @GetMapping("/{companyId}")
     public ResponseEntity<?> requestToChangePassword(
         @PathVariable(value = "companyId") String companyId
     ){
+        CompanyDTO company = companyService.getBusinessById(companyId);
+    
         String code = passwordResetService.generateAndStoreCode(companyId);
-        String email = "alexsanderkafka2001alex@gmail.com";
+
+        String email = company.email();
 
         emailService.sendPasswordResetCode(email, code);
 

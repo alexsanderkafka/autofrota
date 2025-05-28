@@ -6,8 +6,14 @@ import api from "../utils/api";
 import MaintenanceDone from "../types/maintenanceDone";
 import DateFilter from "../types/dateFilter";
 import UpdateMaintenance from "../types/updateMaintenance";
+import Storage from "../utils/storage";
 
-export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<Maintenance[] | null | undefined> {
+export async function getAllScheduledMaintenance(vehicleId: number, page: number): Promise<Maintenance[] | null | undefined> {
+
+  const storage: Storage = await Storage.getInstance();
+      
+  const tokenJwt: string = storage!.tokenJwt!;
+  const companyId: string = storage!.companyExternalId!;
 
     const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/scheduled?page=${page}`, {
               headers:{
@@ -33,18 +39,23 @@ export async function getAllScheduledMaintenance(tokenJwt: string, vehicleId: nu
     return null;
 }
 
-export async function getAllMaintenanceDone(tokenJwt: string, vehicleId: number, companyId: string, page: number): Promise<MaintenanceDone[] | null | undefined>{
+export async function getAllMaintenanceDone(vehicleId: number, page: number): Promise<MaintenanceDone[] | null | undefined>{
+
+  const storage: Storage = await Storage.getInstance();
+      
+  const tokenJwt: string = storage!.tokenJwt!;
+  const companyId: string = storage!.companyExternalId!;
 
     ////?page=0&size=2&direction=desc
 
-    console.log(companyId!);
-    const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/done?page=${page}`, {
+  console.log(companyId!);
+  const response = await api.get(`/maintenance/${companyId}/${vehicleId}/all/done?page=${page}`, {
               headers:{
                 Authorization: `Bearer ${tokenJwt}`
               }
-    });
+  });
       
-    if(response.status === 200 && response.data._embedded != null){
+  if(response.status === 200 && response.data._embedded != null){
 
       try {
         if(response.data.page.totalElements === 0) {

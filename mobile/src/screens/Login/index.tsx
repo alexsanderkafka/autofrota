@@ -23,6 +23,7 @@ import { colors } from '../../theme';
 import styles from './style';
 
 import { login as loginService } from '../../service/loginService';
+import Notify from '../../components/Notify';
 
 interface Props {
   navigation: any;
@@ -32,14 +33,12 @@ export default function Login({ navigation }: Props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
-  const [textAlert, setTextAlert] = useState('');
   const [token, setToken] = useState('');
-  const [remember, setRemember] = useState(false)
-
-  const animatedOpacity = useRef(new Animated.Value(1)).current;
 
   const [eyeButton, setEyeButton] = useState(false);
+
+  //Error alert
+  const [error, setError] = useState<any>({});
 
   useEffect(() => {
 
@@ -65,21 +64,15 @@ export default function Login({ navigation }: Props) {
     }
   }, [token]);
 
-  useEffect( () => {
-    if(showAlert){
-      Animated.timing(animatedOpacity, {
-        toValue: 0,
-        duration: 2000,
-        useNativeDriver: false,
-      }).start( () => {setShowAlert(false);});
-    }else{
-      Animated.timing(animatedOpacity, {
-        toValue: 1,
-        duration: 1,
-        useNativeDriver: false, 
-      }).start();
+  useEffect(() => {
+    console.log("Error: ", error);
+
+    if (error.error) {
+        setTimeout(() => {
+        setError({});
+      }, 2000);
     }
-  }, [showAlert]);
+  }, [error]);
 
   function verifyToken(tokenJwt: string){
     let decoded: any = jwtDecode(tokenJwt);
@@ -113,40 +106,40 @@ export default function Login({ navigation }: Props) {
 
         let response = await loginService(email, password);
 
+        console.log("Response: ", response);
+
         if(response === 200){ 
           navigation.navigate('BottomNavigation');
         }
 
-        if(response === 401){
-          setShowAlert(true);
-          setTextAlert("Email ou senha inválido");
-        }else if(response === 404){
-          setShowAlert(true);
-          setTextAlert("Email não encontrado");
-        }
 
       }catch(error: any){  
         console.log(error)
         let currentStatus = error.response.status; 
         console.log(currentStatus);
+
+        if(currentStatus === 401){
+          console.log("Email ou senha inválido");
+          setError({error: "Email ou senha inválido"});
+          
+        }else if(currentStatus === 404){
+          setError({error: "Email não encontrado"});
+          console.log("Email não encontrado");
+        }
       }
     }
   }
 
   function verifyFields(){
-    if(email === ""){
-      setShowAlert(true);
-      setTextAlert("Digite um e-mail válido");
-      return;
-    }
 
-    if(password === ""){
-      setShowAlert(true);
-      setTextAlert("Senha em branco");
-      return;
-    }
+    let newErrors: any = {};
 
-    return true;
+    if(email === "") newErrors.error = "E-mail em branco";
+    if(password === "") newErrors.error = "Senha em branco";
+
+    setError(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   }
 
   function forgetPassword(){
@@ -162,61 +155,61 @@ export default function Login({ navigation }: Props) {
     <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-        <Image source={require('../../../assets/logo/image.jpg')} style={styles.logoImage}/>
+        <View style={styles.containerFields}>
+          <Image source={require('../../../assets/logo/image.jpg')} style={styles.logoImage}/>
 
-        <Text style={styles.welcomeTitle}>Bem-vindo</Text>
-        <Text style={styles.welcomeDescription}>Faça o login para continuar</Text>
+          <Text style={styles.welcomeTitle}>Bem-vindo</Text>
+          <Text style={styles.welcomeDescription}>Faça o login para continuar</Text>
 
-        <View style={styles.inputContainer} >
+          <View style={styles.inputContainer} >
 
-          <Icon name="email" size={24} color={colors.icon.main}/>
-          <TextInput
-          style={styles.inputs}
-          placeholder='E-mail'
-          value={email}
-          onChangeText={ (text) => setEmail(text)}
-          />
-        </View>
+            <Icon name="email" size={24} color={colors.icon.main}/>
+            <TextInput
+            style={styles.inputs}
+            placeholder='E-mail'
+            value={email}
+            onChangeText={ (text) => setEmail(text)}
+            />
+          </View>
 
-        <View style={styles.inputContainer} >
-          <Icon name="lock" size={24} color={colors.icon.main}/>
-          <TextInput
-          style={styles.inputs}
-          placeholder='Password'
-          secureTextEntry={eyeButton ? false : true}
-          value={password}
-          onChangeText={ (text) => setPassword(text)}
-          />
-          <TouchableOpacity style={styles.eyeBtn} onPress={toggleEyeButton}>
-            {
-              !eyeButton ? (
-                <Icon name="eye" size={24} color={colors.icon.main}/>
-              ) :
-              (
-                <Icon name="eye-off" size={24} color={colors.icon.main}/>
-              )
-            }
+          <View style={styles.inputContainer} >
+            <Icon name="lock" size={24} color={colors.icon.main}/>
+            <TextInput
+            style={styles.inputs}
+            placeholder='Password'
+            secureTextEntry={eyeButton ? false : true}
+            value={password}
+            onChangeText={ (text) => setPassword(text)}
+            />
+            <TouchableOpacity style={styles.eyeBtn} onPress={toggleEyeButton}>
+              {
+                !eyeButton ? (
+                  <Icon name="eye" size={24} color={colors.icon.main}/>
+                ) :
+                (
+                  <Icon name="eye-off" size={24} color={colors.icon.main}/>
+                )
+              }
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity onPress={forgetPassword}>
+            <Text style={{color: colors.text.other}}>Esqueceu a senha?</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btn} onPress={login}>
+            <Text style={styles.btnText}>Entrar</Text>
+          </TouchableOpacity>
+
+          <Text onPress={createAccount} style={styles.textCreateAccount}>Não tem uma conta? <Text style={{ color: colors.text.other, fontStyle: 'italic' }}>Cadastre-se</Text></Text>
         </View>
-
-        <TouchableOpacity onPress={forgetPassword}>
-          <Text style={{color: colors.text.other}}>Esqueceu a senha?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btn} onPress={login}>
-          <Text style={styles.btnText}>Entrar</Text>
-        </TouchableOpacity>
-
-        <Text onPress={createAccount} style={styles.textCreateAccount}>Não tem uma conta? <Text style={{ color: colors.text.other, fontStyle: 'italic' }}>Cadastre-se</Text></Text>
 
         {
-          showAlert && (
-            <Animatable.View 
-            style={[styles.alert, {opacity: animatedOpacity}]}
-            >
-              <Text style={styles.textAlert}>{textAlert}</Text>
-            </Animatable.View>
-            
+          error.error && (
+            <Notify
+              text={error.error}
+              isError={true}
+            />
           )
         }
     </SafeAreaView>

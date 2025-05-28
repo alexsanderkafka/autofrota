@@ -186,6 +186,17 @@ public class VehicleService {
 
         vehicleRepository.delete(vehicle);
     }
+
+    public VehicleDTO searchVehicleByCompanyIdAndPlate(String companyId, String plate) {
+
+        var vehicle = vehicleRepository.findVehicleByCompanyIdAndPlate(companyId, plate.toUpperCase());
+
+        if(vehicle == null) throw new VehicleNotFoundException("Vehicle not found");
+
+        VehicleDTO vehicleDto = new VehicleDTO(vehicle);
+
+        return vehicleDto;
+    }
 }
 
 

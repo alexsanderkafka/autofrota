@@ -50,7 +50,16 @@ public class VehicleController {
 
         var result = vehicleService.searchAllVehiclesByCompany(pageable, companyId, vehicleStatus);
 
-        System.out.println("Batendo no all vehicles by company");
+        return ResponseEntity.ok(result);
+    }
+
+     @GetMapping("/{companyId}/{plate}/plate")
+    public ResponseEntity<?> getAllVehiclesByCompany(
+            @PathVariable(value = "plate") String plate,
+            @PathVariable(value = "companyId") String companyId
+    ){
+
+        VehicleDTO result = vehicleService.searchVehicleByCompanyIdAndPlate(companyId, plate);
 
         return ResponseEntity.ok(result);
     }

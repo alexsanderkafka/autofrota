@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: colors.primary.white,
         flex: 1,
-        paddingHorizontal: 15
+        
     },
     filterButtonContainer:{
         width: '100%',
@@ -81,6 +81,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
+    },
+    scrollView:{
+        paddingHorizontal: 15
     }
     
 });

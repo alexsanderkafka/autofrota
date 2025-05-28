@@ -89,6 +89,18 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
                 m.vehicle.id = :vehicleId
             AND
                 m.done = true
+            """)
+        List<Maintenance> findAllDoneMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = true
             AND
                 m.date >= :startDate
             AND
