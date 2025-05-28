@@ -1,35 +1,19 @@
 import { useState, useEffect } from "react";
 
-import api from "../service/api";
-import Storage from "../service/storage";
-
-interface Vehicles {
-  id: number;
-  plate: string;
-  brand: string;
-  model: string;
-  typeFuel: string;
-  km: number;
-  category: string;
-  activate: boolean;
-  vehicle_image_id: number;
-  company_id: number;
-  vehicle_status_id: number;
-}
+import api from "../utils/api";
+import Storage from "../utils/storage";
+import { getAllVehicleByCompanyIdAndStatus } from "../service/vehicleService";
+import Vehicle from "../types/vehicle";
+import { VehicleStatus } from "../types/vehicleStatus";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default function useVehicles(selected: string){
 
-    const [vehicles, setVehicles] = useState<Vehicles[]>([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [notFoundVehicles, setNotFoundVehicles] = useState(false);
-    const [totalVehicles, setTotalVehicles] = useState(0);
-    const [message, setMessage] = useState("");
-    const [page, setPage] = useState(0);
-    const [latestElement, setLatestElement] = useState(false);
+    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+    const [page, setPage] = useState<number>(0);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
     const [storage, setStorage] = useState<Storage>();
-
-    const sizePage = 12;
 
     useEffect(() =>{
         async function getInStorage(){
@@ -41,7 +25,7 @@ export default function useVehicles(selected: string){
             } catch (error) {
               console.log("Error to get in storage: ", error);
             }
-          }
+        }
   
         getInStorage();
         
@@ -51,53 +35,57 @@ export default function useVehicles(selected: string){
         getStatusVehicles(selected);
     }, [storage])
 
+    useEffect(() => {
+        getStatusVehicles(selected);
+        setPage(0);
+    }, [selected])
+
+    useEffect(() => {
+      getStatusVehicles(selected);
+    }, [page])
+
     async function getStatusVehicles(status: string){
-        try {    
 
-            console.log("Get Status Vehicles: " + storage!.companyExternalId);
+      //await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
+        
+      if(storage!.companyExternalId === null || storage!.tokenJwt === null) return;
+      
+      console.log("Vehicle status: ", status);
 
-            let response = await api.get(`/vehicles/${storage!.companyExternalId}/${status}?page=${page}&direction=desc`, {
-              headers:{
-                Authorization: `Bearer ${storage!.tokenJwt}`
-              }
-            });
-  
-    
-        let listVehicles: Vehicles[] = response.data._embedded.vehicleDTOList;
+      let listVehicles: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(storage!.companyExternalId, status, storage!.tokenJwt, page);
       
-        setVehicles([...vehicles, ...listVehicles]);
-      
-        setTotalPages(response.data.page.totalPages);
-        setLoading(false);
-        setNotFoundVehicles(false);
-        setTotalVehicles(response.data.page.totalElements);
-    
-        //console.log(Vehicles);
-      
-        } catch (error) {
-            console.log("Caiu em error");
-            setLoading(false);
-            setNotFoundVehicles(true);
-            setMessage("Nenhum veículo cadastrado.")
-            console.log("Error: " + error);
+      if(listVehicles != null && listVehicles.length != undefined){
+
+        if(page === 0){
+          setVehicles(listVehicles);
+          return;
+        }else{
+          setVehicles((prevState) => [...prevState, ...listVehicles]);
         }
+
+        setPage(page + 1);
+        
+      }else if(listVehicles === null){
+        setVehicles([]);
+      }
+
+      /*
+      console.log("Caiu em error");
+      
+      setNotFoundVehicles(true);
+      setMessage("Nenhum veículo cadastrado.")
+      console.log("Error: " + error);*/
+      
+      
+      //
+      
+      //setTotalVehicles(response.data.page.totalElements);
     }
 
     async function loadMoreVehicles(){
-        setLatestElement(true);
-        
-        console.log(totalVehicles);
-        
-        if(page === totalPages || totalVehicles < sizePage){
-            setLatestElement(false);
-            return;
-        }
-        
-        setPage(page + 1);
-        
-        getStatusVehicles(selected);
+      getStatusVehicles(selected);
     }
 
-    return { vehicles, totalPages, loading, notFoundVehicles, totalVehicles, message, loadMoreVehicles, latestElement };
+    return { vehicles, loadMoreVehicles };
 
 }

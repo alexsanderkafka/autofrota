@@ -151,6 +151,17 @@ const styles = StyleSheet.create({
     },
     statusText:{
   
+    },
+
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
+    pickerContainer: {
+      backgroundColor: colors.primary.main,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: 16,
     }
 });
 

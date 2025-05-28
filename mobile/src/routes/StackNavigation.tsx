@@ -22,6 +22,12 @@ import {
 } from "react-native";
 import Profile from '../screens/Profile';
 import ChangePassword from '../screens/ChangePassword';
+import SendCode from '../screens/SendCode';
+import AddNewVehicle from '../modal/AddNewVehicle';
+import AddNewFuel from '../modal/AddNewFuel';
+import AddNewMaintenance from '../modal/AddNewMaintenance';
+import Checklist from '../modal/Checklist';
+import UpdateScheduledMaintenance from '../modal/UpdateScheduledMaintenance';
 
 const Stack = createNativeStackNavigator();
 
@@ -105,6 +111,18 @@ export default function MyStack(){
             />
 
             <Stack.Screen 
+                name="SendCode" 
+                component={SendCode}
+                options={{
+                    title: "",
+                    headerStyle:{
+                        backgroundColor: colors.primary.white,
+                    },
+                    headerTintColor: colors.text.other,
+                }}
+            />
+
+            <Stack.Screen 
                 name="ChangePassword" 
                 component={ChangePassword}
                 options={{
@@ -113,6 +131,61 @@ export default function MyStack(){
                         backgroundColor: colors.primary.white,
                     },
                     headerTintColor: colors.text.other,
+                }}
+            />
+
+            <Stack.Screen
+            name="AddVehicle"
+            component={AddNewVehicle}
+            options={{
+                 presentation: 'modal', 
+                 headerShown: false, 
+                 animation: 'slide_from_bottom',
+                 autoHideHomeIndicator: true,
+                }}
+            />
+
+            <Stack.Screen
+            name="AddNewFuel"
+            component={AddNewFuel}
+            options={{
+                 presentation: 'modal', 
+                 headerShown: false, 
+                 animation: 'slide_from_bottom',
+                 autoHideHomeIndicator: true,
+                }}
+            />
+
+            <Stack.Screen
+            name="AddNewMaintenance"
+            component={AddNewMaintenance}
+            options={{
+                 presentation: 'modal', 
+                 headerShown: false, 
+                 animation: 'slide_from_bottom',
+                 autoHideHomeIndicator: true,
+                }}
+            />
+
+            <Stack.Screen
+            name="Checklist"
+            component={Checklist}
+            options={{
+                 presentation: 'modal', 
+                 headerShown: false, 
+                 animation: 'slide_from_bottom',
+                 autoHideHomeIndicator: true,
+                }}
+            />
+
+            <Stack.Screen
+            name="UpdateScheduledMaintenance"
+            component={UpdateScheduledMaintenance}
+            options={{
+                 presentation: 'modal', 
+                 headerShown: false, 
+                 animation: 'slide_from_bottom',
+                 autoHideHomeIndicator: true,
                 }}
             />
 

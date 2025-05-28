@@ -53,6 +53,17 @@ public class VehicleController {
         return ResponseEntity.ok(result);
     }
 
+     @GetMapping("/{companyId}/{plate}/plate")
+    public ResponseEntity<?> getAllVehiclesByCompany(
+            @PathVariable(value = "plate") String plate,
+            @PathVariable(value = "companyId") String companyId
+    ){
+
+        VehicleDTO result = vehicleService.searchVehicleByCompanyIdAndPlate(companyId, plate);
+
+        return ResponseEntity.ok(result);
+    }
+
 
     @GetMapping("/{companyId}/recent")
     public ResponseEntity<?> searchRecentVehiclesByCompany(
@@ -97,7 +108,7 @@ public class VehicleController {
 
         System.out.println("Storing file to disk");
 
-        String path = "/autofrota/vehicles/";
+        String path = "autofrota/vehicles/";
         var url = firebaseImageService.uploadImageToStorage(file, companyId, path);
 
         try{

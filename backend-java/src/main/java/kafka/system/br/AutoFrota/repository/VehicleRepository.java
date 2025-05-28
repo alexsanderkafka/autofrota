@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import kafka.system.br.AutoFrota.dto.ReportDTO;
+import kafka.system.br.AutoFrota.dto.ReportHistoryYearDTO;
+import kafka.system.br.AutoFrota.dto.VehicleExpenseDTO;
 import kafka.system.br.AutoFrota.dto.VehicleStatusDTO;
 import kafka.system.br.AutoFrota.model.Vehicle;
 
@@ -51,6 +53,19 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             """)
         Page<Vehicle> findAllVehiclesByCompany(@Param("externalId") String externalId, @Param("status") String status, Pageable pageable);
 
+        @Query("""
+            SELECT new kafka.system.br.AutoFrota.dto.VehicleExpenseDTO(
+                v,
+                COALESCE(SUM(f.totalValue), 0) + COALESCE(SUM(m.totalValue), 0)
+            )
+            FROM Vehicle v
+            LEFT JOIN Fuel f on f.vehicle.id = v.id
+            LEFT JOIN Maintenance m on m.vehicle.id = v.id
+            WHERE CAST(v.company.externalId AS String) = :externalId
+            GROUP BY v
+            """)
+        List<VehicleExpenseDTO> findAllVehiclesByCompanyAndExpense(@Param("externalId") String externalId);
+
 
         @Query("""
             SELECT 
@@ -76,6 +91,16 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             AND v.id = :vehicleId
             """)
         Vehicle findInfosByVehicleIdAndCompany(@Param("externalId") String externalId, @Param("vehicleId") Long vehicleId);
+
+
+        @Query("""
+            SELECT 
+                v
+            FROM Vehicle v
+            WHERE CAST(v.company.externalId AS String) = :externalId
+            AND v.plate = :plate
+        """)
+        Vehicle findVehicleByCompanyIdAndPlate(@Param("externalId") String externalId, @Param("plate") String plate);
 
 }
 

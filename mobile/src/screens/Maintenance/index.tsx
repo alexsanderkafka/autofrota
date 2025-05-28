@@ -1,26 +1,19 @@
 import React, { useEffect, useState, useRef }from 'react';
-import api from '../../service/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
-    StyleSheet,
     View, 
-    SafeAreaView,
     FlatList,
     ActivityIndicator,
     Text,
     TouchableOpacity,
-    Animated,
-    Dimensions,
-    TextInput,
-    Image
+    Image,
+    SafeAreaView
 } from 'react-native';
 
 import { colors } from '../../theme';
 import FilterButton from '../../components/FilterButton';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddNewMaintenance from '../modal/AddNewMaintenance';
 
 import styles from './style';
 import ScheduledMaintenanceCard from '../../components/ScheduledMaintenanceCard';
@@ -29,111 +22,138 @@ import useMaintenanceDone from '../../hooks/useMaintenanceDone';
 import useScheduledMaintenance from '../../hooks/useScheduledMaintenance';
 
 
-import { ScheduledMaintenance } from '../../hooks/useScheduledMaintenance';
-import { MaintenanceDone } from '../../hooks/useMaintenanceDone';
-
-const { height } = Dimensions.get('window');
+import Maintenance from '../../types/maintenance';
+import MaintenanceDone from '../../types/maintenanceDone';
+import { getAllMaintenanceDone, getAllScheduledMaintenance } from '../../service/maintenanceService';
+import Storage from '../../utils/storage';
 
 interface Props{
     navigation: any;
     route: any;
 }
 
-export default function Maintenance({ navigation, route }: Props) {
+export default function MaintenanceScreen({ navigation, route }: Props) {
 
-    /*
-    const [token, setToken] = useState('');
-    const [maintenances, setMaintenances] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [latestElement, setLatestElement] = useState(false);
-    const [page, setPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalMaintenance, setTotalMaintenance] = useState(0);
-    const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
-
-    const sizePage = 12;
-    const vehicleId = route.params;*/
-
-    const [latestElement, setLatestElement] = useState(false);
     const [filter, setFilter] = useState('made'); //scheduled
-    const [visible, setVisible] = useState(false);
-    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
-    const [loading, setLoading] = useState(true);
     const [notFoundMaintenance, setNotFoundMaintenance] = useState(false);
     //const [message, setMessage] = useState<string>(''); not found maintenance message
 
     const vehicleId: number = route.params;
 
     
-    const { maintenanceDone } = useMaintenanceDone(vehicleId);
-    const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
+    //const { maintenanceDone } = useMaintenanceDone(vehicleId);
+    //const { scheduledMaintenance } = useScheduledMaintenance(vehicleId);
 
-    useEffect( () => {
-        if(maintenanceDone === null){
-            setLoading(true);
-            return;
-        } 
 
-        if(scheduledMaintenance === null) {
-            setLoading(true);
-            return;
-        }
+    //Filter buttons
+    const filters: string[] = ['Feitas', 'Agendadas'];
+    const [selectedFilter, setSelectedFilter] = useState<string>(filters[0]);
 
-        if(maintenanceDone!.length === 0 && scheduledMaintenance!.length === 0){
-            setLoading(false);
-            setNotFoundMaintenance(true)
-            return;
-        }
+    //Flatlist
+    const [scheduledMaintenance, setScheduledMaintenance] = useState<Maintenance[] | null | undefined>();
+    const [maintenanceDone, setMaintenanceDone] = useState<MaintenanceDone[] | null | undefined>();
+    const [page, setPage] = useState<number>(0);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
-        setLoading(false);
-    }, [maintenanceDone, scheduledMaintenance]);
+    useEffect(() => {
+        loadMaintenance(0);
+    }, [])
 
-    console.log("vehicleId: ", vehicleId)
-    console.log(maintenanceDone);
-    console.log(scheduledMaintenance);
+    useEffect(() => {
+        onRefresh();
+        setScheduledMaintenance([]);
+        setMaintenanceDone([]);
+        setPage(0);
+        loadMaintenance(0).then(() => setRefreshing(false));
+    }, [selectedFilter]);
+
+
+    useEffect(() => {
+        console.log("Maintenance Done:", maintenanceDone)
+    }, [maintenanceDone]);
+
+
+    async function loadMaintenance(pageToLoad = 0){
+            try {
+                if (loadingMore) return;
+                setLoadingMore(true);
+
+                if(filter === 'scheduled'){
+                    const result: Maintenance[] | null | undefined = await getAllScheduledMaintenance(vehicleId, pageToLoad);
+    
+                    if(result !== null && result !== undefined){
+                        console.log("Result: ", result);
+                        if (pageToLoad === 0) {
+                            setScheduledMaintenance(result!);
+                        } else {
+                            setScheduledMaintenance(prev => [...prev!, ...result!]);
+                        }
+        
+        
+                        setPage(pageToLoad);
+                    }
+                }else if(filter === 'made'){
+                    const result: MaintenanceDone[] | null | undefined = await getAllMaintenanceDone(vehicleId, pageToLoad);
+
+                    console.log("Bateu aqui")
+    
+                    if(result !== null && result !== undefined){
+                        console.log("Result: ", result);
+                        if (pageToLoad === 0) {
+                            setMaintenanceDone(result!);
+                        } else {
+                            setMaintenanceDone(prev => [...prev!, ...result!]);
+                        }
+                        
+                        setPage(pageToLoad);
+                    }
+                }
+
+            } catch (error) {
+                setLoadingMore(false);
+                console.error("Erro ao carregar veículos", error);
+            } finally {
+                setLoadingMore(false);
+            }
+    };
+
+    function loadMoreMaintenance(){
+        loadMaintenance(page + 1);
+        setLoadingMore(false);
+    };
+
+    function onRefresh(){
+        setRefreshing(true);
+        setMaintenanceDone([]);
+        setScheduledMaintenance([]);
+        setPage(0);
+        loadMaintenance(0).then(() => setRefreshing(false));
+    };
 
     function renderFooterFlatList(){
-        if(!latestElement) return null;
-            
+        if(!loadingMore) return null;
+
+        if(refreshing) return null;
+    
         return(
-            <View style={styles.latestElement}>
-                
-            </View>
+          <View style={styles.latestElement}>
+            <ActivityIndicator
+            size="large" color={colors.primary.main} 
+            style={{ marginTop: 20, marginBottom: 20 }}
+            />
+          </View>
         );
     }
 
-    async function loadMoreFuel(){
-        setLatestElement(true);
-    
-        /*
-        console.log(totalVehicles);
-    
-        if(page === totalPages || totalVehicles < sizePage){
-          setLatestElement(false);
-          return;
-        }
-    
-        setPage(page + 1);
-    
-        if(selected === 'todos'){
-          await getAllVehicles();
-        }else{
-          await getStatusVehicles();
-        }*/
-    }
 
     function openModalAddMaitenance(){
-        setVisible(true);
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        navigation.navigate('AddNewMaintenance', vehicleId);
     }
 
     function renderListMaintenance(){
-        if(loading){
+        if(loadingMore){
             return(
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
@@ -153,30 +173,28 @@ export default function Maintenance({ navigation, route }: Props) {
             );
         }else{
             return(
-                <FlatList<ScheduledMaintenance | MaintenanceDone>
+                <FlatList<Maintenance | MaintenanceDone>
                 showsVerticalScrollIndicator={false} 
                 data={filter === 'scheduled' ? scheduledMaintenance : maintenanceDone}
                 keyExtractor={ item => {
                     if(filter === 'scheduled'){
-                        let scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
-                        return scheduled.id.toString();
+                        let scheduled: Maintenance = item as Maintenance;
+                        return scheduled.id!.toString();
                     }else{
                         let done: MaintenanceDone = item as MaintenanceDone;
-                        return done.maintenance.id.toString();
+                        return done.maintenance.id!.toString();
                     }
                 }}
                 renderItem={ ({ item }) => {
                     if(filter === 'scheduled'){
 
-                        const scheduled: ScheduledMaintenance = item as ScheduledMaintenance;
+                        const scheduled: Maintenance = item as Maintenance;
 
                         return(
                             <ScheduledMaintenanceCard 
-                            date={scheduled ? new Date(scheduled.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                            observation={scheduled ? scheduled.observation : 'Sem observação'}
+                            maintenance={scheduled}
                             navigation={navigation}
-                            vehicleId={scheduled.vehicleId}
-                            vehicle={false}
+                            vehicle={true}
                             />
                         );
                     }
@@ -186,40 +204,45 @@ export default function Maintenance({ navigation, route }: Props) {
 
                     return(
                         <MaintenanceDoneCard
-                        date={done ? new Date(done.maintenance.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                        totalValue={done ? done.maintenance.totalValue : 0}
-                        services={done ? done.service : []}
+                        maintenance={done}
                         navigation={navigation}
-                        vehicleId={done.maintenance.vehicleId}
                         vehicle={false}
                         />
                     )
                 }}
                 onEndReached={() => {
-                    loadMoreFuel();
+                    loadMoreMaintenance();
                 }}
                 onEndReachedThreshold={1} 
                 ListFooterComponent={renderFooterFlatList}
                 style={styles.list}
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                contentContainerStyle={{ paddingBottom: 30 }}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
                 />
             );
         }
     }
 
     return(
-        <View style={styles.container}>
-
+        <SafeAreaView style={styles.container}>
             <View style={styles.containerFilterButton}>
-                <FilterButton text="feitas"/>
-                <FilterButton text="Agendadas"/>
-            </View>
-
-            <View style={styles.fieldSelectDate}>
-                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
-                <TouchableOpacity style={styles.dateButton}>
-                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
-                </TouchableOpacity>
+                {
+                    filters.map((filter: string) => (
+                        <FilterButton
+                        key={filter}
+                        text={filter}
+                        selected={filter == selectedFilter}
+                        onPress={() => {
+                            if(filter === filters[0]) setFilter('made');
+                            else setFilter('scheduled');
+                            
+                            setSelectedFilter(filter);
+                        }}
+                        />
+                    ))
+                }
             </View>
 
             {
@@ -229,13 +252,17 @@ export default function Maintenance({ navigation, route }: Props) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddMaitenance}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
-
-            {
-            visible && (
-                    <AddNewMaintenance visible={setVisible} slideAnim={slideAnim}/>
-                )
-            }
         
-        </View>
+        </SafeAreaView>
     );
 }
+
+
+/*
+<View style={styles.fieldSelectDate}>
+                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
+                <TouchableOpacity style={styles.dateButton}>
+                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
+                </TouchableOpacity>
+            </View>
+ */

@@ -13,11 +13,12 @@ import { colors } from '../theme';
 interface Props{
     icon: string;
     text: string;
+    onPress: () => void;
 }
 
-export default function({ icon, text }: Props){
+export default function({ icon, text, onPress }: Props){
     return(
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Icon name={icon} size={24} color={colors.primary.main} />
             <Text style={{ color: colors.text.other, fontSize: 13 }}>{text}</Text>
         </TouchableOpacity>

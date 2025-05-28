@@ -1,6 +1,6 @@
 
 //config de cores
-export const colors: any = {
+export const colors = {
     primary: {
         main: '#2563EB',
         dark: '#1e40ab',
@@ -21,6 +21,7 @@ export const colors: any = {
         dark: '#1e40ab',
         black: '#000',
         other: '#343440',
+        error: '#FF0000'
         
     },
     shadow:{

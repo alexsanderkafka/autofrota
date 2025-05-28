@@ -82,7 +82,5 @@ public class PasswordResetService {
     private String buildKey(String companyId) {
         return "password-reset:" + companyId;
     }
-
-
 }
 

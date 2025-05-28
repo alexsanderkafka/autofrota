@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     rangeDateSelect:{
         fontSize: 10,
-        color: colors.text.gray,
+        color: colors.text.secondaray,
         marginLeft: 10,
         textAlign: 'center',
     },

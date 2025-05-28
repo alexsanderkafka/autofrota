@@ -4,6 +4,7 @@ import kafka.system.br.AutoFrota.dto.MaintenanceDTO;
 import kafka.system.br.AutoFrota.model.Maintenance;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -88,6 +89,18 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
                 m.vehicle.id = :vehicleId
             AND
                 m.done = true
+            """)
+        List<Maintenance> findAllDoneMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId);
+
+        @Query("""
+            SELECT 
+                m
+            FROM Maintenance m
+                WHERE CAST(m.vehicle.company.externalId AS String) = :externalId
+            AND
+                m.vehicle.id = :vehicleId
+            AND
+                m.done = true
             AND
                 m.date >= :startDate
             AND
@@ -112,6 +125,20 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
                 m.date <= :endDate
             """)
         Page<Maintenance> findAllFilterScheduledMaintenanceByVehicleIdAndCompany(@Param("vehicleId") Long vehicleId, @Param("externalId") String externalId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, Pageable pageable);
+
+
+        @Query("""
+            SELECT
+                DATE_FORMAT(m.date, '%b') AS month,
+                COALESCE(SUM(m.totalValue), 0) AS totalExpenseFuel
+            FROM Fuel m
+            WHERE CAST(m.vehicle.company.externalId AS STRING) = :externalId
+                AND 
+            YEAR(m.date) = :year
+            GROUP BY m.date
+            ORDER BY m.date
+        """)
+        List<Object[]> findHistoryByCompanyAndYear(@Param("externalId") String externalId, @Param("year") Integer year);
 
 
 }

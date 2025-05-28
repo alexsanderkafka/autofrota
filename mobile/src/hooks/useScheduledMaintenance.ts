@@ -1,23 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 
-import api from '../service/api';
-import Storage from '../service/storage';
-
-
-export interface ScheduledMaintenance{
-    id: number;
-    date: string;
-    done: boolean;
-    observation: string;
-    scheduled: boolean;
-    totalValue: number;
-    vehicleId: number;
-}
+import api from '../utils/api';
+import Storage from '../utils/storage';
+import Maintenance from '../types/maintenance';
+import { getAllScheduledMaintenance } from '../service/maintenanceService';
 
 export default function useScheduledMaintenance(vehicleId: number){
 
     const [storage, setStorage] = useState<Storage>();
-    const [scheduledMaintenance, setScheduledMaintenance] = useState<ScheduledMaintenance[] | null | undefined>([]);
+    const [scheduledMaintenance, setScheduledMaintenance] = useState<Maintenance[] | null | undefined>([]);
 
 
     useEffect(() => {
@@ -35,39 +26,11 @@ export default function useScheduledMaintenance(vehicleId: number){
     }, [storage]);
 
     async function getScheduledMaintenance(){
-        try {
 
-            //Resolver o problema de veículos sem manutenções
-    
-            const response = await api.get(`/maintenance/${storage!.companyExternalId}/${vehicleId}/all/scheduled`, {
-              headers:{
-                Authorization: `Bearer ${storage!.tokenJwt}`
-              }
-            });
-      
-            if(response.status === 200){
 
-                if(response.data.page.totalElements === 0) {
-                    setScheduledMaintenance([]);
-                    return;
-                }
+        const listScheduledMaintenance: Maintenance[] | null | undefined = await getAllScheduledMaintenance(storage!.tokenJwt!, vehicleId, storage!.companyExternalId!, 0);
 
-                if(response.data._embedded === undefined || response.data._embedded.maintenanceDTOList.length === 0) {
-                    setScheduledMaintenance([]);
-                    return;
-                }
-
-                let listMaintenance: ScheduledMaintenance[] = response.data._embedded.maintenanceDTOList;
-                setScheduledMaintenance(listMaintenance);
-            }
-      
-          } catch (error: any) {
-            console.log(error);
-      
-            //if(error.response.status === 404) setScheduledMaintenance(null);
-
-            setScheduledMaintenance(null);
-        }
+        setScheduledMaintenance(listScheduledMaintenance);
     }
 
     return { scheduledMaintenance };

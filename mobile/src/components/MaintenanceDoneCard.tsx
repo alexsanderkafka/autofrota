@@ -12,35 +12,36 @@ import {
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaintenanceDone from '../types/maintenanceDone';
+import Service from '../types/service';
 
 interface MaintenanceCardProps {
-    date: string;
-    totalValue: number;
-    services: any[];
-    navigation: any;
-    vehicleId: number;
-    vehicle: boolean;
+    maintenance: MaintenanceDone,
+    navigation: any,
+    vehicle: boolean
 }
 
-export default function MaintenanceCard(props: MaintenanceCardProps) {
+export default function MaintenanceDoneCard(props: MaintenanceCardProps) {
 
     function goToMaintenance(){
-        props.navigation.navigate('Maintenance', props.vehicleId);
+        props.navigation.navigate('Maintenance', props.maintenance.maintenance.vehicleId);
     }
+
+    const formatDate = new Date(props.maintenance.maintenance.date).toLocaleDateString('pt-BR');
 
     return(
         <View style={styles.maintenanceCard}>
             <View style={{ paddingHorizontal: 10, paddingTop: 10 }}>
                 <View style={styles.row}>
                     <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
-                    <Text>{props.date}</Text>
+                    <Text>{formatDate}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
-                    <Text>R$ {props.totalValue}</Text>
+                    <Text>R$ {props.maintenance.maintenance.totalValue}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
@@ -51,12 +52,8 @@ export default function MaintenanceCard(props: MaintenanceCardProps) {
                 </View>
         
                 <View style={styles.serviceBoxMade}>
-                    <View style={styles.serviceMade}>
-                        <Text style={{ color: colors.text.white, fontSize: 10 }}>Troca de óleo</Text>
-                    </View>
 
-                    {props.services.map((service: any, index: any) => (
-                        console.log(service),
+                    {props.maintenance?.services?.map((service: Service, index: any) => (
                         <View key={index} style={styles.serviceMade}>
                             <Text style={{ color: colors.text.white, fontSize: 10 }}>{service.type}</Text>
                         </View>

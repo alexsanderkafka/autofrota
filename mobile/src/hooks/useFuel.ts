@@ -1,16 +1,10 @@
 import { useState, useEffect } from "react";
 
-import api from "../service/api";
-import Storage from "../service/storage";
+import api from "../utils/api";
+import Storage from "../utils/storage";
+import Fuel from "../types/fuel";
+import { getAllFuelByVehicleIdAndCompany } from "../service/fuelService";
 
-interface Fuel{
-    id: number;
-    liters: number;
-    totalValue: number;
-    km: number;
-    date: string;
-    fuelType: string;
-}
 
 export default function useFuel(vehicleId: number){
 
@@ -32,31 +26,14 @@ export default function useFuel(vehicleId: number){
     }, [storage]);
 
     async function getFuel(){
-        try {    
-            const response = await api.get(`/maintenance/${storage!.companyExternalId}/${vehicleId}/all/done`, {
-                headers:{
-                  Authorization: `Bearer ${storage!.tokenJwt}`
-                }
-              });
-        
-              if(response.status === 200){
-  
-                  if(response.data.page.totalElements === 0) {
-                      setFuel([]);
-                      return;
-                  }
-  
-                  let fuelList: Fuel[] = response.data._embedded.fuelDTOList;
-                  setFuel(fuelList);
-              }
-        
-            } catch (error: any) {
-              console.log("Caiu em error: ", error);
-        
-              //if(error.response.status === 404) setFuel(null);
-  
-              setFuel(null);
-          }
+
+        //if(storage!.tokenJwt === null || storage!.companyExternalId === null) return;
+
+        let fuel: Fuel[] | null | undefined = await getAllFuelByVehicleIdAndCompany(storage!.tokenJwt!, vehicleId, storage!.companyExternalId!);
+
+        if(fuel === null) return;
+
+        setFuel(fuel)              
     }
 
     return { fuel };

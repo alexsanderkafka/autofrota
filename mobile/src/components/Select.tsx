@@ -16,10 +16,24 @@ import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Select(){
-    const typeFuel = ['Gasolina', 'Diesel', 'Álcool'];
 
-    const [selectedFuel, setSelectedFuel] = useState(typeFuel[0]);
+enum FuelType {
+    GASOLINA = 'Gasolina',
+    DIESEL = 'Diesel',
+    GNV = 'Gnv',
+    ETANOL = 'Etanol',
+    ARLA = 'Arla'
+}
+
+interface Props{
+    selectedFuel: string;
+    setSelectedFuel: (fuel: string) => void;
+    isAddVehicle: boolean;
+}
+
+export default function Select({ selectedFuel, setSelectedFuel, isAddVehicle }: Props){
+    const typeFuel = ['Gasolina', 'Diesel', 'Gnv', 'Etanol', 'Arla'];
+
     const [visible, setVisible] = useState(false)
 
     function updateItem(item: any){
@@ -30,7 +44,7 @@ export default function Select(){
 
     return(
         <View style={{
-            flex: 1,
+            flex: isAddVehicle ? 0 : 1,
             height: 'auto',
             position: 'relative'
         }} >
@@ -69,7 +83,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     iconContainer:{
         backgroundColor: colors.primary.main,

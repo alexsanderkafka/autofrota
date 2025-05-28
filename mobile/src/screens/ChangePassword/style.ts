@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         
         alignItems: 'center',
-        paddingHorizontal: 30,
+        paddingHorizontal: 15,
         paddingVertical: 30
     },
     title:{

@@ -1,19 +1,12 @@
 import { useState, useEffect, useRef} from 'react';
 
-import api from '../service/api';
-import Storage from '../service/storage';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-
-interface Report{
-    totalVehicles: number;
-    totalKm: number;
-    totalExpenseFuel: number;
-    totalExpenseMaintenance: number;
-}
+import Storage from '../utils/storage';
+import Report from '../types/report';
+import { getCountTotal } from '../service/reportService';
 
 export default function useReport(): any{
 
-    const [report, setReport] = useState<Report>();
+    const [report, setReport] = useState<Report | null | undefined>();
     const [storage, setStorage] = useState<Storage>();
 
     useEffect( () => {
@@ -32,26 +25,10 @@ export default function useReport(): any{
 
 
     async function getReport() {
-        try {
-    
-          let response = await api.get(`/reports/${storage!.companyExternalId}/total`, {
-            headers:{
-              Authorization: `Bearer ${storage!.tokenJwt}`
-            }
-          });
 
-          if(response.status === 200){
-            let report: Report = response.data;
-    
-            setReport(report);
-          }
-    
-          //setLoading(false);
-          //setNotFoundVehicles(false);
-          
-        } catch (error) {
-          console.log("Error get report: ", error);
-        }
+      const report: Report | null | undefined = await getCountTotal(storage!.tokenJwt!, storage!.companyExternalId!);
+
+      setReport(report);
     }
 
     return { report };

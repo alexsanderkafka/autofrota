@@ -2,11 +2,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/Home';
 import Vehicles from '../screens/Vehicles';
-import Settings from '../screens/Settings';
 import ReportScreen from '../screens/Report';
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +58,7 @@ export default function BottomNavigation() {
           }}
         />
 
-      <Tab.Screen name="Configurações" component={Settings}
+      <Tab.Screen name="Perfil" component={Profile}
         options={{
             headerTintColor: colors.text.other,
             tabBarIcon: ({ focused }) => <Icon

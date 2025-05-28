@@ -12,13 +12,10 @@ import {
 import { colors } from '../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fuel from '../types/fuel';
 
 interface FuelCardProps {
-    date: string;
-    price: number;
-    km: number;
-    fuelType: string;
-    liters: number;
+    fuel: Fuel;
     navigation: any;
     vehicleId: number;
     screenVehicles: boolean;
@@ -30,40 +27,46 @@ export default function FuelCard(props: FuelCardProps) {
         props.navigation.navigate('Fuel', props.vehicleId);
     }
 
+    const formatDate = new Date(props.fuel.date).toLocaleDateString('pt-BR');
+    const totalValue = props.fuel.totalValue; //Colocar no padrão pt-br
+    const km = props.fuel.km;
+    const fuelType = props.fuel.fuelType;
+    const liters = props.fuel.liters;
+
     return(
         <View style={styles.fuelCard}>
             <View style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10 }}>
                 <View style={styles.row}>
                     <Icon name="calendar-blank" size={24} color={colors.icon.mainBlue} />
-                    <Text>{props.date}</Text>
+                    <Text>{formatDate}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="currency-usd" size={24} color={colors.icon.mainBlue} />
-                    <Text>R$ {props.price}</Text>
+                    <Text>R$ {totalValue}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
-                    <Text>{props.km}km</Text>
+                    <Text>{km}km</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                     <Icon name="gas-station" size={24} color={colors.icon.mainBlue} />
-                    <Text>{props.fuelType}</Text>
+                    <Text>{fuelType}</Text>
                 </View>
         
                 <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1}}/>
         
                 <View style={styles.row}>
                             <Icon name="fuel" size={24} color={colors.icon.mainBlue} />
-                            <Text>70L</Text>
+                            <Text>{liters}L</Text>
                 </View>
             </View>
 

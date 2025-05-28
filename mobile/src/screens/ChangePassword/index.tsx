@@ -15,18 +15,48 @@ import { colors } from '../../theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './style';
+import ResetPassword from '../../types/resetPassword';
 
 interface Props{
     navigation: any;
+    route: any;
 }
 
 export default function ChangePassword({ navigation }: Props) {
 
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState<string>('');
     const [eyeButtonPassword, setEyeButtonPassword] = useState(false);
 
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [eyeButtonConfirmPassword, setEyeButtonConfirmPassword] = useState(false);
+
+    const [errorsForm, setErrorsForm] = useState<any>({})
+
+    function validateFields(): boolean{
+      let newErrors: any = {};
+
+      if(password === '' || password === null) newErrors.password = "Você precisa digitar uma nova senha.";
+      if(confirmPassword === '' || confirmPassword === null) newErrors.password = "Você precisa confirmar uma nova senha.";
+
+      setErrorsForm(newErrors);
+
+      return Object.keys(newErrors).length === 0;
+    }
+
+    function goToSendCode(){
+
+      const verify: boolean = validateFields();
+
+      if(!verify) return;
+
+      const resetPassword: ResetPassword = {
+        newPassword: password,
+        confirmNewPassword: confirmPassword,
+        code: null
+      }
+
+      navigation.navigate('SendCode', resetPassword);
+    }
 
     return(
         <View style={styles.body}>
@@ -79,8 +109,8 @@ export default function ChangePassword({ navigation }: Props) {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.btn} onPress={() => {}}>
-                <Text style={styles.btnText}>Entrar</Text>
+            <TouchableOpacity style={styles.btn} onPress={goToSendCode}>
+                <Text style={styles.btnText}>Trocar senha</Text>
             </TouchableOpacity>
         </View>
     );

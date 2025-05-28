@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { 
     View, 
@@ -8,33 +8,138 @@ import {
     TouchableOpacity,
     TextInput,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    Animated,
+    Dimensions
 } from "react-native";
 import { colors } from "../../theme";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VehicleListTile from "../../components/VehicleListTile";
-import api from "../../service/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Storage from "../../service/storage";
-import useVehicles from "../../hooks/useVehicles";
+import Storage from "../../utils/storage";
+import styles from "./style";
+import VehicleFilter from "../../components/VehicleFilter";
+import Vehicle from "../../types/vehicle";
+import { deleteVehicleByCompanyAndVehicleId, getAllVehicleByCompanyIdAndStatus, getVehicleByPlate } from "../../service/vehicleService";
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Notify from "../../components/Notify";
 
 interface Props{
   navigation: any;
 }
 
 export default function Vehicles( {navigation}: Props ) {
-    const [search, setSearch] = useState('');
 
+    const [companyId, setCompanyId] = useState<string>('');
+    const [tokenJwt, setTokenJwt] = useState<string>('');
+
+    const [search, setSearch] = useState('');
     const [selected, setSelected] = useState("active");
 
-    const sizePage = 12;
+    //Filter buttons
+    //const filters: string[] = ['Ativos', 'Manutenção', 'Aviso', 'Em uso'];
+    const filters: any[] = [
+        {label: 'Ativos', value: "active"},
+        {label: 'Manutenção', value: "maintenance"},
+        {label: 'Aviso', value: "alert"}
+    ]
+    
+    const [selectedFilter, setSelectedFilter] = useState<string>(filters[0].label);
 
-    const {vehicles, totalPages, loading, notFoundVehicles, totalVehicles, message, loadMoreVehicles, latestElement} = useVehicles(selected);
+    //flat list
+    const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>();
+    const [page, setPage] = useState<number>(0);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+    
 
+    //field error
+    const [error, setError] = useState<any>({});
+
+    useEffect(() => {
+        async function getInStorage(){
+            try {
+                const currentStorage: Storage = await Storage.getInstance().then((storage: Storage) => {
+                    setCompanyId(storage!.companyExternalId!);
+                    setTokenJwt(storage!.tokenJwt!);
+                    return storage;
+                });
+                
+            } catch (error) {
+                console.log("Error to get in storage: ", error);
+            }
+        }
+
+        getInStorage();
+    }, [])
+
+    useEffect(() => {
+        setRefreshing(true);
+        setVehicles([]);
+        setPage(0);
+        loadVehicles(0).then(() => setRefreshing(false));
+    }, [selected]);
+
+    useEffect(() => {
+        loadVehicles(0);
+    }, [companyId, tokenJwt]);
+
+    useEffect(() => {
+        console.log("Error: ", error);
+        if (error.search) {
+            setTimeout(() => {
+                setError({});
+            }, 2000);
+        }
+    }, [error])
+
+    async function loadVehicles(pageToLoad = 0){
+        try {
+            if (loadingMore) return;
+            setLoadingMore(true);
+
+            const result: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(selected, pageToLoad);
+
+            if(result !== null && result !== undefined){
+                console.log("Result: ", result);
+                if (pageToLoad === 0) {
+                    setVehicles(result!);
+                } else {
+                    setVehicles(prev => [...prev!, ...result!]);
+                }
+                setPage(pageToLoad);
+            }
+        } catch (error) {
+            setLoadingMore(false);
+            console.error("Erro ao carregar veículos", error);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
+
+    function loadMoreVehicles(){
+        loadVehicles(page + 1);
+        setLoadingMore(false);
+    };
+
+    function onRefresh(){
+        setRefreshing(true);
+        setVehicles([]);
+        setPage(0);
+        loadVehicles(0).then(() => setRefreshing(false));
+    };
+
+    
+    function openModalAddVehicle(){
+        navigation.navigate("AddVehicle");
+    }
 
     function renderFooterFlatList(){
-        if(!latestElement) return null;
+        if(!loadingMore) return null;
+
+        if(refreshing) return null;
     
         return(
           <View style={styles.latestElement}>
@@ -46,25 +151,66 @@ export default function Vehicles( {navigation}: Props ) {
         );
     }
 
+    async function deleteItem(vehicle: Vehicle){
+
+        const reponse: number = await deleteVehicleByCompanyAndVehicleId(vehicle, tokenJwt);
+
+        if(reponse === 204){
+            console.log("Veículo deletado com sucesso");
+            onRefresh();
+        }
+
+        //Voltar algum erro um sucesso
+    }
+
+    function renderRightActions(item: Vehicle){
+        return(
+            <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => deleteItem(item)}
+            >
+                <Icon name="delete" size={24} color={colors.primary.white} />
+            </TouchableOpacity>
+        );
+    };
+
+    async function searchVehicleByPlate(){
+        const vehicleFound: Vehicle | null | undefined = await getVehicleByPlate(search);
+
+        console.log("Vehicle found: ", vehicleFound);
+
+        if(vehicleFound !== null && vehicleFound !== undefined){
+            navigation.navigate("Vehicle", vehicleFound);
+            return;
+        }
+
+        console.log("Nenhum veículo encontrado com a placa informada.");
+        setError({ search: "Nenhum veículo encontrado com a placa informada."});
+    }
+
+    async function onPressErrorNotify(){
+        setError({});
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 18 }}>
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Ativos</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Manutenção</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Avisos</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.filter}>
-                        <Text style={styles.textButton}>Em uso</Text>
-                    </TouchableOpacity>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 15, gap: 18, paddingVertical: 2 }}>
+                    {
+                        filters.map((filter: any) => (
+                            <VehicleFilter
+                            key={filter.label}
+                            text={filter.label}
+                            selected={filter.label == selectedFilter}
+                            onPress={() => {
+                                setSelectedFilter(filter.label);
+                                console.log(filter.value);
+                                setSelected(filter.value);
+                                setRefreshing(true);
+                            }}
+                            />
+                        ))
+                    }
                 </ScrollView>
             </View>
 
@@ -80,6 +226,7 @@ export default function Vehicles( {navigation}: Props ) {
 
                   <TouchableOpacity
                   style={ styles.searchButton }
+                  onPress={searchVehicleByPlate}
                   >
                       <Icon name="magnify" size={24} color={colors.icon.white}/>
 
@@ -91,77 +238,42 @@ export default function Vehicles( {navigation}: Props ) {
             <FlatList 
             showsVerticalScrollIndicator={false}  
             data={vehicles}
-            //keyExtractor={ item => String(item.vehicle_characteristic.id)}
-            renderItem={ ({ item }) => <VehicleListTile data={item} navigation={navigation}/>}
-            onEndReached={() => {
-                loadMoreVehicles();
-            }}
+            keyExtractor={ item => String(item.id)}
+            renderItem={ ({ item }) => (
+                <View style={styles.gestureContainer}>
+                    <GestureHandlerRootView>
+                            <ReanimatedSwipeable
+                                enableTrackpadTwoFingerGesture
+                                renderRightActions={() => renderRightActions(item)}
+                            >
+                                
+                                <VehicleListTile vehicle={item} navigation={navigation} isVehicles={true}/>                           
+                            </ReanimatedSwipeable>
+                    </GestureHandlerRootView>
+                </View>
+            )}
+            onEndReached={loadMoreVehicles}
             onEndReachedThreshold={1} 
             ListFooterComponent={renderFooterFlatList}
             style={styles.list}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
+            contentContainerStyle={{ paddingBottom: 30 }}
             />
 
+            <TouchableOpacity style={styles.fab} onPress={openModalAddVehicle}>
+                <Icon name="plus" size={24} color={colors.primary.white} />
+            </TouchableOpacity>
 
+            {error.search && (
+                <Notify
+                isError={true}
+                text={error.search}
+                />
+            )}
         </View>
     );
 
 }
 
-const styles = StyleSheet.create({
-    container:{
-        width: '100%',
-        height: '100%',
-        backgroundColor: colors.primary.white,
-        
-    },
-    buttonContainer:{
-        width: '100%',
-        height: 'auto',
-        marginTop: 30,
-        paddingHorizontal: 15,
-    },
-    filter:{
-        width: 'auto',
-        height: 'auto',
-        paddingVertical: 9,
-        paddingHorizontal: 37,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-        backgroundColor: colors.primary.main,
-        elevation: 2
-    },
-    textButton:{
-        fontSize: 13,
-        color: colors.text.white
-    },
-    searchField:{
-        width: '100%',
-        maxHeight: 38,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        elevation: 2,
-        backgroundColor: colors.primary.white,
-        borderRadius: 5,
-        marginTop: 35,
-    },
-    searchButton:{
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        backgroundColor: colors.primary.main,
-        borderRadius: 5,
-        justifyContent: 'center',
-        height: '100%',
-        elevation: 2,
-    },
-    list:{
-        marginTop: 16,
-        paddingHorizontal: 15,
-        paddingTop: 10
-    },
-    latestElement:{
-
-    }
-});

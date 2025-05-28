@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef }from 'react';
+import React, { useEffect, useState, useRef, use }from 'react';
 
 import {
     StyleSheet,
@@ -17,14 +17,13 @@ import {
 import { colors } from '../../theme';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddNewFuel from '../modal/AddNewFuel';
 
 import styles from './style';
 import FuelCard from '../../components/FuelCard';
 
-import useFuel from '../../hooks/useFuel';
-
-const { height } = Dimensions.get('window');
+import Storage from '../../utils/storage';
+import FuelType from '../../types/fuel';
+import { getAllFuelByVehicleIdAndCompany } from '../../service/fuelService';
 
 interface Props{
     navigation: any;
@@ -33,92 +32,79 @@ interface Props{
 
 export default function Fuel({ navigation, route }: Props) {
 
-    const [latestElement, setLatestElement] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
     const [notFound, setNotFound] = useState<boolean>(false);
-
-    const [visible, setVisible] = useState<boolean>(false);
-    const slideAnim = useRef(new Animated.Value(height)).current; // começa fora da tela
 
     const vehicleId: number = route.params;
 
-    const { fuel } = useFuel(vehicleId);
+    //Flat list
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(0);
+    const [fuel, setFuel] = useState<FuelType[] | null | undefined>();
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
-    useEffect( () => {
+    useEffect(() => {
+        loadFuel(0);
+    }, [])
 
-        if(fuel === null){
-            setLoading(false);
-            return;
-        }
-
-        if(fuel!.length === 0){
-            setLoading(false);
-            setNotFound(true);
-            return;
-        }
-
-        
-
-    }, [fuel]);
-
+    async function loadFuel(pageToLoad = 0){
+            try {
+                if (loadingMore) return;
+                setLoadingMore(true);
     
+                const result: FuelType[] | null | undefined = await getAllFuelByVehicleIdAndCompany(vehicleId, pageToLoad);
+    
+                if(result !== null && result !== undefined){
 
-    function sendToAddFuel(){
-        if(loading){
-            return(
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator
-                    size="large" color={colors.primary.main} 
-                    />
-                </View>
-            );
-        }
-    }
+                    console.log("Result: ", result);
+                    if (pageToLoad === 0) {
+                        setFuel(result!);
+                    } else {
+                        setFuel(prev => [...prev!, ...result!]);
+                    }
+
+                    setPage(pageToLoad);
+                }
+            } catch (error) {
+                setLoadingMore(false);
+                console.error("Erro ao carregar fuels", error);
+            } finally {
+                setLoadingMore(false);
+            }
+    };
 
     function renderFooterFlatList(){
-        if(!latestElement) return null;
-        
+        if(!loadingMore) return null;
+
+        if(refreshing) return null;
+    
         return(
-            <View style={styles.latestElement}>
-                <ActivityIndicator
-                size="large" color={colors.primary.main} 
-                style={{ marginTop: 20, marginBottom: 20 }}
-                />
-            </View>
+          <View style={styles.latestElement}>
+            <ActivityIndicator
+            size="large" color={colors.primary.main} 
+            style={{ marginTop: 20, marginBottom: 20 }}
+            />
+          </View>
         );
     }
 
-    async function loadMoreFuel(){
-        setLatestElement(true);
-    
-        /*
-        console.log(totalVehicles);
-    
-        if(page === totalPages || totalVehicles < sizePage){
-          setLatestElement(false);
-          return;
-        }
-    
-        setPage(page + 1);
-    
-        if(selected === 'todos'){
-          await getAllVehicles();
-        }else{
-          await getStatusVehicles();
-        }*/
-    }
+    function loadMoreFuel(){
+        loadFuel(page + 1);
+        setLoadingMore(false);
+    };
 
     function openModalAddFuel(){
-        setVisible(true);
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        navigation.navigate('AddNewFuel', vehicleId);
     }
 
+    function onRefresh(){
+        setRefreshing(true);
+        setFuel([]);
+        setPage(0);
+        loadFuel(0).then(() => setRefreshing(false));
+    };
+
     function renderFuelList(){
-        if(loading){
+        if(loadingMore){
             return(
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator
@@ -127,6 +113,7 @@ export default function Fuel({ navigation, route }: Props) {
                 </View>
             );
         }else if(notFound){
+            console.log("Bateu no else");
             const notFoundImage: any = require('../../../assets/logo/not-found-fuel.png');
 
             return(
@@ -136,19 +123,16 @@ export default function Fuel({ navigation, route }: Props) {
                 </View>
             );
         }else{
+
             return(
                 <FlatList
                 showsVerticalScrollIndicator={false}
                 data={fuel}
                 keyExtractor={ item => String(item.id)}
                 renderItem={ ({ item }) => <FuelCard 
-                                            date={item ? new Date(item.date).toLocaleDateString('pt-BR') : '00/00/0000'}
-                                            price={item ? item.totalValue : 0.00}
-                                            km={item ? item.km : 0}
-                                            fuelType={item ? item.fuelType : 'Gasolina'}
-                                            liters={item ? item.liters : 0}
+                                            fuel={item}
                                             navigation={navigation}
-                                            vehicleId={item.id}
+                                            vehicleId={vehicleId}
                                             screenVehicles={false}
                                         />}
                 onEndReached={() => {
@@ -158,6 +142,9 @@ export default function Fuel({ navigation, route }: Props) {
                 ListFooterComponent={renderFooterFlatList}
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
                 style={styles.list}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                contentContainerStyle={{ paddingBottom: 30 }}
                 />
             );
         }
@@ -165,14 +152,6 @@ export default function Fuel({ navigation, route }: Props) {
 
     return(
         <View style={styles.container}>
-            
-            <View style={styles.fieldSelectDate}>
-                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
-                <TouchableOpacity style={styles.dateButton}>
-                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
-                </TouchableOpacity>
-            </View>
-
             {
                 renderFuelList()
             }
@@ -180,13 +159,13 @@ export default function Fuel({ navigation, route }: Props) {
             <TouchableOpacity style={styles.fab} onPress={openModalAddFuel}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>
-
-            {
-                visible && (
-                    <AddNewFuel visible={setVisible} slideAnim={slideAnim}/>
-                )
-            }
-        
         </View>
     )
 }
+
+/*<View style={styles.fieldSelectDate}>
+                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
+                <TouchableOpacity style={styles.dateButton}>
+                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
+                </TouchableOpacity>
+            </View>*/

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: colors.primary.white,
         flex: 1,
-        paddingHorizontal: 15
+        
     },
     filterButtonContainer:{
         width: '100%',
@@ -28,11 +28,14 @@ const styles = StyleSheet.create({
     },
     chartContainer:{
         width: '100%',
-        height: 255,
+        height: 270,
         marginTop: 26,
         elevation: 2,
         backgroundColor: colors.primary.white,
-        borderRadius: 5
+        borderRadius: 5,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     reportContainer:{
         width: '100%',
@@ -55,6 +58,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         justifyContent: 'space-between'
+    },
+    valueChart:{
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    dataChart:{
+        fontSize: 16
+    },
+    chart:{
+        height: 200,
+        width: '100%'
+    },
+    titleChart:{
+        fontSize: 16,
+        fontWeight: '500'
+    },
+    chartHeader:{
+        marginBottom: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+    },
+    scrollView:{
+        paddingHorizontal: 15
     }
     
 });

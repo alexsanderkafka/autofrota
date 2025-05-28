@@ -138,6 +138,8 @@ public class MaintenanceController {
             @Valid @RequestBody UpdateMaintenanceDTO dto
     ){        
 
+        System.out.println(dto.toString());
+
         service.updateScheduledMaintenance(dto);
 
         //Posso voltar o item que foi atualizado

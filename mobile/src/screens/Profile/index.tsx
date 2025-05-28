@@ -19,73 +19,48 @@ import { colors } from '../../theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './style';
 import useDrivers from '../../hooks/useDrivers';
+import useCompany from '../../hooks/useCompany';
+
+import Storage from '../../utils/storage'
 
 interface Props{
     navigation: any;
-    route: any;
 }
 
-
-function DriverCard({ name, email, image }: any){
-    return(
-        <View style={styles.row}>
-            <Image
-            source={image}
-            style={styles.driverImage}
-            />
-
-            <View>
-                <Text style={styles.driverName}>{name}</Text>
-                <Text style={styles.driverEmail}>{email}</Text>
-            </View>             
-        </View>
-    )
-}
-
-export default function Profile({ navigation, route }: Props){
+export default function Profile({ navigation }: Props){
     const businessImage = require('../../../assets/business.jpg');
 
-    const company = route.params;
+    const { company } = useCompany();
 
-    const email: string = company.email;
-    const name: string = company.name;
-    const cnpj: string = company.cnpj;
-    const cpf: string | null | undefined = company.cpf;
-    const zipCode: string = company.zipCode;
-    const address: string = company.address;
-    const phone: string = company.phone;
-    const profileImage: string = company.profileImage;
+    
+    
+    const email: string = company ? company!.email : 'teste@gmail.com';
+    const name: string = company ? company!.name : 'teste';
+    const cnpj: string = company ? company!.cnpj : '00.000.000/0000-0';
+    const cpf: string | null | undefined = company ? company.cpf : null;
+    const zipCode: string = company ? company!.zipCode : '00000-000';
+    const address: string = company ? company!.address : 'Rua teste';
+    const phone: string = company ? company!.phone : '(00) 00000-0000';
+    const profileImage: string = company ? company!.profileImage : '';
 
-    const { drivers } = useDrivers();
-
-    console.log("Drivers: ", drivers);
+    async function logout(){
+        const storage: Storage = await Storage.getInstance();
+        storage.clear();
+        navigation.navigate('Login');
+    }
 
     return(
-        <ScrollView>
             <View style={styles.body}>
-                
-                <View style={styles.identificationContainer}>
-                    <View style={{ position: 'relative'}}>
-                        <Image
-                        source={{ uri: profileImage }}
-                        style={styles.profileImage}
-                        />
-                        <TouchableOpacity style={styles.galleryButton}>
-                            <Icon name="image-edit" size={24} color={colors.icon.mainBlue}/>
-                        </TouchableOpacity>
-                    </View>
-                    
-                    <Text style={styles.businessName}>{name}</Text>
+
+                <View style={styles.imageArea}>
+                    <Image
+                    source={{ uri: profileImage }}
+                    style={styles.profileImage}
+                    />
                 </View>
 
                 <View style={styles.sectionContainer}>
-                    <View style={styles.rowTitle}>
-                        <Text style={styles.titles}>Informações</Text>
-
-                        <TouchableOpacity>
-                            <Icon name="pencil" size={24} color={colors.icon.mainBlue}/>
-                        </TouchableOpacity>
-                    </View>
+                    <Text style={styles.titles}>Informações</Text>
 
                     <View style={styles.informationCard}>
                         <View style={styles.row}>
@@ -120,36 +95,13 @@ export default function Profile({ navigation, route }: Props){
                             <Icon name="email" size={24} color={colors.icon.mainBlue} />
                             <Text>{email}</Text>
                         </View>
-
                     </View>
                     
                 </View>
 
-                <View style={styles.sectionContainer}>
-                    <View style={styles.rowTitle}>
-                        <Text style={styles.titles}>Motoristas</Text>
-
-                        <TouchableOpacity>
-                            <Icon name="plus" size={24} color={colors.icon.mainBlue}/>
-                        </TouchableOpacity>
-                    </View>
-
-                    <FlatList 
-                        data={ drivers }
-                        keyExtractor={(item, index) => index.toString()}
-                        style={[styles.driversCard]}
-                        renderItem={({ item }) => (
-                            <DriverCard 
-                                name={item.name}
-                                email={item.email}
-                                image={businessImage}
-                            />
-                        )}
-                        ItemSeparatorComponent={() => <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>}
-                    />
-                </View>
-
+                <TouchableOpacity style={styles.exitButton} onPress={logout}>
+                    <Text style={{ color: colors.text.white, fontSize: 16 }}>Sair</Text>
+               </TouchableOpacity>
             </View>
-        </ScrollView>
     )
 }

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#FFF',
       alignItems: 'center',
-      padding: 30
+      paddingVertical: 30,
     },
     logoImage:{
       width: 169,
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
     },
     textCreateAccount:{
   
+    },
+    containerFields:{
+      paddingHorizontal: 15,
+      alignItems: 'center',
+      width: '100%',
     }
   
 });
