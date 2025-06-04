@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const ContainerToggleButton = styled.div`
     width: 489px;
@@ -36,7 +37,8 @@ export const ContainerToggleButton = styled.div`
     }
 
     
-    @media only screen and (max-width: 768px) {
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 80%;
         .toggle-button{
             font-size: 14px;
         }

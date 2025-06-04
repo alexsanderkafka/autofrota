@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const MainContainer = styled.div`
     margin-top: 60px;   
-    
+
+    width: 586px;
+
     form{
         display: flex;
         flex-direction: column;
-        width: 586px;
+        width: 100%;
 
         margin-bottom: 120px;
     }
@@ -31,6 +34,10 @@ export const MainContainer = styled.div`
     .small-field{
         max-width: 100%;
     }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 80%;
+    }
     
 `;
     
@@ -40,4 +47,19 @@ export const ContainerSmallFields = styled.div`
     justify-content: space-between;
     width: 100%;
     height: auto;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        flex-direction: column;
+        
+    }
 `;
+
+
+export const SmallFields = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 273px;
+    @media (max-width: ${breakpoints.tablet}) {
+        width: auto;
+    }
+`

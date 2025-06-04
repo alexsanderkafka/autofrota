@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const ContainerToggleButtonPlanCard = styled.div`
     display: flex;
@@ -7,6 +8,16 @@ export const ContainerToggleButtonPlanCard = styled.div`
     justify-content: center;
     align-items: center;
     gap: 50px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+    }
+
+    @media (max-width: ${breakpoints.laptop}) {
+        flex-direction: column;
+    }
 `;
 
 export const PlanCardButton = styled.div`
@@ -32,6 +43,10 @@ export const PlanCardButton = styled.div`
     &.active-toggle {
         background-color: ${colors.primary.white};
         border: 1px solid ${colors.border.main};
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 100%;
     }
 `;
 

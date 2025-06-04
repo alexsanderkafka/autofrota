@@ -8,7 +8,8 @@ import FormButton from "../FormButton";
 
 import {
     ContainerSmallFields,
-    MainContainer
+    MainContainer,
+    SmallFields
 } from './style';
 
 interface FormProps{
@@ -27,71 +28,6 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
 
     const onSubmit = async ( data:any ) => {
         console.log(data);
-    }
-
-    function renderFields(type: string): any{
-        if(type == "Pessoa física"){
-            return(
-                <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "273px"
-                }}
-                >
-                    <label
-                    >{errors.zipCode ? errors.zipCode.message?.toString() : "Cep*"}</label>
-                    <input 
-                    className="custom-input"
-                    {...register('zipCode', {required: "Por favor, digite um cep!"})}
-                    type="text" placeholder='00000-000'
-                    style={{
-                        borderColor: errors.password && "red",
-                    }}
-                    />
-                </div>
-            );
-        }
-
-        return(
-            <ContainerSmallFields>
-                    <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "273px"
-                    }}
-                    >
-                        <label
-                        >{errors.zipCode ? errors.zipCode.message?.toString() : "Cep*"}</label>
-                        <input 
-                        className="custom-input"
-                        {...register('zipCode', {required: "Por favor, digite um cep!"})}
-                        type="text" placeholder='00000-000'
-                        style={{
-                            borderColor: errors.password && "red",
-                        }}
-                        />
-                    </div>
-
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "273px"
-                    }}
-                    >
-                        <label>{errors.cnpj ? errors.cnpj.message?.toString() : "CNPJ*"}</label>
-                        <input 
-                        className="custom-input"
-                        {...register('cnpj', {required: "Por favor, digite um CNPJ!"})}
-                        type="text" placeholder='00.000.000/0000-00'
-                        style={{
-                            borderColor: errors.confirmPassword && "red"
-                        }}
-                        />
-                    </div>
-                </ContainerSmallFields>
-        );
     }
     
     return(
@@ -125,11 +61,7 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                 />
 
                 <ContainerSmallFields>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "273px"
-                    }}>
+                    <SmallFields>
                         <label>{errors.password ? errors.password.message?.toString() : "Senha*"}</label>
                         <input 
                         className="custom-input"
@@ -139,13 +71,9 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                             borderColor: errors.password && "red"
                         }}
                         />
-                    </div>
+                    </SmallFields>
 
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "273px"
-                    }}
+                    <SmallFields
                     >
                         <label>{errors.confirmPassword ? errors.confirmPassword.message?.toString() : "Confirmar senha*"}</label>
                         <input 
@@ -156,12 +84,35 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                             borderColor: errors.confirmPassword && "red"
                         }}
                         />
-                    </div>
+                    </SmallFields>
                 </ContainerSmallFields>
 
-                {
-                    renderFields(typeForm)
-                }
+                <ContainerSmallFields>
+                    <SmallFields>
+                        <label
+                        >{errors.zipCode ? errors.zipCode.message?.toString() : "Cep*"}</label>
+                        <input 
+                        className="custom-input"
+                        {...register('zipCode', {required: "Por favor, digite um cep!"})}
+                        type="text" placeholder='00000-000'
+                        style={{
+                            borderColor: errors.password && "red",
+                        }}
+                        />
+                    </SmallFields>
+
+                    <SmallFields>
+                        <label>{errors.social ? errors.social.message?.toString() : typeForm === "Pessoa física" ? "CPF*" : "CNPJ*"}</label>
+                        <input 
+                        className="custom-input"
+                        {...register('social', {required: typeForm === "Pessoa física" ? "Por favor, digite um CPF!" : "Por favor, digite um CNPJ!"})}
+                        type="text" placeholder='00.000.000/0000-00'
+                        style={{
+                            borderColor: errors.confirmPassword && "red"
+                        }}
+                        />
+                    </SmallFields>
+                </ContainerSmallFields>
                 
                 <label>{errors.local ? errors.local.message?.toString() : "Endereço*"}</label>
                 <input 

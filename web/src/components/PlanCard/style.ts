@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const Card = styled.div`
     display: flex;
@@ -16,6 +17,10 @@ export const Card = styled.div`
         margin: 0px 32px 32px 32px;
         height: 1px;
         background-color: ${colors.border.main};
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 100%;
     }
 `;
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { colors } from "../../styles/theme";
+import { breakpoints } from '../../styles/breakpoints';
 
 export const FooterContainer = styled.footer`
   padding-top: 80px;
@@ -17,7 +18,14 @@ export const FooterItens = styled.div`
     max-width: 100%;
     margin: 0 auto;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+
+    @media (max-width: ${breakpoints.laptop}) {
+      flex-direction: column;
+      gap: 30px;
+    }
+
 `;
 
 export const FooterSection = styled.div`
@@ -54,6 +62,10 @@ export const FooterTitle = styled.h3`
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 24px;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    margin-bottom: 0px;
+  }
 `;
 
 export const FooterLink = styled.a`

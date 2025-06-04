@@ -5,7 +5,10 @@ import PlanCard from "../../components/PlanCard";
 import AccordionQuestion from "../../components/AccordionQuestion";
 
 import CarImage from "../../assets/car.png";
-import Slide from "../../components/Slide";
+import Fuel from "../../assets/fuel.png";
+import Checklist from "../../assets/checklist.png";
+import Maintenance from "../../assets/maintenance.png";
+import Manage from "../../assets/manage.png";
 
 import {
     SectionHero,
@@ -16,7 +19,6 @@ import {
     Title,
     ContainerFeatures,
     SectionFirstCallToAction,
-    SectionFeedbacks,
     SectionPlans,
     BoxTextPlans,
     BoxCards,
@@ -43,7 +45,7 @@ export default function LandingPage(){
     
                         <ContainerButtons>
                             <ButtonLandingPage text="Contato" />
-                            <ButtonLandingPage text="Saiba mais testes" transparent={true} />
+                            <ButtonLandingPage text="Saiba mais" transparent={true} />
                         </ContainerButtons>
                     </BoxButton>
                 </BoxText>
@@ -54,9 +56,9 @@ export default function LandingPage(){
                 <Title>Recursos Essenciais para o Gerenciamento Eficiente da Sua Frota</Title>
 
                 <ContainerFeatures>
-                    <FeaturesCard title="Controle de gasto de combustível" description="Descubra como nosso sistema pode ajudar a sua empresa a reduzir custos."/>
-                    <FeaturesCard title="Controle de manutenções" description="Acompanhe as manutenções dos veículos e previna quebras inesperadas."/>
-                    <FeaturesCard title="Checklist nos veículos" description="Faça checklists completos e evite imprevistos com os veículos."/>
+                    <FeaturesCard title="Controle de gasto de combustível" description="Descubra como nosso sistema pode ajudar a sua empresa a reduzir custos." img={Fuel}/>
+                    <FeaturesCard title="Controle de manutenções" description="Acompanhe as manutenções dos veículos e previna quebras inesperadas." img={Maintenance}/>
+                    <FeaturesCard title="Checklist nos veículos" description="Faça checklists completos e evite imprevistos com os veículos." img={Checklist}/>
                 </ContainerFeatures>
             </SectionFeatures>
 
@@ -66,12 +68,8 @@ export default function LandingPage(){
                     <p>Com nosso sistema, você pode reduzir custos operacionais, aumentar a eficiência e garantir a segurança da sua frota. Transforme a gestão de veículos em uma tarefa simples e eficaz.</p>
                 </div>
 
-                <img src={PlaceholderImage} alt="" />
+                <img src={Manage} alt="" />
             </SectionFirstCallToAction>
-
-            <SectionFeedbacks>
-                <Slide />
-            </SectionFeedbacks>
 
             <SectionPlans>
                 <BoxTextPlans>

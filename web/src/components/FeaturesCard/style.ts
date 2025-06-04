@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const Card = styled.div`
     display: flex;
@@ -13,7 +14,8 @@ export const Card = styled.div`
     img{
         width: 100%;
         height: 431px;
-        margin-bottom: 30px
+        margin-bottom: 30px;
+        object-fit: cover;
     }
 
     h1{
@@ -27,4 +29,10 @@ export const Card = styled.div`
         color: ${colors.text.secondaray};
         margin-bottom: 30px
     }
+
+    @media (max-width: ${breakpoints.laptop}) {
+        width: 80%;
+    }
+
+    
 `

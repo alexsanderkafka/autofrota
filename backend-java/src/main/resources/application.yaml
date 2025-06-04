@@ -36,4 +36,4 @@ mercado-pago:
   access-token: set access token
   public-key: set public key
   webhook:
-    secret: set secrete
+    secret: set secret

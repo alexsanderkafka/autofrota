@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const SectionHero = styled.section`
     width: 100%;
@@ -8,7 +9,6 @@ export const SectionHero = styled.section`
     img{
         width: 100%;
         height: 703px;
-
         object-fit: cover;
     }
 `
@@ -30,6 +30,24 @@ export const BoxText = styled.div`
         font-size: 40px;
         max-width: 616px;   
     }
+
+    @media (max-width: ${breakpoints.laptop}) {
+        gap: 50px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h1{
+            text-align: center;
+        }
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        h1{
+            font-size: 34px;
+        }
+    }
+
 `
 
 export const BoxButton = styled.div`
@@ -42,6 +60,17 @@ export const BoxButton = styled.div`
         font-size: 20px;
         font-weight: lighter;
         color: ${colors.text.secondaray};
+    }
+
+
+    @media (max-width: ${breakpoints.laptop}) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        p{
+            text-align: center;
+        }
     }
 `
 
@@ -61,6 +90,7 @@ export const SectionFeatures = styled.section`
     img{
         object-fit: cover;
     }
+
 `
 
 export const ContainerButtons = styled.div`
@@ -72,6 +102,10 @@ export const Title = styled.h1`
     font-size: 40px;
     max-width: 768px;
     text-align: center;
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 34px;
+    }
 `
 
 export const ContainerFeatures = styled.div`
@@ -82,6 +116,13 @@ export const ContainerFeatures = styled.div`
 
     width: 100%;
     height: auto;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 50px;
+    }
 `
 
 export const SectionFirstCallToAction = styled.section`
@@ -113,6 +154,32 @@ export const SectionFirstCallToAction = styled.section`
         font-weight: lighter;
         color: ${colors.text.secondaray};
         max-width: 616px;
+    }
+
+    @media (max-width: ${breakpoints.laptop}) {
+        gap: 50px;
+        flex-direction: column;
+      
+        h1{
+            text-align: center;
+        }
+
+        p{
+            text-align: center;
+        }
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        img{
+            width: 80%;
+            height: 431px;
+        }
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        h1{
+            font-size: 34px;
+        }
     }
 `
 
@@ -152,12 +219,26 @@ export const BoxTextPlans = styled.div`
         color: ${colors.text.secondaray};
     }
 
+    @media (max-width: ${breakpoints.mobile}) {
+        h1{
+            font-size: 34px;
+        }
+    }
+
 `
 
 export const BoxCards = styled.div`
     display: flex;
     flex-direction: row;
     gap: 50px;
+
+    @media (max-width: ${breakpoints.laptop}) {
+      flex-direction: column;
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+      width: 80%;
+    }
 `
 
 export const SectionQuestions = styled.section`
@@ -199,9 +280,31 @@ export const BoxCallToAction = styled.div`
     height: auto;
 
     padding: 30px;
+
+    @media (max-width: ${breakpoints.laptop}) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+
+
+      img{
+        display: none;
+      }
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    
 `
 
 export const TextsCallToAction = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     color: ${colors.text.white};
 
     h1{
@@ -232,5 +335,21 @@ export const TextsCallToAction = styled.div`
     button:hover{
         background-color: ${colors.primary.other};
         color: ${colors.text.white};
+    }
+
+    @media (max-width: ${breakpoints.tablet}) {
+        p, h1{
+            text-align: flex-start;
+        }
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        h1{
+            font-size: 34px;
+        }
+
+        button{
+            padding: 15px 0px 15px 0px;
+        }
     }
 `

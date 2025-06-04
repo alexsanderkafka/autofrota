@@ -1,14 +1,16 @@
 import styled from "styled-components";
 
 import { colors } from "../../styles/theme";
+import { breakpoints } from "../../styles/breakpoints";
 
 //talves precise alterar o width para %
 export const Accordion = styled.div`
     border: 1px solid ${colors.border.main};
     border-radius: 10px;
     overflow: hidden;
-    width: 1042px;
+    width: 1024px;
     margin-bottom: 20px;
+
 
     transition: 0.3s;
 
@@ -20,6 +22,9 @@ export const Accordion = styled.div`
 
     .arrow .open {
         transform: rotate(180deg);
+    }
+    @media (max-width: ${breakpoints.laptop}) {
+        width: 80%;
     }
 `
 
@@ -37,6 +42,12 @@ export const AccordionHeader = styled.div`
         font-size: 24px;
         color: ${colors.text.primary};
         font-weight: 500;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        h3{
+            font-size: 18px;
+        }
     }
 `
 

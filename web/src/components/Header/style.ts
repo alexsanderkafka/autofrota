@@ -1,5 +1,6 @@
 import { colors } from "../../styles/theme";
 import styled from "styled-components";
+import { breakpoints } from "../../styles/breakpoints";
 
 export const HeaderContainer = styled.header`
     padding: 18px 50px;
@@ -13,6 +14,14 @@ export const HeaderContainer = styled.header`
         height: 40px;
         width: auto;
     }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        gap: 20px;
+
+        flex-direction: column;
+    }
+
+
 `
 
 export const HeaderButton = styled.button`
@@ -28,4 +37,5 @@ export const HeaderButton = styled.button`
     &:hover{
         background-color: ${colors.primary.dark};
     }
+
 `
