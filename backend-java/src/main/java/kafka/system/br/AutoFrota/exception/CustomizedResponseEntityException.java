@@ -132,5 +132,13 @@ public class CustomizedResponseEntityException {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(MercadoPagoException.class)
+    public final ResponseEntity<ExceptionDTO> handleMercadoPago(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
 
 }

@@ -26,28 +26,28 @@ public class Payment {
     @JoinColumn(name = "payment_id")
     private Long id;
 
-    @Column(name = "collectorId", nullable = true)
+    @Column(name = "collector_id", nullable = true)
     private String collectorId;
 
-    @Column(name = "paymentId", nullable = true)
+    @Column(name = "payment_id", nullable = true)
     private String paymentId;
 
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "externalRefence", nullable = true)
-    private String externalRefence;
+    @Column(name = "external_reference", nullable = true)
+    private String externalReference;
 
-    @Column(name = "paymentType", nullable = true)
+    @Column(name = "payment_type", nullable = true)
     private String paymentType;
 
-    @Column(name = "processingMode", nullable = true)
+    @Column(name = "processing_mode", nullable = true)
     private String processingMode;
 
-    @Column(name = "merchantAccountId", nullable = true)
+    @Column(name = "merchant_account_id", nullable = true)
     private String merchantAccountId;
 
-    @Column(name = "confirmedDatePayment", nullable = true)
+    @Column(name = "confirmed_date_payment", nullable = true)
     private Date confirmedDatePayment;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -61,16 +61,29 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Long id, String collectorId, String paymentId, String status, String externalRefence, String paymentType, String processingMode, String merchantAccountId, Date confirmedDatePayment, Plan plan, Company company) {
+    public Payment(Long id, String collectorId, String paymentId, String status, String externalReference, String paymentType, String processingMode, String merchantAccountId, Date confirmedDatePayment, Plan plan, Company company) {
         this.id = id;
         this.collectorId = collectorId;
         this.paymentId = paymentId;
         this.status = status;
-        this.externalRefence = externalRefence;
+        this.externalReference = externalReference;
         this.paymentType = paymentType;
         this.processingMode = processingMode;
         this.merchantAccountId = merchantAccountId;
         this.confirmedDatePayment = confirmedDatePayment;
+        this.plan = plan;
+        this.company = company;
+    }
+
+    public Payment(String status, Plan plan, Company company) {
+        this.collectorId = null;
+        this.paymentId = null;
+        this.status = status;
+        this.externalReference = null;
+        this.paymentType = null;
+        this.processingMode = null;
+        this.merchantAccountId = null;
+        this.confirmedDatePayment = null;
         this.plan = plan;
         this.company = company;
     }
@@ -108,11 +121,11 @@ public class Payment {
     }
 
     public String getExternalRefence() {
-        return externalRefence;
+        return externalReference;
     }
 
     public void setExternalRefence(String externalRefence) {
-        this.externalRefence = externalRefence;
+        this.externalReference = externalRefence;
     }
 
     public String getPaymentType() {

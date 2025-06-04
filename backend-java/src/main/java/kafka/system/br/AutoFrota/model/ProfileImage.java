@@ -32,6 +32,10 @@ public class ProfileImage {
         this.url = url;
     }
 
+    public ProfileImage(String url) {
+        this.url = url;
+    }
+
     public Long getId() {
         return id;
     }

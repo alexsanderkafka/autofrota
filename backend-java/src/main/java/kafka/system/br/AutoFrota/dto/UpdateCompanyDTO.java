@@ -9,9 +9,8 @@ public record UpdateCompanyDTO(
     @NotNull
     String name,
     @NotBlank
-    String cnpj,
-    @Null
-    String cpf,
+    @NotNull
+    String social,
     @NotBlank
     @NotNull
     String zipCode,

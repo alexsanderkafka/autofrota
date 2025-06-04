@@ -31,11 +31,8 @@ public class Company {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "cnpj", nullable = true, length = 30)
-    private String cnpj;
-
-    @Column(name = "cpf", nullable = true, length = 30)
-    private String cpf;
+    @Column(name = "social", nullable = true, length = 30)
+    private String social;
 
     @Column(name = "phone", nullable = false, length = 50)
     private String phone;
@@ -57,16 +54,25 @@ public class Company {
     public Company() {
     }
 
-    public Company(Login login, ProfileImage profileImage, String address, String zipCode, String phone, String cpf, String cnpj, String name, Long id) {
+    public Company(Login login, ProfileImage profileImage, String address, String zipCode, String phone, String social, String name, Long id) {
         this.login = login;
         this.profileImage = profileImage;
         this.address = address;
         this.zipCode = zipCode;
         this.phone = phone;
-        this.cpf = cpf;
-        this.cnpj = cnpj;
+        this.social = social;
         this.name = name;
         this.id = id;
+    }
+
+    public Company(Login login, ProfileImage profileImage, String address, String zipCode, String phone, String social, String name) {
+        this.login = login;
+        this.profileImage = profileImage;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.phone = phone;
+        this.social = social;
+        this.name = name;
     }
 
     public Long getId() {
@@ -85,20 +91,12 @@ public class Company {
         this.name = name;
     }
 
-    public String getCnpj() {
-        return cnpj;
+    public String getSocial() {
+        return social;
     }
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setSocial(String social) {
+        this.social = social;
     }
 
     public String getPhone() {

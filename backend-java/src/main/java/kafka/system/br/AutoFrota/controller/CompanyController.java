@@ -1,6 +1,7 @@
 package kafka.system.br.AutoFrota.controller;
 
 import kafka.system.br.AutoFrota.dto.UpdateCompanyDTO;
+import kafka.system.br.AutoFrota.security.MercadoPagoSecurity;
 import kafka.system.br.AutoFrota.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

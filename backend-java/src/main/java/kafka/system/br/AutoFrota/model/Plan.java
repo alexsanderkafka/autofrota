@@ -36,6 +36,9 @@ public class Plan {
     @Column(name = "amount_vehicles", nullable = false)
     private int amountVehicles;
 
+    @Column(name = "description", nullable = false)
+    private String description;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "feature_id")
     private Feature feature;
@@ -43,11 +46,12 @@ public class Plan {
     public Plan() {
     }
 
-    public Plan(Long id, String name, int days, double price, int amountVehicles, Feature feature) {
+    public Plan(Long id, String name, int days, double price, int amountVehicles, String description, Feature feature) {
         this.id = id;
         this.name = name;
         this.days = days;
         this.price = price;
+        this.description = description;
         this.amountVehicles = amountVehicles;
         this.feature = feature;
     }
@@ -99,4 +103,13 @@ public class Plan {
     public void setFeature(Feature feature) {
         this.feature = feature;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

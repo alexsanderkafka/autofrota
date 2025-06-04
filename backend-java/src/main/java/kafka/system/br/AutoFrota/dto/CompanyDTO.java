@@ -7,8 +7,7 @@ import kafka.system.br.AutoFrota.model.Company;
 public record CompanyDTO(
         String email,
         String name,
-        String cnpj,
-        String cpf,
+        String social,
         String zipCode,
         String address,
         String phone,
@@ -18,8 +17,7 @@ public record CompanyDTO(
         this(
                 company.getLogin().getEmail(),
                 company.getName(),
-                company.getCnpj(),
-                company.getCpf(),
+                company.getSocial(),
                 company.getZipCode(),
                 company.getAddress(),
                 company.getPhone(),

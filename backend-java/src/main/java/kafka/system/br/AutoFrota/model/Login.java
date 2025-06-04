@@ -40,7 +40,7 @@ public class Login implements UserDetails {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.active = active; 
     }
 
     public Login(String email, String password, boolean active) {

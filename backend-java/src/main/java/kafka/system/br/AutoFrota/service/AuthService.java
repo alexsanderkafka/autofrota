@@ -1,6 +1,8 @@
 package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.AuthenticationDTO;
+import kafka.system.br.AutoFrota.dto.RegisterDTO;
+import kafka.system.br.AutoFrota.repository.CompanyRepository;
 //import kafka.system.br.AutoFrota.dto.TokenDTO;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
 import kafka.system.br.AutoFrota.security.TokenProvider;
@@ -13,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService {
+public class AuthService {
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -24,8 +26,12 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
     public ResponseEntity<?> signin(AuthenticationDTO data) {
         try{
+            //Verificar se o usuário realmente pagou
             var email = data.email();
             var password = data.password();
 
@@ -41,6 +47,11 @@ public class LoginService {
         }catch (Exception e){
             throw new BadCredentialsException("Email ou senha inválidos");
         }
+    }
+
+    public ResponseEntity<?> register(RegisterDTO dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'register'");
     }
 }
 
