@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -33,7 +35,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO dto){
+    public ResponseEntity<?> register(
+       @Valid @RequestBody RegisterDTO dto
+    ){
         System.out.println(dto);
 
         Company company = companyService.create(dto);

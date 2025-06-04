@@ -13,25 +13,26 @@ import {
 
 
 interface PlanCardProps{
-    planName?: string,
     price?: string,
     itensOne?: string[],
     itensTwo?: string[],
     type: string,
     setType : (type: string) => void
+    setPlanId : (id: number) => void
 }
 
-export default function ToggleButtonPlanCard({planName = "Plano Básico", price = "0,00", itensOne = [], itensTwo = [], type, setType}: PlanCardProps){
+export default function ToggleButtonPlanCard({price = "0,00", itensOne = [], itensTwo = [], type, setType, setPlanId}: PlanCardProps){
     return(
         <ContainerToggleButtonPlanCard>
             <PlanCardButton
                 className={`${type === "basic" ? "active-toggle" : ""}`}
                 onClick={() => {
+                    setPlanId(1);
                     setType("basic");
                 }}
             >
                 <HeaderCard>
-                    <h3>{planName}</h3>
+                    <h3>Plano básico</h3>
                     <p>R$ {price}/ano</p>
                 </HeaderCard>
 
@@ -56,11 +57,12 @@ export default function ToggleButtonPlanCard({planName = "Plano Básico", price 
             <PlanCardButton
                 className={type === "premium" ? "active-toggle" : ""}
                 onClick={() => {
+                    setPlanId(2);
                     setType("premium");
                 }}
             >
                 <HeaderCard>
-                    <h3>{planName}</h3>
+                    <h3>Plano pro</h3>
                     <p>R$ {price}/ano</p>
                 </HeaderCard>
 

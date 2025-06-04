@@ -2,6 +2,7 @@ package kafka.system.br.AutoFrota.service;
 
 import kafka.system.br.AutoFrota.dto.AuthenticationDTO;
 import kafka.system.br.AutoFrota.dto.RegisterDTO;
+import kafka.system.br.AutoFrota.exception.UserNotPaidException;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
 //import kafka.system.br.AutoFrota.dto.TokenDTO;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
@@ -39,12 +40,17 @@ public class AuthService {
 
             if(currentLogin == null) throw new UsernameNotFoundException("Email " + email + " não encontrado!");
 
+            if(!currentLogin.isActive()) throw new UserNotPaidException("Pagamento não realizado");
+
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
             return ResponseEntity.ok(tokenProvider.createAccessToken(email, currentLogin));
         }catch (UsernameNotFoundException e){
             throw e;
-        }catch (Exception e){
+        }catch (UserNotPaidException e){
+            throw e;
+        }
+        catch (Exception e){
             throw new BadCredentialsException("Email ou senha inválidos");
         }
     }

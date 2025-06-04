@@ -19,6 +19,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long>{
     Company findByExternalId(@Param("externalId") String externalId);
 
 
+
     /*
     @Query("""
             SELECT

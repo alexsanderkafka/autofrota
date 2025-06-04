@@ -79,7 +79,7 @@ public class CustomizedResponseEntityException {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        ValidationExceptionDTO exceptionResponse = new ValidationExceptionDTO(new Date(), "Validation failed", request.getDescription(false), fields);
+        ValidationExceptionDTO exceptionResponse = new ValidationExceptionDTO(new Date(), "Preencha todos os campos", request.getDescription(false), fields);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -138,6 +138,22 @@ public class CustomizedResponseEntityException {
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EntityExistException.class)
+    public final ResponseEntity<ExceptionDTO> handleEntityExist(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserNotPaidException.class)
+    public final ResponseEntity<ExceptionDTO> handleUserNotPaid(Exception ex, WebRequest request){
+        ExceptionDTO exceptionResponse = new ExceptionDTO(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
 

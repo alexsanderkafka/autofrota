@@ -3,7 +3,9 @@ package kafka.system.br.AutoFrota.service;
 import kafka.system.br.AutoFrota.dto.CompanyDTO;
 import kafka.system.br.AutoFrota.dto.RegisterDTO;
 import kafka.system.br.AutoFrota.dto.UpdateCompanyDTO;
+import kafka.system.br.AutoFrota.exception.EntityExistException;
 import kafka.system.br.AutoFrota.exception.NotFoundEntityException;
+import kafka.system.br.AutoFrota.exception.PasswordIsNotConfirmedException;
 import kafka.system.br.AutoFrota.model.Company;
 import kafka.system.br.AutoFrota.model.Login;
 import kafka.system.br.AutoFrota.model.ProfileImage;
@@ -48,7 +50,12 @@ public class CompanyService implements UserDetailsService {
     }
 
     public Company create(RegisterDTO dto) {
-        //Verificar se as senhas são iguais
+        
+        Login login = authenticationRepository.findByCompanyEmail(dto.email());
+
+        if(login != null) throw new EntityExistException("Esse email já está cadastrado");
+
+        if(!dto.pass().equals(dto.confirmPass())) throw new PasswordIsNotConfirmedException("As senhas não conferem");
 
         String cryptoPass = PasswordEnconder.encode(dto.pass());
 

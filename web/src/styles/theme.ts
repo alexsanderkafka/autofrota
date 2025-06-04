@@ -6,6 +6,7 @@ export const colors = {
         dark: '#1e40ab',
         white: '#FFF',
         other: '#343440',
+        error: "#FF0000"
     },
     text:{
         primary: '#000',

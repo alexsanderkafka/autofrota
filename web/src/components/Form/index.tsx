@@ -1,37 +1,113 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useForm } from 'react-hook-form';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FooterRegister from "../FooterRegister";
 import FormButton from "../FormButton";
+import { AnimatePresence, motion } from 'framer-motion';
 
 import {
     ContainerSmallFields,
     MainContainer,
-    SmallFields
+    SmallFields,
+    ErrorContainer
 } from './style';
+import api from "../../api";
 
 interface FormProps{
     typeForm: string;
+    planId: number;
 }
-export default function Form({typeForm = "Pessoa física"}: FormProps){
+export default function Form({typeForm = "Pessoa física", planId = 1}: FormProps){
 
     const { register, handleSubmit, formState: {errors} } = useForm();
     //const selectedOption = watch("terms");
 
-    const [checked, setChecked] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (event: any) => {
-        setChecked(event.target.checked);
-    };
+    const MotionErrorContainer = motion(ErrorContainer);
 
-    const onSubmit = async ( data:any ) => {
-        console.log(data);
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    function verifyPass(pass: string, confirmPass: string){
+        if(pass != confirmPass){
+            setError("As senhas não são iguais!");
+            return false;
+        };
+
+        return true;
+    }
+
+    async function onSubmit ( data:any ){
+
+        if(!verifyPass(data.pass, data.confirmPass)) return;
+
+        const currentData: any = {
+            name: data.name,
+            email: data.email,
+            pass: data.pass,
+            confirmPass: data.confirmPass,
+            zipCode: data.zipCode,
+            social: data.social,
+            address: data.address,
+            phone: data.phone,
+            planId: planId
+        }
+        
+        try{
+            const response = await api.post("/auth/register", currentData);
+
+            if(response.status === 200){
+                const urlToPayment: string = response.data.initPoint;
+
+                window.location.href = urlToPayment;
+            }
+        }catch(err: any){
+            console.log(err.response.data.message);
+
+            if(err.response.status === 409){
+                setError(err.response.data.message);
+            }
+
+            if(err.response.status === 400){
+                setError(err.response.data.message)
+            }
+
+            if(err.response.status === 404){
+                setError(err.response.data.message)
+            }
+        }
     }
     
     return(
         <MainContainer>
+            
+            {
+                <AnimatePresence>
+                    {
+                        error && (
+                            <MotionErrorContainer
+                            key="error"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                            >
+                                <p>{error}</p>
+                            </MotionErrorContainer>
+                        )
+                    }
+                </AnimatePresence>
+            }
+
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <label>{errors.name ? errors.name.message?.toString() : typeForm == "Pessoa física" ? "Nome completo*" : "Nome da empresa*"}</label>
@@ -62,26 +138,26 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
 
                 <ContainerSmallFields>
                     <SmallFields>
-                        <label>{errors.password ? errors.password.message?.toString() : "Senha*"}</label>
+                        <label>{errors.pass ? errors.pass.message?.toString() : "Senha*"}</label>
                         <input 
                         className="custom-input"
-                        {...register('password', {required: "Por favor, digite uma senha!"})}
-                        type="password" placeholder='Mínimo 8 caracteres'
+                        {...register('pass', {required: "Por favor, digite uma senha!"})}
+                        type="password" placeholder='Digite sua senha'
                         style={{
-                            borderColor: errors.password && "red"
+                            borderColor: errors.pass && "red"
                         }}
                         />
                     </SmallFields>
 
                     <SmallFields
                     >
-                        <label>{errors.confirmPassword ? errors.confirmPassword.message?.toString() : "Confirmar senha*"}</label>
+                        <label>{errors.confirmPass ? errors.confirmPass.message?.toString() : "Confirmar senha*"}</label>
                         <input 
                         className="custom-input"
-                        {...register('confirmPassword', {required: "Por favor, confirme sua senha!"})}
+                        {...register('confirmPass', {required: "Por favor, confirme sua senha!"})}
                         type="password" placeholder='Digite novamente a senha'
                         style={{
-                            borderColor: errors.confirmPassword && "red"
+                            borderColor: errors.confirmPass && "red"
                         }}
                         />
                     </SmallFields>
@@ -96,7 +172,7 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                         {...register('zipCode', {required: "Por favor, digite um cep!"})}
                         type="text" placeholder='00000-000'
                         style={{
-                            borderColor: errors.password && "red",
+                            borderColor: errors.zipCode && "red",
                         }}
                         />
                     </SmallFields>
@@ -106,21 +182,21 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                         <input 
                         className="custom-input"
                         {...register('social', {required: typeForm === "Pessoa física" ? "Por favor, digite um CPF!" : "Por favor, digite um CNPJ!"})}
-                        type="text" placeholder='00.000.000/0000-00'
+                        type="text" placeholder= {typeForm === "Pessoa física" ? '000.000.000-00' : '00.000.000/0000-00'}
                         style={{
-                            borderColor: errors.confirmPassword && "red"
+                            borderColor: errors.social && "red"
                         }}
                         />
                     </SmallFields>
                 </ContainerSmallFields>
                 
-                <label>{errors.local ? errors.local.message?.toString() : "Endereço*"}</label>
+                <label>{errors.address ? errors.address.message?.toString() : "Endereço*"}</label>
                 <input 
                 className="custom-input"
-                {...register('local', {required: "Por favor, digite um endereço!"})}
+                {...register('address', {required: "Por favor, digite um endereço!"})}
                 type="text" placeholder='Ex: Av. Exemplo, 1000, Bairro exemplo'
                 style={{
-                    borderColor: errors.local && "red"
+                    borderColor: errors.address && "red"
                 }}
                 />
 
@@ -132,18 +208,6 @@ export default function Form({typeForm = "Pessoa física"}: FormProps){
                 style={{
                     borderColor: errors.phone && "red"
                 }}
-                />
-
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                        checked={checked}
-                        onChange={handleChange}
-                        color="primary"
-                        name="terms"
-                        />
-                    }
-                    label="Aceito os termos de uso e a politíca de privacidade."
                 />
 
                 <FormButton children="Criar conta" onClick={() => {}}/>

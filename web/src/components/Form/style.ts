@@ -63,3 +63,16 @@ export const SmallFields = styled.div`
         width: auto;
     }
 `
+
+export const ErrorContainer = styled.div`
+    background-color: ${colors.primary.error};
+    color: ${colors.primary.white};
+    width: 100%;
+    min-height: 47px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+`

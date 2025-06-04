@@ -26,10 +26,13 @@ import kafka.system.br.AutoFrota.dto.MercadoPagoDTO;
 import kafka.system.br.AutoFrota.dto.RegisterDTO;
 import kafka.system.br.AutoFrota.exception.MercadoPagoException;
 import kafka.system.br.AutoFrota.exception.NotFoundEntityException;
+import kafka.system.br.AutoFrota.exception.PasswordIsNotConfirmedException;
 import kafka.system.br.AutoFrota.model.Company;
+import kafka.system.br.AutoFrota.model.Login;
 import kafka.system.br.AutoFrota.model.Payment;
 import kafka.system.br.AutoFrota.model.Plan;
 import kafka.system.br.AutoFrota.repository.CompanyRepository;
+import kafka.system.br.AutoFrota.repository.LoginRepository;
 import kafka.system.br.AutoFrota.repository.PaymentRepository;
 import kafka.system.br.AutoFrota.repository.PlanRepository;
 
@@ -44,6 +47,9 @@ public class PaymentService {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private LoginRepository loginRepository;
 
     public MercadoPagoDTO createCheckoutPro(RegisterDTO dto, Company company){
 
@@ -64,9 +70,9 @@ public class PaymentService {
 
 
             PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                .success("https://localhost:3000/sucess")
-                .failure("https://localhost:3000/failure")
-                .pending("https://localhost:3000/pending")
+                .success("https://localhost:5173")
+                .failure("https://localhost:5173")
+                .pending("https://localhost:5173")
                 .build();
 
             List<PreferenceItemRequest> items = new ArrayList<>();
@@ -152,6 +158,9 @@ public class PaymentService {
                 currentPayment.setConfirmedDatePayment(new Date());
 
                 paymentRepository.save(currentPayment);
+                String email = (String) metadata.get("user_email");
+                this.updatedLogin(email);
+                //Adicionar a parte que manda o email
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -175,5 +184,11 @@ public class PaymentService {
         Payment payment = new Payment("unpaid", plan, company);
 
         return paymentRepository.save(payment);
+    }
+
+    private void updatedLogin(String email){
+        Login login = loginRepository.findByCompanyEmail(email);
+        login.setActive(true);
+        loginRepository.save(login);
     }
 }
