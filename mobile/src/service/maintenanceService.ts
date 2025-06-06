@@ -7,6 +7,7 @@ import MaintenanceDone from "../types/maintenanceDone";
 import DateFilter from "../types/dateFilter";
 import UpdateMaintenance from "../types/updateMaintenance";
 import Storage from "../utils/storage";
+import SaveMaintenanceDone from "../types/saveMaintenanceDone";
 
 export async function getAllScheduledMaintenance(vehicleId: number, page: number): Promise<Maintenance[] | null | undefined> {
 
@@ -151,13 +152,17 @@ export async function saveScheduledMaintenanceByVehicleId(tokenJwt: string, sche
     return response.status;
 }
 
-export async function saveMaintenanceDoneByVehicleId(tokenJwt: string, maintenanceDone: MaintenanceDone): Promise<number> {
+export async function saveMaintenanceDoneByVehicleId(tokenJwt: string, maintenanceDone: SaveMaintenanceDone): Promise<number> {
+
+    console.log(maintenanceDone);
 
     const response = await api.post(`/maintenance/done`, maintenanceDone, {
             headers:{
               Authorization: `Bearer ${tokenJwt}`
             }
     });
+
+    console.log(response);
 
     return response.status;
 }

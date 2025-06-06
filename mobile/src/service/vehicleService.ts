@@ -18,7 +18,7 @@ export async function getAllVehicleByCompanyIdAndStatus(vehicleStatus: string, p
 
     if(response.status === 200 && response.data._embedded != null){
       try {
-        let listVehicles: Vehicle[] = response.data._embedded.vehicleDTOList;
+        let listVehicles: Vehicle[] = await response.data._embedded.vehicleDTOList;
 
         return listVehicles; 
       } catch (error: any) {

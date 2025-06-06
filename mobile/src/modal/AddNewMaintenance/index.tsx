@@ -22,6 +22,7 @@ import Storage from '../../utils/storage';
 import { saveMaintenanceDoneByVehicleId, saveScheduledMaintenanceByVehicleId } from '../../service/maintenanceService';
 import { ActivityIndicator } from 'react-native';
 import styles from './style';
+import SaveMaintenanceDone from '../../types/saveMaintenanceDone';
 
 interface Props{
     navigation: any;
@@ -122,23 +123,17 @@ export default function AddNewMaintenance({navigation, route}: Props){
                 vehicleId: vehicleId
             }
 
-            const services: Service[] = listServies.map((service: string) => {
-                return {
-                    id: null,
-                    type: service
-                }
-            })
 
-            const maintenanceDone: MaintenanceDone = {
+            const maintenanceDone: SaveMaintenanceDone = {
                 maintenance: maintenance,
-                services: services
+                services: listServies
             }
 
             response = await saveMaintenanceDoneByVehicleId(tokenJwt, maintenanceDone);
         }else{
             const maintenance: Maintenance = {
                 id: null,
-                date: datePicker.toISOString(),
+                date: "2024-08-02T03:00:00.000+00:00",
                 done: false,
                 observation: observation,
                 scheduled: true,

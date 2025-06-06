@@ -128,6 +128,8 @@ public class MaintenanceController {
             @Valid @RequestBody MaintenanceDoneRegisterDTO dto
     ){        
 
+        System.out.println(dto);
+
         service.saveDone(dto);
 
         return ResponseEntity.created(null).build();

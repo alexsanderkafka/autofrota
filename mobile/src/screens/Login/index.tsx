@@ -125,6 +125,9 @@ export default function Login({ navigation }: Props) {
         }else if(currentStatus === 404){
           setError({error: "Email não encontrado"});
           console.log("Email não encontrado");
+        }else if(currentStatus === 403){
+          setError({error: "Sua conta está inativa, entre em contato com o suporte"});
+          console.log("Sua conta está inativa");
         }
       }
     }
@@ -192,10 +195,6 @@ export default function Login({ navigation }: Props) {
               }
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity onPress={forgetPassword}>
-            <Text style={{color: colors.text.other}}>Esqueceu a senha?</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity style={styles.btn} onPress={login}>
             <Text style={styles.btnText}>Entrar</Text>

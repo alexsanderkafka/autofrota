@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: colors.primary.white,
         flex: 1,
-        
     },
     filterButtonContainer:{
         width: '100%',
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     },
     chartContainer:{
         width: '100%',
-        height: 270,
+        height: 'auto',
         marginTop: 26,
         elevation: 2,
         backgroundColor: colors.primary.white,
@@ -84,8 +83,25 @@ const styles = StyleSheet.create({
     },
     scrollView:{
         paddingHorizontal: 15
+    },
+    chartLegend:{
+        width: '100%',
+        height: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    legendItem:{
+        width: 'auto',
+        height: 'auto',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5
+    },
+    identification:{
+        width: 20,
+        height: 10
     }
-    
 });
 
 export default styles;

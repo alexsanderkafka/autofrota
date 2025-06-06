@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, use} from 'react';
+import React, { useState, useEffect, useRef, use, useMemo} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
-    Dimensions
+    Dimensions,
+    Modal
   } from 'react-native';
   
 import { colors } from '../../theme';
@@ -36,6 +37,7 @@ import { getHistoryByYear, getHistoryCompanyPdf } from '../../service/reportServ
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 import * as Sharing from 'expo-sharing';
+import YearSelectorModal from '../../modal/YearSelectorModal';
 
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -61,6 +63,11 @@ export default function ReportScreen(){
     const [tokenJwt, setTokenJwt] = useState<string>();
     const [companyId, setCompanyId] = useState<string>();
 
+    const monthNames = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
     const { state, isActive} = useChartPressState<any>({x: "Jan", y: {fuel: 40000, maintenance: 2000}})
     const font = useFont(Roboto_400Regular, 12);
     const transformState = useChartTransformState({
@@ -76,32 +83,33 @@ export default function ReportScreen(){
     const totalExpenseMaintenance: number = report ? report!.totalExpenseMaintenance : 0;
 
     const [reportHistory, setReportHistory] = useState<ReportHistory[] | null | undefined >(null);
+    //const [normalizedReport, setNormalizedReport] = useState<any>(null);
+
 
     //Select data
-    const [selectedData, setSelectedData] = useState<number>(new Date().getFullYear());
+    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+
+    useEffect(() => {
+        console.log(reportHistory);
+    }, [selectedYear])
 
     //url pdf
     const [urlPdf, setUrlPdf] = useState<string | null>();
 
-    useEffect( () => {
-            async function getInStorage(){
-                const currentStorage: Storage = await Storage.getInstance();
-                
-                setTokenJwt(currentStorage.tokenJwt!);
-                setCompanyId(currentStorage.companyExternalId!);
-            }
-             
-            getInStorage();
-    }, []);
-
     useEffect(() => {        
         getReport();
-    }, [tokenJwt, companyId]);
+    }, []);
+
+
 
     async function getReport() {
         console.log("Bateu em getReport");
-        const report: ReportHistory[] | null | undefined = await getHistoryByYear(2025);
+        const report: ReportHistory[] | null | undefined = await getHistoryByYear(selectedYear);
+
+
         
+        console.log("get Report:", report);
+
         setReportHistory(report);
     }
 
@@ -166,21 +174,37 @@ export default function ReportScreen(){
         return;
     }
 
+    
+    const normalizedReport = monthNames.map((name, index) => {
+        const monthNumber = (index + 1).toString();
+        const found = reportHistory?.find(item => item.month === monthNumber);
+        
+        return {
+            month: name,
+            totalExpenseFuel: found?.totalExpenseFuel ?? 0,
+            totalExpenseMaintenance: found?.totalExpenseMaintenance ?? 0,
+        };
+    });
+
+    /*
+    const normalizedReport = useMemo(() => {
+    return monthNames.map((name, index) => {
+        const monthNumber = (index + 1).toString();
+        const found = reportHistory?.find(item => item.month === monthNumber);
+        
+        return {
+            month: name,
+            totalExpenseFuel: found?.totalExpenseFuel ?? 0,
+            totalExpenseMaintenance: found?.totalExpenseMaintenance ?? 0,
+        };
+    });
+    }, [reportHistory, selectedYear]);*/
+
+
+
     return(
             <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                <View style={styles.filterButtonContainer}>
-                    {
-                        filters.map((filter) => (
-                            <FilterButton
-                                key={filter}
-                                text={filter}
-                                selected={selectedFilter === filter}
-                                onPress={() => setSelectedFilter(filter)}
-                            />
-                        ))
-                    }
-                </View>
 
                 <View style={styles.containerVehiclesInfos}>
                     <InfoCardReport icon="car" color={colors.icon.mainBlue} amount={totalVehicles.toString()} title="Veículos"/>
@@ -221,18 +245,18 @@ export default function ReportScreen(){
                             )
                         }
 
-                        <ChartSelect
-                            selectedData={selectedData}
-                            onPress={() => setShowPicker(true)}
+                        <YearSelectorModal
+                            selectedYear={selectedYear}
+                            onSelectYear={setSelectedYear}
                         />
                     </View>
                     
-
                    <View style={styles.chart}>
                     {
                         reportHistory ? ( 
                             <CartesianChart<ChartSelectProps, 'month', 'totalExpenseFuel' | 'totalExpenseMaintenance'>
-                            data={reportHistory}
+                            key={`chart-${selectedYear}`}
+                            data={normalizedReport}
                             xKey="month"
                             yKeys={["totalExpenseFuel", "totalExpenseMaintenance"]}
                             transformConfig={{
@@ -284,6 +308,25 @@ export default function ReportScreen(){
                         )
                     }
                    </View> 
+
+                   <View style={styles.chartLegend}>
+                        <View style={styles.legendItem}>
+                            <View style={[styles.identification, {backgroundColor: '#2563EB', borderRadius: 5}]}/>
+                            <Text>Combustível</Text>
+                        </View>
+
+                        <View style={styles.legendItem}>
+                            <View style={[styles.identification, {backgroundColor: '#FFA500', borderRadius: 5}]}/>
+                            <Text>Manutenções</Text>
+                        </View>
+
+                        <View style={styles.legendItem}>
+                            <View style={[styles.identification, {backgroundColor: '#7B7C67', borderRadius: 5}]}/>
+                            <Text>Pico de gastos</Text>
+                        </View>
+                        
+
+                   </View>
                     
                 </View>
 

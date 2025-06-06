@@ -40,8 +40,10 @@ const styles = StyleSheet.create({
         height: 'auto',
         padding: 10,
         elevation: 2,
-        backgroundColor: '#FFF',
-        borderRadius: 5
+        backgroundColor: colors.primary.white,
+        borderRadius: 5,
+        justifyContent: 'center',
+
     },
     infoCardHeader:{
         display: 'flex',

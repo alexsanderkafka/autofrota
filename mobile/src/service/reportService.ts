@@ -31,7 +31,8 @@ export async function getHistoryByYear(year: number): Promise<ReportHistory[] | 
   const tokenJwt: string = storage!.tokenJwt!;
   const companyId: string = storage!.companyExternalId!;
 
-  let response = await api.get(`/reports/${companyId}/history/${year}`, {
+  try {
+    let response = await api.get(`/reports/${companyId}/history/${year}`, {
       headers:{
               Authorization: `Bearer ${tokenJwt}`
             },
@@ -43,6 +44,9 @@ export async function getHistoryByYear(year: number): Promise<ReportHistory[] | 
       let report: ReportHistory[] = response.data;
 
       return report;
+    } 
+  } catch (error) {
+    console.log(error)
   }
     
   return null;

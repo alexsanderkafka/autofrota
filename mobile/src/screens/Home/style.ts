@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
       flex: 1,
       color: '#000',
       backgroundColor: colors.primary.white,
-      width: '100%',
     },
     infosContainer:{
       width: '100%',
@@ -70,6 +69,7 @@ const styles = StyleSheet.create({
     },
     recentVehiclesContainer:{
       marginTop: 26,
+      flex: 1
     },
     list:{
       paddingHorizontal: 15,
@@ -118,6 +118,23 @@ const styles = StyleSheet.create({
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    notFoundVehiclesContainer:{
+      width: '100%',
+      height: '100%',
+      paddingHorizontal: 15,
+      alignItems: 'center',
+      
+    },
+    notFoundVehiclesImage:{
+      width: 200,
+      height: 200,
+      marginBottom: 20
+    },
+    notFoundVehiclesText:{
+      fontSize: 16,
+      textAlign: 'center',
+      fontStyle: 'italic'
     }
 });
 

@@ -10,7 +10,8 @@ import {
     FlatList,
     ActivityIndicator,
     Animated,
-    Dimensions
+    Dimensions,
+    Image
 } from "react-native";
 import { colors } from "../../theme";
 
@@ -38,6 +39,10 @@ export default function Vehicles( {navigation}: Props ) {
     const [search, setSearch] = useState('');
     const [selected, setSelected] = useState("active");
 
+    const imageNotFoundVehicles = require("../../../assets/logo/not-found-vehicles.png");
+
+    const [notFoundVehicles, setNotFoundVehicles] = useState<boolean>(false);
+
     //Filter buttons
     //const filters: string[] = ['Ativos', 'Manutenção', 'Aviso', 'Em uso'];
     const filters: any[] = [
@@ -49,7 +54,7 @@ export default function Vehicles( {navigation}: Props ) {
     const [selectedFilter, setSelectedFilter] = useState<string>(filters[0].label);
 
     //flat list
-    const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>();
+    const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>(null);
     const [page, setPage] = useState<number>(0);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -74,6 +79,9 @@ export default function Vehicles( {navigation}: Props ) {
 
         getInStorage();
     }, [])
+
+
+
 
     useEffect(() => {
         setRefreshing(true);
@@ -103,6 +111,7 @@ export default function Vehicles( {navigation}: Props ) {
             const result: Vehicle[] | null | undefined = await getAllVehicleByCompanyIdAndStatus(selected, pageToLoad);
 
             if(result !== null && result !== undefined){
+
                 console.log("Result: ", result);
                 if (pageToLoad === 0) {
                     setVehicles(result!);
@@ -126,6 +135,7 @@ export default function Vehicles( {navigation}: Props ) {
 
     function onRefresh(){
         setRefreshing(true);
+        setNotFoundVehicles(false);
         setVehicles([]);
         setPage(0);
         loadVehicles(0).then(() => setRefreshing(false));
@@ -235,33 +245,33 @@ export default function Vehicles( {navigation}: Props ) {
               </View>
             </View>
 
-            <FlatList 
-            showsVerticalScrollIndicator={false}  
-            data={vehicles}
-            keyExtractor={ item => String(item.id)}
-            renderItem={ ({ item }) => (
-                <View style={styles.gestureContainer}>
-                    <GestureHandlerRootView>
-                            <ReanimatedSwipeable
-                                enableTrackpadTwoFingerGesture
-                                renderRightActions={() => renderRightActions(item)}
-                            >
-                                
-                                <VehicleListTile vehicle={item} navigation={navigation} isVehicles={true}/>                           
-                            </ReanimatedSwipeable>
-                    </GestureHandlerRootView>
-                </View>
-            )}
-            onEndReached={loadMoreVehicles}
-            onEndReachedThreshold={1} 
-            ListFooterComponent={renderFooterFlatList}
-            style={styles.list}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
-            contentContainerStyle={{ paddingBottom: 30 }}
+             <FlatList 
+                    showsVerticalScrollIndicator={false}  
+                    data={vehicles}
+                    keyExtractor={ item => String(item.id)}
+                    renderItem={ ({ item }) => (
+                        <View style={styles.gestureContainer}>
+                            <GestureHandlerRootView>
+                                    <ReanimatedSwipeable
+                                        enableTrackpadTwoFingerGesture
+                                        renderRightActions={() => renderRightActions(item)}
+                                    >
+                                        
+                                        <VehicleListTile vehicle={item} navigation={navigation} isVehicles={true}/>                           
+                                    </ReanimatedSwipeable>
+                            </GestureHandlerRootView>
+                        </View>
+                    )}
+                    onEndReached={loadMoreVehicles}
+                    onEndReachedThreshold={1} 
+                    ListFooterComponent={renderFooterFlatList}
+                    style={styles.list}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
+                    contentContainerStyle={{ paddingBottom: 30 }}
             />
-
+            
             <TouchableOpacity style={styles.fab} onPress={openModalAddVehicle}>
                 <Icon name="plus" size={24} color={colors.primary.white} />
             </TouchableOpacity>

@@ -10,7 +10,8 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 
 import { colors } from '../../theme';
@@ -33,6 +34,9 @@ export default function HomeScreen({ navigation }: Props) {
   const { statusCount } = useStatusCount();
 
   const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>();
+  const [notFoundRecentVehicles, setNotFoundRrecentVehicles] = useState<boolean>(false);
+
+  const imageNotFoundVehicles = require("../../../assets/logo/not-found-vehicles.png");
 
   useEffect(() => {
     loadVehicles();
@@ -43,17 +47,22 @@ export default function HomeScreen({ navigation }: Props) {
     const response: Vehicle[] | null | undefined = await getRecentVehiclesByCompanyId();
 
     if(response){
+
+      if(response.length === 0){
+        setNotFoundRrecentVehicles(true);
+      }
+
       setVehicles(response);
     }
   }
 
   return(
       <View style={styles.container}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2}}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingVertical: 2, maxHeight: 145}}>
             <View style={styles.infosContainer} >
-                <InfoCard icon="car" amount={statusCount?.active ?? 50} title="Veículos Ativos" color={colors.icon.green}/>
-                <InfoCard icon="wrench" amount={statusCount?.maintenance ?? 50} title="Em Manutenção" color={colors.icon.yellow}/>
-                <InfoCard icon="alert" amount={statusCount?.alert ?? 50} title="Em Alerta" color={colors.icon.red}/>
+                <InfoCard icon="car" amount={statusCount?.active ?? 0} title="Veículos Ativos" color={colors.icon.green}/>
+                <InfoCard icon="wrench" amount={statusCount?.maintenance ?? 0} title="Em Manutenção" color={colors.icon.yellow}/>
+                <InfoCard icon="alert" amount={statusCount?.alert ?? 0} title="Em Alerta" color={colors.icon.red}/>
             </View>
           </ScrollView>
 
@@ -68,14 +77,24 @@ export default function HomeScreen({ navigation }: Props) {
 
           <View style={styles.recentVehiclesContainer}>
             <Text style={[styles.titles, {paddingHorizontal:15}]}>Veículos recentes</Text>
-            <FlatList 
-            data={vehicles}
-            keyExtractor={ item => String(item.id)}
-            renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation} isVehicles={false}/>}
-            onEndReachedThreshold={1} 
-            style={styles.list}
-            ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
-            />
+
+            {
+              notFoundRecentVehicles ? (
+                <View style={styles.notFoundVehiclesContainer}>
+                  <Image source={imageNotFoundVehicles} style={styles.notFoundVehiclesImage}/>
+                  <Text style={styles.notFoundVehiclesText}>Nenhum veículo encontrado, adicione um novo veículo!</Text>
+                </View>
+              ) : (
+                <FlatList 
+                data={vehicles}
+                keyExtractor={ item => String(item.id)}
+                renderItem={ ({ item }) => <VehicleListTile vehicle={item} navigation={navigation} isVehicles={false}/>}
+                onEndReachedThreshold={1} 
+                style={styles.list}
+                ItemSeparatorComponent={() => <View style={{ marginVertical: 10 }} />}
+                />
+              )
+            }
           </View>
       </View>
   );

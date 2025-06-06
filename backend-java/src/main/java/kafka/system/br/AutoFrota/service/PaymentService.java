@@ -35,6 +35,7 @@ import kafka.system.br.AutoFrota.repository.CompanyRepository;
 import kafka.system.br.AutoFrota.repository.LoginRepository;
 import kafka.system.br.AutoFrota.repository.PaymentRepository;
 import kafka.system.br.AutoFrota.repository.PlanRepository;
+import kafka.system.br.AutoFrota.utils.Email;
 
 @Service
 public class PaymentService {
@@ -50,6 +51,9 @@ public class PaymentService {
 
     @Autowired
     private LoginRepository loginRepository;
+
+    @Autowired
+    private Email emailUtil;
 
     public MercadoPagoDTO createCheckoutPro(RegisterDTO dto, Company company){
 
@@ -160,10 +164,16 @@ public class PaymentService {
                 paymentRepository.save(currentPayment);
                 String email = (String) metadata.get("user_email");
                 this.updatedLogin(email);
-                //Adicionar a parte que manda o email
+
+
+                this.emailUtil.sendPaymentConfirmation(email);
+                
+
             }
         } catch (Exception e) {
             System.out.println(e);
+            System.out.println(e.getMessage());
+            System.out.println("Caindo em error");
             throw new MercadoPagoException("Não foi possível atualizar o pagamento");
         }
     }

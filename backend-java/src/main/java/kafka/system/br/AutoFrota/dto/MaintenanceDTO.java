@@ -15,7 +15,6 @@ public record MaintenanceDTO(
         Date date,
         @NotNull(message = "O campo done é obrigatório")
         Boolean done,
-        @NotBlank(message = "O campo observation não deve estar vazio")
         @NotNull(message = "O campo observation é obrigatório")
         String observation,
         @NotNull(message = "O campo scheduled é obrigatório")

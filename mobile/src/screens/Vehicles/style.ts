@@ -75,6 +75,23 @@ const styles = StyleSheet.create({
         borderColor: colors.primary.dark,
         borderRadius: 5,
     },
+    notFoundVehiclesContainer:{
+      width: '100%',
+      height: '100%',
+      paddingHorizontal: 15,
+      alignItems: 'center',
+      
+    },
+    notFoundVehiclesImage:{
+      width: 200,
+      height: 200,
+      marginBottom: 20
+    },
+    notFoundVehiclesText:{
+      fontSize: 16,
+      textAlign: 'center',
+      fontStyle: 'italic'
+    }
 });
 
 export default styles;
