@@ -109,7 +109,9 @@ export default function Checklist({navigation, route}: Props){
 
         const response: number = await saveScheduledMaintenanceByVehicleId(tokenJwt, maintenance)
 
-        if(response == 201) navigation.goBack();
+        if(response == 201) {
+            navigation.goBack()
+        };
     }
 
     function onChange (event: any, selectedDate: any){

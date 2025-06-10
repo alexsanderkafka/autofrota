@@ -28,7 +28,6 @@ interface Props{
 }
 
 export default function Profile({ navigation }: Props){
-    const businessImage = require('../../../assets/business.jpg');
 
     const { company } = useCompany();
 
@@ -36,8 +35,7 @@ export default function Profile({ navigation }: Props){
     
     const email: string = company ? company!.email : 'teste@gmail.com';
     const name: string = company ? company!.name : 'teste';
-    const cnpj: string = company ? company!.cnpj : '00.000.000/0000-0';
-    const cpf: string | null | undefined = company ? company.cpf : null;
+    const social: string = company ? company!.social : '00.000.000/0000-0';
     const zipCode: string = company ? company!.zipCode : '00000-000';
     const address: string = company ? company!.address : 'Rua teste';
     const phone: string = company ? company!.phone : '(00) 00000-0000';
@@ -72,7 +70,7 @@ export default function Profile({ navigation }: Props){
 
                         <View style={styles.row}>
                             <Icon name="fingerprint" size={24} color={colors.icon.mainBlue} />
-                            <Text>{cpf ? cpf : cnpj}</Text>
+                            <Text>{social}</Text>
                         </View>
 
                         <View style={{ borderBottomColor: "#ddd", borderBottomWidth: 1, marginVertical: 10}}/>

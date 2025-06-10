@@ -15,6 +15,7 @@ import kafka.system.br.AutoFrota.repository.ProfileImageRepository;
 import kafka.system.br.AutoFrota.security.PasswordEnconder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +34,9 @@ public class CompanyService implements UserDetailsService {
 
     @Autowired
     private ProfileImageRepository profileImageRepository;
+
+    @Value("${profile.image}")
+    private String urlProfileImage;
 
 
     @Override
@@ -63,7 +67,7 @@ public class CompanyService implements UserDetailsService {
         Login savedLogin = authenticationRepository.save(currentLogin);
 
         
-        ProfileImage profileImage = new ProfileImage("https://firebasestorage.googleapis.com/v0/b/softpizza-3602d.appspot.com/o/autofrota%2Fdriver.jpg?alt=media&token=33231db1-9f99-4ef6-9d19-31bac6dcea83");
+        ProfileImage profileImage = new ProfileImage(urlProfileImage);
         ProfileImage savedProfileImage = profileImageRepository.save(profileImage);
 
 

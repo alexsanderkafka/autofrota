@@ -114,7 +114,7 @@ export default function Fuel({ navigation, route }: Props) {
             );
         }else if(notFound){
             console.log("Bateu no else");
-            const notFoundImage: any = require('../../../assets/logo/not-found-fuel.png');
+            const notFoundImage: any = require('../../assets/images/errors/not-found-fuel.png');
 
             return(
                 <View style={styles.notFoundContainer}>
@@ -162,10 +162,3 @@ export default function Fuel({ navigation, route }: Props) {
         </View>
     )
 }
-
-/*<View style={styles.fieldSelectDate}>
-                <Text style={styles.rangeDateSelect}>00/00/0000-00/00/0000</Text>
-                <TouchableOpacity style={styles.dateButton}>
-                    <Icon name="calendar-range" size={24} color={colors.primary.white} />
-                </TouchableOpacity>
-            </View>*/

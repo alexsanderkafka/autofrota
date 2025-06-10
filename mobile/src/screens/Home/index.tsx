@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }: Props) {
   const [vehicles, setVehicles] = useState<Vehicle[] | null | undefined>();
   const [notFoundRecentVehicles, setNotFoundRrecentVehicles] = useState<boolean>(false);
 
-  const imageNotFoundVehicles = require("../../../assets/logo/not-found-vehicles.png");
+  const imageNotFoundVehicles = require("../../assets/images/errors/not-found-vehicles.png");
 
   useEffect(() => {
     loadVehicles();
@@ -71,7 +71,7 @@ export default function HomeScreen({ navigation }: Props) {
 
             <View style={styles.buttonContainer}>
                 <ActionButton icon={'plus'} text={'Novo Veículo'} onPress={() => navigation.navigate('AddVehicle')}/>
-                <ActionButton icon={'chart-bar'} text={'Relatórios'} onPress={() => navigation.navigate('AddVehicle')}/>
+                <ActionButton icon={'chart-bar'} text={'Relatórios'} onPress={() => navigation.navigate('BottomNavigation', {screen: 'Relatórios'})}/>
             </View>
           </View>
 

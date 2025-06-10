@@ -83,14 +83,14 @@ export default function ReportScreen(){
     const totalExpenseMaintenance: number = report ? report!.totalExpenseMaintenance : 0;
 
     const [reportHistory, setReportHistory] = useState<ReportHistory[] | null | undefined >(null);
-    //const [normalizedReport, setNormalizedReport] = useState<any>(null);
+    const [normalizedReport, setNormalizedReport] = useState<any>(null);
 
 
     //Select data
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
     useEffect(() => {
-        console.log(reportHistory);
+        getReport();
     }, [selectedYear])
 
     //url pdf
@@ -99,6 +99,22 @@ export default function ReportScreen(){
     useEffect(() => {        
         getReport();
     }, []);
+
+    useEffect(() => {
+        const currentReport: ReportHistory[] = monthNames.map((name, index) => {
+            const monthNumber = (index + 1).toString();
+            const found = reportHistory?.find(item => item.month === monthNumber);
+        
+            return {
+                month: name,
+                totalExpenseFuel: found?.totalExpenseFuel ?? 0,
+                totalExpenseMaintenance: found?.totalExpenseMaintenance ?? 0,
+            };
+        });
+
+        setNormalizedReport(currentReport);
+        console.log(currentReport);
+    }, [reportHistory])
 
 
 
@@ -173,34 +189,6 @@ export default function ReportScreen(){
 
         return;
     }
-
-    
-    const normalizedReport = monthNames.map((name, index) => {
-        const monthNumber = (index + 1).toString();
-        const found = reportHistory?.find(item => item.month === monthNumber);
-        
-        return {
-            month: name,
-            totalExpenseFuel: found?.totalExpenseFuel ?? 0,
-            totalExpenseMaintenance: found?.totalExpenseMaintenance ?? 0,
-        };
-    });
-
-    /*
-    const normalizedReport = useMemo(() => {
-    return monthNames.map((name, index) => {
-        const monthNumber = (index + 1).toString();
-        const found = reportHistory?.find(item => item.month === monthNumber);
-        
-        return {
-            month: name,
-            totalExpenseFuel: found?.totalExpenseFuel ?? 0,
-            totalExpenseMaintenance: found?.totalExpenseMaintenance ?? 0,
-        };
-    });
-    }, [reportHistory, selectedYear]);*/
-
-
 
     return(
             <View style={styles.container}>
@@ -347,7 +335,7 @@ export default function ReportScreen(){
                     onPress={getPdf}
                     >
                         <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
-                            <Image source={require('../../../assets/icons/pdf.png')} style={{width: 38, height: 38}}/>
+                            <Image source={require('../../assets/images/icons/pdf.png')} style={{width: 38, height: 38}}/>
                             <Text>Relatório em pdf</Text>
                         </View>
                         <Icon name="cloud-download" size={24} color={colors.icon.main}/>

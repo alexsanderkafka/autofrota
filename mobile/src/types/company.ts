@@ -1,8 +1,7 @@
 export default interface Company {
     email: string;
     name: string;
-    cnpj: string | null | undefined;
-    cpf: string | null | undefined;
+    social: string;
     zipCode: string;
     address: string;
     phone: string;

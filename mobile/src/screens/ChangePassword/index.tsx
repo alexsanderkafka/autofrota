@@ -61,7 +61,7 @@ export default function ChangePassword({ navigation }: Props) {
     return(
         <View style={styles.body}>
 
-            <Image source={require('../../../assets/logo/image.jpg')} style={styles.logoImage}/>
+            <Image source={require('../../assets/images/logo/image.jpg')} style={styles.logoImage}/>
 
             <Text style={styles.title}>Altere sua senha</Text>
 

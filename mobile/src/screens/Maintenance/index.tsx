@@ -163,7 +163,7 @@ export default function MaintenanceScreen({ navigation, route }: Props) {
             );
         }else if(notFoundMaintenance){
 
-            const notFoundImage: any = require('../../../assets/logo/not-found-maintenance.png');
+            const notFoundImage: any = require('../../assets/images/errors/not-found-maintenance.png');
 
             return(
                 <View style={styles.notFoundContainer}>

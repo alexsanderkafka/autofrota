@@ -159,7 +159,7 @@ export default function Login({ navigation }: Props) {
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
         <View style={styles.containerFields}>
-          <Image source={require('../../../assets/logo/image.jpg')} style={styles.logoImage}/>
+          <Image source={require('../../assets/images/logo/image.jpg')} style={styles.logoImage}/>
 
           <Text style={styles.welcomeTitle}>Bem-vindo</Text>
           <Text style={styles.welcomeDescription}>Faça o login para continuar</Text>

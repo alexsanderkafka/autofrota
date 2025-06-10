@@ -40,7 +40,7 @@ export default function VehicleListTile({ vehicle, navigation, isVehicles = fals
 
   //console.log(image);
 
-  const imageKm = require("../../assets/icons/km.png");
+  const imageKm = require("../assets/images/icons/km.png");
 
   const iconColor = [
       {status: "active", color: colors.icon.green, text: "Ativo"},

@@ -19,8 +19,8 @@ spring:
   flyway:
     enabled: true
   mail:
-    host: smtp.test.com
-    port: set port
+    host: smtp.gmail.com
+    port: 587
     username: set username
     password: set password
     properties:
@@ -36,4 +36,7 @@ mercado-pago:
   access-token: set access token
   public-key: set public key
   webhook:
-    secret: set secret
+    secret: set webhook secret
+
+profile:
+  image: set url image

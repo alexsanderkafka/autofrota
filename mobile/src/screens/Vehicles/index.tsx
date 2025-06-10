@@ -39,7 +39,6 @@ export default function Vehicles( {navigation}: Props ) {
     const [search, setSearch] = useState('');
     const [selected, setSelected] = useState("active");
 
-    const imageNotFoundVehicles = require("../../../assets/logo/not-found-vehicles.png");
 
     const [notFoundVehicles, setNotFoundVehicles] = useState<boolean>(false);
 

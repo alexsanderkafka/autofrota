@@ -28,22 +28,22 @@ const { width, height } = Dimensions.get("window");
 
 const slides = [
   {
-    image: require("../../../assets/onboarding/slide-1.png"),
+    image: require("../../assets/images/onboarding/slide-1.png"),
     title: "Pronto para gerenciar a sua frota? ",
     description: "Gerencia sua frota de uma  forma simples e eficiente",
   },
   {
-    image: require("../../../assets/onboarding/slide-2.png"),
+    image: require("../../assets/images/onboarding/slide-2.png"),
     title: "Análise completa de dados",
     description: "Acompanhe o histórico de abastecimento e manutenções da sua frota",
   },
   {
-    image: require("../../../assets/onboarding/slide-3.jpg"),
+    image: require("../../assets/images/onboarding/slide-3.jpg"),
     title: "Geração de relatórios",
     description: "Insights detalhados da sua frota para tomada de decisões",
   },
   {
-    image: require("../../../assets/onboarding/slide-4.png"),
+    image: require("../../assets/images/onboarding/slide-4.png"),
     title: "Emissão de alertas",
     description: "Receba alertas de vencimento de manutenções",
   },

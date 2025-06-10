@@ -125,7 +125,7 @@ export default function Vehicle({ navigation, route }: Props) {
                 <Text style={styles.textInfo}>{vehicleBrand} {vehicleModel}</Text>
 
                 <View style={styles.containerWithIcon}>
-                  <Image source={require('../../../assets/icons/km.png')} style={{ width: 12, height: 12 }} />
+                  <Image source={require('../../assets/images/icons/km.png')} style={{ width: 12, height: 12 }} />
                   <Text style={styles.textInfo}>{km}km</Text>
                 </View>
 

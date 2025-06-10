@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "e3d12250-8840-4e33-8fa0-7ffc41576e1b",
 		"name": "Auto frota",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "27099370",
 		"_collection_link": "https://warped-satellite-158160.postman.co/workspace/Team-Workspace~19b784ec-8042-4ab2-84ab-c11cccf2ac94/collection/27099370-e3d12250-8840-4e33-8fa0-7ffc41576e1b?action=share&source=collection_link&creator=27099370"
 	},
@@ -14,14 +14,7 @@
 					"name": "Signin with email and password",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
@@ -34,16 +27,25 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/auth/signin",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"auth",
-								"signin"
-							]
-						}
+						"url": "{{baseurl}}/auth/signin"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Empresa Exemplo\",\r\n  \"email\": \"alexsanderkafka2001alex@gmail.com\",\r\n  \"pass\": \"admin123\",\r\n  \"confirmPass\": \"admin123\",\r\n  \"zipCode\": \"12345-678\",\r\n  \"social\": \"12345678000190\",\r\n  \"address\": \"Rua Exemplo, 100 - Centro\",\r\n  \"phone\": \"(11) 91234-5678\",\r\n  \"planId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseurl}}/auth/register"
 					},
 					"response": []
 				}
@@ -57,18 +59,14 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjU4NjkxLCJpYXQiOjE3NDY2NDc4OTF9.qz9CcpeiEdEQ-nPwWxwgDRvEIPpPe2E-A1yRcbOu5OU",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDc4NTQzMzAsImlhdCI6MTc0Nzg0MzUzMH0.MPegSFk0SQjMWaR0UfWrhp-1rSAy_OdCoy96R6F51xs"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/active?page=0&direction=desc",
+							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/active?page=1&direction=desc",
 							"host": [
 								"{{baseurl}}"
 							],
@@ -80,7 +78,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "1"
 								},
 								{
 									"key": "direction",
@@ -96,27 +94,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MDQyMTMxLCJpYXQiOjE3NDYwMzEzMzF9.b8SFA0WQKEXcY8xhvL93wkBhQL4W6gXU28alZcdwgqU",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3NjkwMTA5LCJpYXQiOjE3NDc2NzkzMDl9.PXf0QcfYFxCkH0a8kzdKNoKRZqfmQi34MRoOohMt7Ps"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/recent",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"recent"
-							]
-						}
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/recent"
 					},
 					"response": []
 				},
@@ -125,27 +109,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/status",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"status"
-							]
-						}
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/status"
 					},
 					"response": []
 				},
@@ -154,28 +124,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MTk3MjcxLCJpYXQiOjE3NDYxODY0NzF9.afeccOOIpVf4NNQs3nFgCyD_2EtFOKqkt7xYwcyGcT8",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDg0NTcxNjEsImlhdCI6MTc0ODQ0NjM2MX0.kHHPaxTuZ_vwMmCswbenbjlCyT3JFIJNjL48aT5wB_M"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/20/infos",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"20",
-								"infos"
-							]
-						}
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/20/infos"
 					},
 					"response": []
 				},
@@ -187,13 +142,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDc4NDM3NTMsImlhdCI6MTc0NzgzMjk1M30.bADe3QFiTd9yd14O9HxjVlWQcSGfAple4fLOgw18k4o"
+							}
 						},
 						"method": "POST",
 						"header": [
@@ -219,16 +170,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -237,13 +179,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDg0NTg1MjEsImlhdCI6MTc0ODQ0NzcyMX0.Yc4izen5V6zeT6IrQkf6X3O-efzNQOgxKMI1VfrbqAs"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -256,15 +194,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/vehicles",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles"
-							]
-						}
+						"url": "{{baseurl}}/vehicles"
 					},
 					"response": []
 				},
@@ -273,27 +203,28 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDc4Njc0MjAsImlhdCI6MTc0Nzg1NjYyMH0.uVhbAvTH-kb5JZNaCi9yyF63Y1qEXSA3VS-dDKo59yU"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/25",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"vehicles",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"25"
-							]
-						}
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/72"
+					},
+					"response": []
+				},
+				{
+					"name": "Find vehicle by company and plate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDgyODQ3NTYsImlhdCI6MTc0ODI3Mzk1Nn0.iHjGsVsm5n4Mi4aCz9iSEA1G2Ox5Xay67veMiFQjKxQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseurl}}/vehicles/550e8400-e29b-41d4-a716-446655440000/abc1a01/plate"
 					},
 					"response": []
 				}
@@ -307,27 +238,29 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjMwNzMwLCJpYXQiOjE3NDY2MTk5MzB9.MYsuve7vbF7pfAhtVixlAXyoUyjlplv82raBQTEeyGk",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3NDA3Mzk5LCJpYXQiOjE3NDczOTY1OTl9.9pLwLEM768QugAkNYZXfAwJYd0GnHDRA79fixwi4F0Q"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/scheduled",
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/20/all/scheduled?page=0",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"maintenance",
 								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
+								"20",
 								"all",
 								"scheduled"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
 							]
 						}
 					},
@@ -335,30 +268,48 @@
 				},
 				{
 					"name": "find all done maintenance by vehicle id and company id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NzMzNTM1LCJpYXQiOjE3NDY3MjI3MzV9.IBwd4D2HesOP-BXr8I56bXa5ytjSC9W-pKCjrH0EIR4",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3NDA3Mzk5LCJpYXQiOjE3NDczOTY1OTl9.9pLwLEM768QugAkNYZXfAwJYd0GnHDRA79fixwi4F0Q"
+							}
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/done",
+							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/20/all/done?page=0&direction=desc",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"maintenance",
 								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
+								"20",
 								"all",
 								"done"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "direction",
+									"value": "desc"
+								}
 							]
 						}
 					},
@@ -369,28 +320,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MjUzMDcyLCJpYXQiOjE3NDcyNDIyNzJ9.t1TrMMPx4PXDu6FZXPu9osZwKnrpWdM6GBv7zZ1bzJE"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/scheduled",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"scheduled"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/20/scheduled"
 					},
 					"response": []
 				},
@@ -399,28 +335,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MjUzMDcyLCJpYXQiOjE3NDcyNDIyNzJ9.t1TrMMPx4PXDu6FZXPu9osZwKnrpWdM6GBv7zZ1bzJE"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/2/last",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"2",
-								"last"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/20/last"
 					},
 					"response": []
 				},
@@ -432,13 +353,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -451,20 +368,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/done/filter",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"all",
-								"done",
-								"filter"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/done/filter"
 					},
 					"response": []
 				},
@@ -476,13 +380,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -495,20 +395,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/scheduled/filter",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"all",
-								"scheduled",
-								"filter"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/550e8400-e29b-41d4-a716-446655440000/1/all/scheduled/filter"
 					},
 					"response": []
 				},
@@ -517,35 +404,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3NjkwMTA5LCJpYXQiOjE3NDc2NzkzMDl9.PXf0QcfYFxCkH0a8kzdKNoKRZqfmQi34MRoOohMt7Ps"
+							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"date\": \"2025-06-01T03:00:00.000+00:00\",\r\n    \"done\": false,\r\n    \"observation\": \"Troca de óleo e filtros, verificação dos freios e inspeção geral dos pneus e suspensão. Será feito também o alinhamento e balanceamento das rodas. Atualização do histórico de manutenção ao final do serviço.\",\r\n    \"scheduled\": true,\r\n    \"totalValue\": 0.0,\r\n    \"vehicleId\": 1\r\n}",
+							"raw": "{\r\n    \"date\": \"2025-06-01T03:00:00.000+00:00\",\r\n    \"done\": false,\r\n    \"observation\": \"\",\r\n    \"scheduled\": true,\r\n    \"totalValue\": 0.0,\r\n    \"vehicleId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/maintenance/scheduled",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"scheduled"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/scheduled"
 					},
 					"response": []
 				},
@@ -554,35 +428,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODE4NjM3LCJpYXQiOjE3NDY4MDc4Mzd9.81M9IaUgmVyCsWwRF3zSAp20vSnzQhGVnlMvj_D4blg",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ5MjI1OTU1LCJpYXQiOjE3NDkyMTUxNTV9.8koqZloJC-JjTONO7hd7F5MODJ8WtbEqXsDPmlv_0mA"
+							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"maintenance\":{\r\n        \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n        \"done\": true,\r\n        \"observation\": \"Troca de óleo e filtros, verificação dos freios e inspeção geral dos pneus e suspensão. Será feito também o alinhamento e balanceamento das rodas. Atualização do histórico de manutenção ao final do serviço.\",\r\n        \"scheduled\": true,\r\n        \"totalValue\": 5000.99,\r\n        \"vehicleId\": 1\r\n    },\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"maintenance\":{\r\n        \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n        \"done\": true,\r\n        \"observation\": \"\",\r\n        \"scheduled\": true,\r\n        \"totalValue\": 200,\r\n        \"vehicleId\": 1\r\n    },\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/maintenance/done",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"done"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/done"
 					},
 					"response": []
 				},
@@ -591,35 +452,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDgwNDIzMjEsImlhdCI6MTc0ODAzMTUyMX0.NKp_zOjJJNMfW9VrZqvZ7yoFzdi3LCu2e6P1OtEKShQ"
+							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 2,\r\n    \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n    \"totalValue\": 5000.99,\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"id\": null,\r\n    \"date\": \"2024-08-02T03:00:00.000+00:00\",\r\n    \"totalValue\": 5000.99,\r\n    \"services\": [\r\n        \"Troca de óleo\", \"Alinhamento\", \"Freios\", \"Pneus\", \"Lavação\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/maintenance/scheduled",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"maintenance",
-								"scheduled"
-							]
-						}
+						"url": "{{baseurl}}/maintenance/scheduled"
 					},
 					"response": []
 				}
@@ -633,27 +481,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NjMxOTIwLCJpYXQiOjE3NDY2MjExMjB9.3hpxpjPbOqtUX_Xmje8-a98yL8i1EiYflIvq_Z4NYXg",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDg0NjE3NzMsImlhdCI6MTc0ODQ1MDk3M30.gJrnGgqXDTwoBXCiKFXZrCqzJMrrjB1Ng-AhONrEWqE"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"fuel",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1"
-							]
-						}
+						"url": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/20"
 					},
 					"response": []
 				},
@@ -662,28 +496,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2MjExNjcxLCJpYXQiOjE3NDYyMDA4NzF9.MWT3dBYJ5WtXgkpXqwUbsEFmrhZgaaG2GBHgWlTofV0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MjUzMDcyLCJpYXQiOjE3NDcyNDIyNzJ9.t1TrMMPx4PXDu6FZXPu9osZwKnrpWdM6GBv7zZ1bzJE"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/last",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"fuel",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"last"
-							]
-						}
+						"url": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/20/last"
 					},
 					"response": []
 				},
@@ -695,13 +514,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ1OTU0Nzk3LCJpYXQiOjE3NDU5NDM5OTd9.PURapUgadI4Le2yS3D0k7IgMSwfZEyzuM3HjiK3aIm0"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -714,19 +529,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/all/filter",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"fuel",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"1",
-								"all",
-								"filter"
-							]
-						}
+						"url": "{{baseurl}}/fuel/550e8400-e29b-41d4-a716-446655440000/1/all/filter"
 					},
 					"response": []
 				},
@@ -735,35 +538,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDc2NDgwLCJpYXQiOjE3NDcwNjU2ODB9.jwb1nJ5I2YsBK7sIJF4HvbGF9UM42j9RmmMOI5wuzRA",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDc5NTQ2MDcsImlhdCI6MTc0Nzk0MzgwN30.nXL8DCNZamwlzQZBLcle-68hc1Z1ruybCcp0H_qBKsU"
+							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"liters\": 0,\r\n    \"totalValue\": 500.0,\r\n    \"km\": 47500,\r\n    \"date\": \"2024-05-30T03:00:00.000+00:00\",\r\n    \"fuelType\": \"gasolina\"\r\n}",
+							"raw": "{\r\n    \"liters\": 0,\r\n    \"totalValue\": 500.0,\r\n    \"km\": 47500,\r\n    \"date\": \"2025-01-28T03:00:00.000+00:00\",\r\n    \"fuelType\": \"gasolina\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/fuel/1",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"fuel",
-								"1"
-							]
-						}
+						"url": "{{baseurl}}/fuel/1"
 					},
 					"response": []
 				}
@@ -777,26 +567,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"company",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -805,13 +582,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MDg1MDAyLCJpYXQiOjE3NDcwNzQyMDJ9.m15NFcHtNz3f38XQSN5X8FCITdIpxpeWV_vZr0gMuZE"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -824,16 +597,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"company",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/company/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				}
@@ -856,18 +620,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/api/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"register"
-							]
-						}
+						"url": "http://localhost:8080/api/register"
 					},
 					"response": []
 				},
@@ -876,19 +629,7 @@
 					"request": {
 						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/webhook/mercado-pago",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"webhook",
-								"mercado-pago"
-							]
-						}
+						"url": "http://localhost:8080/api/webhook/mercado-pago"
 					},
 					"response": []
 				}
@@ -902,27 +643,58 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NDY5NzM2LCJpYXQiOjE3NDY0NTg5MzZ9.ifzS_qUnaKXJQJgPn1R7i-79dZQXedvwDpO-JCh7V_A",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2NDY5NzM2LCJpYXQiOjE3NDY0NTg5MzZ9.ifzS_qUnaKXJQJgPn1R7i-79dZQXedvwDpO-JCh7V_A"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/total",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"reports",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"total"
-							]
-						}
+						"url": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/total"
+					},
+					"response": []
+				},
+				{
+					"name": "history",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ5MjI1OTU1LCJpYXQiOjE3NDkyMTUxNTV9.8koqZloJC-JjTONO7hd7F5MODJ8WtbEqXsDPmlv_0mA"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/history/2025"
+					},
+					"response": []
+				},
+				{
+					"name": "get pdf",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDg0NTQ0MTgsImlhdCI6MTc0ODQ0MzYxOH0.-BC977_VWvYev9qZpHWM0YkQmBJXf9bIJk25QrXrQnw"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/history/pdf"
+					},
+					"response": []
+				},
+				{
+					"name": "get vehicle pdf",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDg0NjE3NzMsImlhdCI6MTc0ODQ1MDk3M30.gJrnGgqXDTwoBXCiKFXZrCqzJMrrjB1Ng-AhONrEWqE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseurl}}/reports/550e8400-e29b-41d4-a716-446655440000/20/history/vehicle/pdf"
 					},
 					"response": []
 				}
@@ -936,26 +708,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2Mjg0OTU0LCJpYXQiOjE3NDYyNzQxNTR9.1CmjcMUbE3WlfrlHED3kzZjCArlGu8uCJA1DKy_FzTo",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2Mjg0OTU0LCJpYXQiOjE3NDYyNzQxNTR9.1CmjcMUbE3WlfrlHED3kzZjCArlGu8uCJA1DKy_FzTo"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"drivers",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -964,13 +723,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8"
+							}
 						},
 						"method": "POST",
 						"header": [],
@@ -983,16 +738,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"drivers",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -1001,27 +747,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzOTQ3LCJpYXQiOjE3NDcxNTMxNDd9.HIlETFfuq8K8gfjWqjMNo-ftCCcEsiw4S1zYOw_tZv8"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000/23",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"drivers",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"23"
-							]
-						}
+						"url": "{{baseurl}}/drivers/550e8400-e29b-41d4-a716-446655440000/23"
 					},
 					"response": []
 				}
@@ -1035,26 +767,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODA2MDUxLCJpYXQiOjE3NDY3OTUyNTF9.L8hFdbGuNF8yghwaxqCWLybHm4SDzhLnjEuERWo6TCk",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDkyMzY0MjYsImlhdCI6MTc0OTIyNTYyNn0.qr6UXCZCq8N4pddC-wu2Pkry69Y5tgYXv4bMwYJZAck"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"reset",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -1063,35 +782,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ2ODA2MDUxLCJpYXQiOjE3NDY3OTUyNTF9.L8hFdbGuNF8yghwaxqCWLybHm4SDzhLnjEuERWo6TCk",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGV4c2FuZGVya2Fma2EyMDAxYWxleEBnbWFpbC5jb20iLCJleHAiOjE3NDc3ODA1MzgsImlhdCI6MTc0Nzc2OTczOH0.P_9P9IqpGK18VUi7_pz-BSdoZaNtSYT_TH8jcBwbjQM"
+							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"newPassword\": \"admin123\",\r\n    \"confirmNewPassword\": \"admin123\",\r\n    \"code\": \"ZX55H\"\r\n}",
+							"raw": "{\r\n    \"newPassword\": \"admin123\",\r\n    \"confirmNewPassword\": \"admin123\",\r\n    \"code\": \"FTG3K\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"reset",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/reset/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				}
@@ -1105,13 +811,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -1125,17 +827,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseurl}}/profile/company/550e8400-e29b-41d4-a716-446655440000",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"profile",
-								"company",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
+						"url": "{{baseurl}}/profile/company/550e8400-e29b-41d4-a716-446655440000"
 					},
 					"response": []
 				},
@@ -1144,13 +836,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb250YXRvQHRyYW5zcG9ydGVyYXBpZG8uY29tIiwiZXhwIjoxNzQ3MTYzNDk4LCJpYXQiOjE3NDcxNTI2OTh9.vjHMpclicbLp5Exi5_wVTCJ26GDCzIsxf9hQNBR0M3M"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -1164,17 +852,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseurl}}/profile/driver/23",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"profile",
-								"driver",
-								"23"
-							]
-						}
+						"url": "{{baseurl}}/profile/driver/23"
 					},
 					"response": []
 				}
