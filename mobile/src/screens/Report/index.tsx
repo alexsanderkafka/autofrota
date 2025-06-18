@@ -62,6 +62,7 @@ export default function ReportScreen(){
 
     const [tokenJwt, setTokenJwt] = useState<string>();
     const [companyId, setCompanyId] = useState<string>();
+    const [loadingReport, setLoadingReport] = useState<boolean>(false);
 
     const monthNames = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -76,7 +77,6 @@ export default function ReportScreen(){
     });
     
     const { report } = useReport();
-    console.log(report);
     const totalVehicles: number = report ? report!.totalVehicles : 0;
     const totalKm: number = report ? report!.totalKm : 0;
     const totalExpenseFuel: number = report ? report!.totalExpenseFuel : 0;
@@ -173,6 +173,7 @@ export default function ReportScreen(){
     }
 
     async function getPdf(){
+        setLoadingReport(true);
         const response = getHistoryCompanyPdf().then(async (res) => {
             setUrlPdf(res)
             await openPdf(res!);
@@ -180,8 +181,8 @@ export default function ReportScreen(){
     }
 
     async function openPdf(path: string){
-        console.log(path);
         if (await Sharing.isAvailableAsync()) {
+            setLoadingReport(false);
             await Sharing.shareAsync(path);
         } else {
             console.log("ERror ao abrir o pdf")
@@ -196,7 +197,7 @@ export default function ReportScreen(){
 
                 <View style={styles.containerVehiclesInfos}>
                     <InfoCardReport icon="car" color={colors.icon.mainBlue} amount={totalVehicles.toString()} title="Veículos"/>
-                    <InfoCardReport icon="car" color={colors.icon.secondaray} amount={`${totalKm} Km`} title="Km rodados"/>
+                    <InfoCardReport icon="car" color={colors.icon.secondaray} amount={`${!totalKm ? 0 : totalKm} Km`} title="Km rodados"/>
                     <InfoCardReport icon="currency-usd" color={colors.icon.money} amount={`R$ ${renderTotalExpense()}`} title="Gastos"/>
                 </View>
 
@@ -333,12 +334,18 @@ export default function ReportScreen(){
 
                     <TouchableOpacity style={styles.reportButton}
                     onPress={getPdf}
-                    >
+                    >   
                         <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center'}}>
                             <Image source={require('../../assets/images/icons/pdf.png')} style={{width: 38, height: 38}}/>
                             <Text>Relatório em pdf</Text>
                         </View>
-                        <Icon name="cloud-download" size={24} color={colors.icon.main}/>
+                        {
+                            loadingReport ? (
+                                <ActivityIndicator size="small" color={colors.icon.mainBlue}/>
+                            ) : (
+                                <Icon name="cloud-download" size={24} color={colors.icon.main}/> 
+                            )
+                        } 
                     </TouchableOpacity>
                 </View>
                 </ScrollView>

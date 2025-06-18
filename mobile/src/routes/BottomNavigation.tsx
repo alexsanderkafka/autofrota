@@ -62,7 +62,7 @@ export default function BottomNavigation() {
         options={{
             headerTintColor: colors.text.other,
             tabBarIcon: ({ focused }) => <Icon
-            name="cog"
+            name="account"
             size={24} color={focused ? colors.icon.mainBlue : colors.icon.main}
             />,
           }}
@@ -70,5 +70,3 @@ export default function BottomNavigation() {
     </Tab.Navigator>
   );
 }
-
-//user-shape

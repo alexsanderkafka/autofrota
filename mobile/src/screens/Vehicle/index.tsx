@@ -8,7 +8,8 @@ import {
     Dimensions,
     Animated,
     Modal,
-    Pressable
+    Pressable,
+    RefreshControl
 } from 'react-native';
 import { colors } from '../../theme';
 
@@ -28,6 +29,8 @@ import VehicleType from '../../types/vehicle';
 import { getHistoryVehiclePdf } from '../../service/reportService';
 
 import * as Sharing from 'expo-sharing';
+import Fuel from '../../types/fuel';
+import { getLastFuelByVehicleIdAndCompany } from '../../service/fuelService';
 
 interface Props{
   navigation: any;
@@ -109,10 +112,22 @@ export default function Vehicle({ navigation, route }: Props) {
     return;
   }
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  function onRefresh(){
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
+
 
   return (
     <View style={styles.container}>
-        <ScrollView>
+        <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
           <Image
             source={{ uri:image }}
             style={styles.img}

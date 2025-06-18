@@ -33,7 +33,13 @@ export async function getAllFuelByVehicleIdAndCompany(vehicleId: number, page: n
     return null;
 }
 
-export async function getLastFuelByVehicleIdAndCompany(tokenJwt: string, companyId: string, vehicleId: number): Promise<Fuel | null | undefined>{
+export async function getLastFuelByVehicleIdAndCompany(vehicleId: number): Promise<Fuel | null | undefined>{
+
+    const storage: Storage = await Storage.getInstance();
+    
+    const tokenJwt: string = storage!.tokenJwt!;
+    const companyId: string = storage!.companyExternalId!;
+
         const response = await api.get(`/fuel/${companyId}/${vehicleId}/last`, {
                     headers:{
                     Authorization: `Bearer ${tokenJwt}`

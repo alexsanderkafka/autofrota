@@ -11,28 +11,16 @@ export default function useLastFuel(vehicleId: number): any {
     const [lastFuel, setLastFuel] = useState<Fuel | null | undefined>(null);
 
     useEffect(() => {
-        async function getInStorage(){
-          const currentStorage: Storage = await Storage.getInstance();
-    
-          setStorage(currentStorage);
-        }
-    
-        getInStorage();
-    }, []);
-
-
-    useEffect(() => {
         getLastFuel();
-    }, [storage]);
+    }, []);
 
     async function getLastFuel(){
 
-      const fuel: Fuel | null | undefined = await getLastFuelByVehicleIdAndCompany(storage!.tokenJwt!, storage!.companyExternalId!, vehicleId);
+      const fuel: Fuel | null | undefined = await getLastFuelByVehicleIdAndCompany(vehicleId);
 
       setLastFuel(fuel);
     }
 
     return {lastFuel};
-    
-
+  
 }

@@ -29,10 +29,10 @@ interface Props{
 
 export default function Profile({ navigation }: Props){
 
+    const [loading, setloading] = useState<boolean>(true);
+
     const { company } = useCompany();
 
-    
-    
     const email: string = company ? company!.email : 'teste@gmail.com';
     const name: string = company ? company!.name : 'teste';
     const social: string = company ? company!.social : '00.000.000/0000-0';

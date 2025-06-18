@@ -59,13 +59,11 @@ export default function Select({ selectedFuel, setSelectedFuel, isAddVehicle }: 
             {
                 visible &&
                 <View style={styles.itens}>
-                    <FlatList 
-                    showsVerticalScrollIndicator={false}  
-                    data={typeFuel}
-                    renderItem={ ({ item }) => <TouchableOpacity style={styles.item} onPress={() => updateItem(item)}><Text>{item}</Text></TouchableOpacity>}
-                    onEndReachedThreshold={1} 
-                    style={styles.list}
-                    />
+                    {
+                        typeFuel.map((item, index) => (
+                            <TouchableOpacity key={index} style={styles.item} onPress={() => updateItem(item)}><Text>{item}</Text></TouchableOpacity>
+                        ))
+                    }
                 </View>   
             }
         </View>

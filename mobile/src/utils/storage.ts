@@ -53,7 +53,11 @@ export default class Storage{
     
     public async clear(): Promise<void> {
         try {
+          this.setItem("tokenJwt", "");
+          this.setItem("companyExternalId", "");
+          //Storage.instance = new Storage("", ""); 
           await AsyncStorage.clear();
+          Storage.instance = undefined as unknown as Storage; // zera o singleton
         } catch (error) {
           console.error('Erro ao limpar o AsyncStorage:', error);
         }

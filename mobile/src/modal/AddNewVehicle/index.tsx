@@ -82,13 +82,14 @@ export default function AddNewVehicle({navigation}: Props){
     }
 
 
-    function validateForm(){
+    function validateData(){
         let newErrors: any = {};
 
         if(forms.brand === null || forms.brand === "") newErrors.brand = "Você precisa adicionar a marca do veículo";
         if(forms.model === null || forms.model === "") newErrors.model = "Você precisa adicionar o modelo do veículo";
         if(forms.km === null || forms.km === "") newErrors.km = "Você precisa adicionar a quilometragem do veículo";
         if(forms.plate === null || forms.plate === "") newErrors.plate = "Você precisa adicionar a placa do veículo";
+        if(image === null || image === "") newErrors.image = "Você precisa adicionar uma imagem";
         if(!categories.includes(forms.category.toUpperCase())) newErrors.category = "Categoria inválida, escolha entre: CARRO, CAMINHÃO, MOTO ou VAN";
 
         setErrorsForm(newErrors);
@@ -99,11 +100,14 @@ export default function AddNewVehicle({navigation}: Props){
     }
 
     async function saveNewVehicle(){
-        const verify: boolean = validateForm();
+
+        const verify: boolean = validateData();
 
         if(!verify){
             return;
         }
+
+        setLoading(true);
 
         const formData: FormData = new FormData();
 
@@ -124,6 +128,7 @@ export default function AddNewVehicle({navigation}: Props){
 
         if(response === 201){
             alert("Veículo cadastrado com sucesso!");
+            setLoading(false);
             navigation.goBack();
         }
 
@@ -183,7 +188,7 @@ export default function AddNewVehicle({navigation}: Props){
                 }}>
 
                     <TouchableOpacity
-                    style={styles.uploadArea}
+                    style={[styles.uploadArea, {borderColor: errorsForm.image ? colors.border.error : colors.primary.main}]}
                     onPress={selectImage}
                     >
                         {
@@ -198,8 +203,8 @@ export default function AddNewVehicle({navigation}: Props){
                                 />
                             ) : (
                                 <View style={styles.boxInUploadArea}>
-                                    <Icon name="camera" size={24} color={colors.icon.mainBlue} />
-                                    <Text style={styles.textAddImage}>Adicionar foto do veículo</Text>
+                                    <Icon name="camera" size={24} color={errorsForm.image ? colors.icon.red : colors.icon.mainBlue} />
+                                    <Text style={[styles.textAddImage, {color: errorsForm.image ? colors.text.red : colors.text.primary}]}>{errorsForm.image ? errorsForm.image : "Adicionar foto do veículo"}</Text>
                                 </View>
                             )
                         }
