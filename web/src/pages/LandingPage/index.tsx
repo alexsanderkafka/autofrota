@@ -1,4 +1,4 @@
-import PlaceholderImage from "../../assets/placeholder-image.jpg";
+import MainImage from "../../assets/main-image.png";
 import ButtonLandingPage from "../../components/Button";
 import FeaturesCard from "../../components/FeaturesCard";
 import PlanCard from "../../components/PlanCard";
@@ -32,7 +32,7 @@ export default function LandingPage(){
     return (
         <>
             <SectionHero>
-                <img src={PlaceholderImage} alt="" />
+                <img src={MainImage} alt="" />
 
                 <BoxText>
                     <h1>Gerencie sua frota de forma eficiente</h1>
