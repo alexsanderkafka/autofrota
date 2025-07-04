@@ -2,7 +2,7 @@
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/alexsanderkafka/autofrota/blob/main/LICENSE) 
 
 # Sobre o projeto
-O foco desse projeto, foi criar um projeto multiplaforma que tinha como objetivo o estudo de todo o ciclo de desenvolvimento de software para fins de estudo. Nesse projeto, foi criado um app utilizando React Native com Expo Go, para parte de cadastro de novos usuários foi criado um sistema web com React e uma API utilzando Java com Spring Boot.
+O foco desse projeto, foi criar um projeto multiplataforma que tinha como objetivo o estudo de todo o ciclo de desenvolvimento de software para fins de estudo. Nesse projeto, foi criado um app utilizando React Native com Expo Go, para parte de cadastro de novos usuários foi criado um sistema web com React e uma API utilzando Java com Spring Boot.
 
 # Integrações
 - Firebase (storage)
