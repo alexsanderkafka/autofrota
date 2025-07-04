@@ -9,8 +9,8 @@
 - Mercado pago
 
 ## Layout Mobile
-
-![mobile-1]
+![mobile-1](https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_1.png) ![mobile-2](https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_2.png)
+![mobile-3](https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_3.png) ![mobile-4](https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_4.png)
 
 ## Layout web
 ![web-1]
