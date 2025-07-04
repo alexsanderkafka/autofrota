@@ -9,7 +9,7 @@
 - Mercado pago
 
 ## Layout Mobile
-<img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_1.png" alt="mobile-1" width="200"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_2.png" alt="mobile-1" width="200"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_3.png" alt="mobile-1" width="200"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_4.png" alt="mobile-1" width="200"/>
+<img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_1.png" alt="mobile-1" width="300"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_2.png" alt="mobile-1" width="300"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_3.png" alt="mobile-1" width="300"/> <img src="https://github.com/alexsanderkafka/autofrota/blob/main/assets/onboarding_4.png" alt="mobile-1" width="300"/>
 
 ## Layout web
 ![web-1]
